@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.HomeFragment">
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:id="@+id/swipe_refresh_Layout"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:paddingEnd="0dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:paddingStart="10dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="7dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:src="@drawable/menu"
+                            android:paddingEnd="0dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/salon_home"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/salon_home" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/salon_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/cinzel_decorative_bold"
+                            android:text="@string/salon_home"
+                            android:textSize="22sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/wallet"
+                            app:layout_constraintStart_toEndOf="@+id/menu"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/wallet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/account_balance_wallet"
+                            app:layout_constraintBottom_toBottomOf="@+id/salon_home"
+                            app:layout_constraintEnd_toStartOf="@+id/notification"
+                            app:layout_constraintStart_toEndOf="@+id/salon_home"
+                            app:layout_constraintTop_toTopOf="@+id/salon_home" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/notification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/notifications_none"
+                            app:layout_constraintBottom_toBottomOf="@+id/wallet"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/wallet" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--                <com.google.android.material.appbar.AppBarLayout-->
+                    <!--                    android:id="@+id/toolbar"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:background="#FFFFFF"-->
+                    <!--                    android:visibility="visible"-->
+                    <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                    app:layout_constraintTop_toTopOf="parent">-->
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="15dp"
+                        android:paddingStart="0dp"
+                        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                        <com.smarteist.autoimageslider.SliderView
+                            android:id="@+id/imageSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="165dp"
+                            android:clipToPadding="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:sliderAnimationDuration="600"
+                            app:sliderAutoCycleDirection="right"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="600"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMargin="15dp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorPadding="3dp"
+                            app:sliderIndicatorRadius="2dp"
+                            app:sliderIndicatorSelectedColor="#5A5A5A"
+                            app:sliderIndicatorUnselectedColor="#FFF"
+                            app:sliderScrollTimeInSec="1"
+                            app:sliderStartAutoCycle="true" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Manage_Services"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/manage_services"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/imageSlider"
+                            app:layout_constraintTop_toBottomOf="@+id/imageSlider" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/see_All"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/see_all"
+                            android:textColor="#296064"
+                            app:layout_constraintBottom_toBottomOf="@+id/Manage_Services"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/Manage_Services" />
+
+                        <HorizontalScrollView
+                            android:id="@+id/nested_scrooll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="130dp"
+                            app:layout_constraintEnd_toEndOf="@+id/see_All"
+                            android:scrollbars="none"
+                            app:layout_constraintStart_toStartOf="@+id/Manage_Services"
+                            app:layout_constraintTop_toBottomOf="@+id/Manage_Services">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="140dp">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_manage_services"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:nestedScrollingEnabled="true"
+                                    android:orientation="horizontal"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:listitem="@layout/manage_services_items" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/manage_add_services_tab"
+                                    android:layout_width="90dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    app:cardCornerRadius="40dp"
+                                    app:cardElevation="7dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/recycler_manage_services"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/recycler_manage_services"
+                                    app:layout_constraintTop_toTopOf="@+id/recycler_manage_services">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="#F5F5F5">
+
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:id="@+id/kaichi"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginHorizontal="15dp"
+                                            android:layout_marginTop="10dp"
+                                            android:adjustViewBounds="true"
+                                            android:background="@drawable/oval_recycler"
+                                            android:src="@drawable/add_services"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/kaichi_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="7dp"
+                                            android:layout_marginBottom="8dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="@string/add_services"
+                                            android:textColor="#296064"
+                                            android:textSize="12sp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            android:textAlignment="center"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/kaichi" />
+
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        </HorizontalScrollView>
+
+
+                        <View
+                            android:id="@+id/line"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="#EBEBEB"
+                            app:layout_constraintEnd_toEndOf="@+id/nested_scrooll"
+                            app:layout_constraintStart_toStartOf="@+id/nested_scrooll"
+                            app:layout_constraintTop_toBottomOf="@+id/nested_scrooll" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Appointment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/appointment"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/Manage_Services"
+                            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appointment_see_All"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/see_all"
+                            app:layout_constraintBottom_toBottomOf="@+id/Appointment"
+                            app:layout_constraintEnd_toEndOf="@+id/see_All"
+                            app:layout_constraintTop_toBottomOf="@+id/line"
+                            app:layout_constraintTop_toTopOf="@+id/Appointment" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/appointment_recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            app:layout_constraintEnd_toEndOf="@+id/appointment_see_All"
+                            app:layout_constraintStart_toStartOf="@+id/Appointment"
+                            app:layout_constraintTop_toBottomOf="@+id/Appointment"
+                            tools:listitem="@layout/appointment_recyclerview_item" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/top_services"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/packages"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/appointment_recyclerView"
+                            app:layout_constraintTop_toBottomOf="@+id/appointment_recyclerView" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/see_All3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/see_all"
+                            app:layout_constraintBottom_toBottomOf="@+id/top_services"
+                            app:layout_constraintEnd_toEndOf="@+id/see_All"
+                            app:layout_constraintTop_toBottomOf="@+id/appointment_recyclerView"
+                            app:layout_constraintTop_toTopOf="@+id/top_services" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/top_services_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="@+id/see_All3"
+                            app:layout_constraintStart_toStartOf="@+id/top_services"
+                            app:layout_constraintTop_toBottomOf="@+id/top_services"
+                            tools:listitem="@layout/top_services_item" />
+
+
+                        <!--  <androidx.appcompat.widget.AppCompatTextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:drawableStart="@drawable/logout"
+                              android:fontFamily="@font/poppins"
+                              android:gravity="bottom"
+                              android:text="Logout" />-->
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Revenue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/revenue"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/top_services_recycler"
+                            app:layout_constraintTop_toBottomOf="@+id/top_services_recycler" />
+
+                        <!--                <com.jjoe64.graphview.GraphView-->
+                        <!--                    android:id="@+id/idGraphView"-->
+                        <!--                    android:layout_width="match_parent"-->
+                        <!--                    android:layout_height="wrap_content"-->
+                        <!--                    android:layout_alignParentTop="true"-->
+                        <!--                    app:layout_constraintTop_toBottomOf="@+id/Revenue"-->
+                        <!--                    app:layout_constraintStart_toStartOf="@+id/Revenue"-->
+                        <!--                    app:layout_constraintEnd_toEndOf="@id/Revenue"/>-->
+
+
+                        <!--        <com.google.android.material.tabs.TabLayout-->
+                        <!--            android:id="@+id/tab_layout"-->
+                        <!--            android:layout_width="match_parent"-->
+                        <!--            android:layout_height="wrap_content"-->
+                        <!--            android:layout_gravity="top"-->
+                        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--            app:layout_constraintStart_toStartOf="@+id/Revenue"-->
+                        <!--            app:layout_constraintTop_toBottomOf="@+id/Revenue">-->
+
+                        <!--        </com.google.android.material.tabs.TabLayout>-->
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/Revenue"
+                            app:layout_constraintTop_toBottomOf="@+id/Revenue"
+
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+</layout>

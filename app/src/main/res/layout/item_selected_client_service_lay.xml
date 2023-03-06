@@ -1,0 +1,117 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/add_client_selection_lays"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/category_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="20dp"
+            android:padding="3dp"
+            app:cardCornerRadius="9dp"
+            app:cardElevation="7dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/category_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_add_services_spinner"
+                    android:dropDownVerticalOffset="57dp"
+                    android:text="@string/select_category"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginEnd="11dp"
+                    android:contentDescription="@string/todo"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arrow_dd"
+                    app:layout_constraintBottom_toBottomOf="@id/category_spinner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/category_spinner"
+                    tools:ignore="ImageContrastCheck" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/services_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginVertical="13dp"
+            android:layout_marginRight="20dp"
+            android:padding="3dp"
+            app:cardCornerRadius="9dp"
+            app:cardElevation="7dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/services_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_add_services_spinner"
+                    android:dropDownVerticalOffset="57dp"
+                    android:text="@string/select_category"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_marginEnd="11dp"
+                    android:contentDescription="@string/todo"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arrow_dd"
+                    app:layout_constraintBottom_toBottomOf="@id/services_spinner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/services_spinner"
+                    tools:ignore="ImageContrastCheck" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/dotted_line2"
+            android:elevation="1dp" />
+
+
+    </LinearLayout>
+</layout>

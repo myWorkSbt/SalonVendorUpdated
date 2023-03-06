@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent"
+    app:cardCornerRadius="27dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:cardElevation="7dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:layout_height="match_parent"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Staff "
+                android:id="@+id/btn_edit_staff"
+                android:padding="13dp"
+                android:textSize="15sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:drawableStart="@drawable/edit_staff"
+                android:drawablePadding="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remove Staff"
+                android:id="@+id/btn_remove_staff"
+                android:padding="13dp"
+                app:layout_constraintTop_toBottomOf="@id/btn_edit_staff"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="15sp"
+                android:drawableStart="@drawable/remove_staff"
+                android:drawablePadding="10dp"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send Login credential via mail"
+                android:id="@+id/btn_send_credentials"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/btn_remove_staff"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="15dp"
+                android:drawableStart="@drawable/send_logins"
+                android:drawablePadding="10dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>

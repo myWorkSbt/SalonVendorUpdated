@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/BottomSheetDialogStyle"
+    android:paddingBottom="43dp">
+
+
+        <View
+            android:layout_width="78dp"
+            android:layout_height="3dp"
+            android:background="#87CFD6"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/completion_status_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="17dp"
+            app:cardElevation="11dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="27dp">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/status_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="By Status"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="40dp"
+                    android:background="#E6E6E6"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/filtered_unseleced_box"
+                    android:paddingHorizontal="23dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:text="All"
+                    android:textColor="#296064"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_completed"
+                    app:layout_constraintTop_toBottomOf="@id/status_title" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_completed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/filtered_unseleced_box"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="23dp"
+                    android:paddingVertical="7dp"
+                    android:text="Completed"
+                    android:textColor="#296064"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_all"
+                    app:layout_constraintEnd_toStartOf="@id/btn_cancel"
+                    app:layout_constraintStart_toEndOf="@id/btn_all"
+                    app:layout_constraintTop_toTopOf="@id/btn_all" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/filtered_unseleced_box"
+                    android:paddingStart="24dp"
+                    android:paddingTop="7dp"
+                    android:paddingEnd="24dp"
+                    android:paddingBottom="7dp"
+                    android:text="Cancelled"
+                    android:textColor="#296064"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_completed"
+                    app:layout_constraintStart_toEndOf="@id/btn_completed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_completed" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            app:cardCornerRadius="13dp"
+            android:layout_marginBottom="17dp"
+            android:layout_marginEnd="6dp"
+            app:cardElevation="11dp"
+            android:layout_marginStart="6dp"
+            app:layout_constraintTop_toBottomOf="@id/completion_status_lay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="7dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/select_date_headings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Select Date"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/date_view_lines"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="9dp"
+                    android:background="#E6E6E6"
+                    app:layout_constraintTop_toBottomOf="@id/select_date_headings" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/from_lays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="3dp"
+                    app:layout_constraintEnd_toStartOf="@id/to_lays"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/date_view_lines">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="17dp"
+                        android:background="#F8F8F8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="From"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="@id/tv_from_date"
+                            app:layout_constraintStart_toStartOf="@id/tv_from_date"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btn_from_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:src="@drawable/evet"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_from_date"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_from_date"
+                            app:layout_constraintTop_toTopOf="@id/tv_from" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_from_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="DD/MM/YYYY"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:textColor="#575757"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toEndOf="@id/btn_from_date"
+                            app:layout_constraintTop_toBottomOf="@id/tv_from" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/to_lays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/from_lays"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/from_lays"
+                    app:layout_constraintTop_toTopOf="@id/from_lays">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:paddingVertical="5dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="17dp"
+                        android:background="#F8F8F8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="To"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="@id/tv_to_date"
+                            app:layout_constraintStart_toStartOf="@id/btn_to_date"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btn_to_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/evet"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_to_date"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_to_date"
+                            app:layout_constraintTop_toTopOf="@id/tv_to" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_to_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="DD/MM/YYYY"
+                            android:textColor="#575757"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toEndOf="@id/btn_to_date"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_to" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:background="@drawable/filter_reset_btn"
+                    android:fontFamily="@font/poppins"
+                    android:paddingVertical="9dp"
+                    android:paddingHorizontal="53dp"
+                    android:text="Reset"
+                    android:textAllCaps="false"
+                    android:textColor="#296064"
+                    app:cornerRadius="9dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_apply_filter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/from_lays" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_apply_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/filter_apply_filter_btn"
+                    android:fontFamily="@font/poppins"
+                    android:paddingVertical="9dp"
+                    android:text=" Apply Filter"
+                    android:textAllCaps="false"
+                    android:textColor="#296064"
+                    android:paddingHorizontal="27dp"
+                    app:cornerRadius="9dp"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_reset"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_reset"
+                    app:layout_constraintTop_toBottomOf="@id/from_lays"
+                    app:layout_constraintTop_toTopOf="@id/btn_reset" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

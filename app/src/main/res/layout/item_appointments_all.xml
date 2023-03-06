@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="13dp"
+        android:layout_marginVertical="7dp"
+        app:cardElevation="17dp"
+        android:layout_marginHorizontal="13dp"
+        android:id="@+id/appointment_main_lays"
+        android:layout_height="117dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/item_all_appointmn_image_lays"
+                app:layout_constraintStart_toStartOf="parent"
+                app:cardCornerRadius="11dp">
+
+                <ImageView
+                    android:layout_width="83dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/no_image_rectangle"
+                    android:scaleType="fitXY"
+                    android:id="@+id/item_all_appointmn_image" />
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appointment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:elevation="9dp"
+                android:background="@drawable/corner_cut"
+                android:fontFamily="@font/poppins_medium"
+                android:text="02:00 pm"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                app:layout_constraintBottom_toBottomOf="@id/item_all_appointmn_image_lays"
+                app:layout_constraintEnd_toEndOf="@id/item_all_appointmn_image_lays"
+                app:layout_constraintBaseline_toBottomOf="@id/item_all_appointmn_image_lays"
+                app:layout_constraintStart_toStartOf="@id/item_all_appointmn_image_lays" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_name"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/item_all_appointmn_image_lays"
+                android:text=" User 1"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins_medium"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/completion_status_lays"
+                app:cardCornerRadius="9dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:padding="5dp"
+                    android:id="@+id/competion_status_inner_lays"
+                    android:layout_height="match_parent"
+                    android:background="#2FC75C">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Completed"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="13sp"
+                        android:textColor="@color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textStyle="bold"
+                        android:id="@+id/completion_status" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/saloon_site"
+                android:text="At Home"
+                android:textColor="#7A7A7A"
+                android:fontFamily="@font/poppins"
+                app:layout_constraintStart_toStartOf="@id/item_name"
+                app:layout_constraintStart_toEndOf="@id/item_all_appointmn_image_lays"
+                app:layout_constraintTop_toBottomOf="@id/item_name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment : "
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:id="@+id/payment_header"
+                app:layout_constraintTop_toBottomOf="@id/saloon_site"
+                app:layout_constraintStart_toStartOf="@id/saloon_site" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/payment_medium"
+                app:layout_constraintStart_toEndOf="@id/payment_header"
+                app:layout_constraintTop_toBottomOf="@id/saloon_site"
+                android:layout_marginStart="3dp"
+                android:text="online"
+                android:fontFamily="@font/roboto"
+                android:textColor="#649EA4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/payment_header"
+                android:drawablePadding="7dp"
+                app:layout_constraintStart_toStartOf="@id/payment_header"
+                android:id="@+id/services"
+                android:ellipsize="end"
+                android:maxLength="13"
+                android:maxLines="1"
+                android:text="haircut"
+                android:drawableStart="@drawable/menu" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_gender"
+                app:layout_constraintEnd_toStartOf="@id/distance"
+                android:text="male"
+                app:layout_constraintBottom_toBottomOf="@id/services"
+                app:layout_constraintTop_toBottomOf="@id/payment_medium"
+                app:layout_constraintTop_toTopOf="@id/services"
+                android:layout_marginEnd="3dp"
+                android:drawableStart="@drawable/icon_park_massage_chair_one" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/distance"
+                android:drawableStart="@drawable/dashicons_location"
+                android:fontFamily="@font/roboto"
+                android:textSize="10sp"
+                app:layout_constraintTop_toBottomOf="@id/payment_medium"
+                app:layout_constraintBottom_toBottomOf="@id/item_gender"
+                app:layout_constraintTop_toTopOf="@id/item_gender"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@id/completion_status_lays"
+                android:text="1.5km"
+
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".activity.Login">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/arrow_back"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@+id/back">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/create_your_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/create"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/welcome_to"
+                    android:textColor="#212121"
+                    android:textSize="30sp"
+                    app:fontFamily="@font/poppins_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/salon_home"
+                    android:textColor="#212121"
+                    android:textSize="30sp"
+                    app:fontFamily="@font/poppins_medium"
+                    app:layout_constraintStart_toStartOf="@+id/create"
+                    app:layout_constraintTop_toBottomOf="@id/create" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/country_picker_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="50dp"
+                android:background="@drawable/rectangle"
+                android:drawableBottom="@drawable/line"
+                app:layout_constraintStart_toStartOf="@+id/create_your_layout"
+                app:layout_constraintTop_toBottomOf="@+id/create_your_layout">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/country_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginStart="5dp"
+                    android:drawableEnd="@drawable/arrow_down"
+                    android:text="@string/_91"
+                    android:textSize="21sp"
+                    app:ccpDialog_textColor="@color/StatusBarBackgroundColor"
+                    app:ccp_autoDetectCountry="false"
+                    app:ccp_contentColor="@color/StatusBarBackgroundColor"
+                    app:ccp_showFlag="false"
+                    app:ccp_showFullName="false"
+                    app:ccp_showNameCode="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line_up"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/StatusBarBackgroundColor"
+                    app:layout_constraintStart_toEndOf="@id/country_picker" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/enter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="9dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@null"
+                    android:backgroundTint="#F5F5F5"
+                    android:paddingVertical="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:hint="@string/mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:textFontWeight="400"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toEndOf="@+id/line_up"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:targetApi="p" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/country_picker_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#87CFD6"
+        android:paddingVertical="15dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toTopOf="@id/or_continue_with"
+        app:layout_constraintEnd_toEndOf="@+id/scroll"
+        app:layout_constraintStart_toStartOf="@+id/scroll"
+        app:layout_constraintTop_toBottomOf="@id/scroll" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/or_continue_with"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/or_continue_with"
+        android:textColor="#212121"
+        app:fontFamily="@font/roboto"
+        app:layout_constraintBottom_toTopOf="@id/fb_card"
+        app:layout_constraintEnd_toEndOf="@+id/btn_login_next"
+        app:layout_constraintStart_toStartOf="@+id/btn_login_next" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/line"
+        app:layout_constraintBottom_toBottomOf="@+id/or_continue_with"
+        app:layout_constraintEnd_toStartOf="@+id/or_continue_with"
+        app:layout_constraintStart_toStartOf="@+id/btn_login_next"
+        app:layout_constraintTop_toTopOf="@+id/or_continue_with" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/line"
+        app:layout_constraintBottom_toBottomOf="@+id/or_continue_with"
+        app:layout_constraintEnd_toEndOf="@+id/scroll"
+        app:layout_constraintStart_toEndOf="@+id/or_continue_with"
+        app:layout_constraintTop_toTopOf="@+id/or_continue_with" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fb_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/line2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_next">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/fb_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rectangle"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#C5C5C5"
+            app:strokeWidth="1dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/fb"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/facebook_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/google_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="7dp"
+            app:layout_constraintBottom_toBottomOf="@+id/fb_icon"
+            app:layout_constraintEnd_toStartOf="@+id/twitter_icon"
+            app:layout_constraintStart_toEndOf="@+id/fb_icon"
+            app:layout_constraintTop_toTopOf="@+id/fb_icon"
+            app:strokeColor="#C5C5C5"
+            app:strokeWidth="1dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/google"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/google_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/twitter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rectangle"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="7dp"
+            app:layout_constraintBottom_toBottomOf="@+id/google_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/google_icon"
+            app:layout_constraintTop_toTopOf="@+id/google_icon"
+            app:strokeColor="#C5C5C5"
+            app:strokeWidth="1dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/twitter"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/vector"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/already_have_Account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="@string/already_have_an_account"
+            android:textColor="#212121"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/sign_in"
+            android:textColor="#87CFD6"
+            app:layout_constraintBottom_toBottomOf="@+id/already_have_Account"
+            app:layout_constraintStart_toEndOf="@+id/already_have_Account"
+            app:layout_constraintTop_toTopOf="@+id/already_have_Account" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="67dp"
+        android:elevation="11dp"
+        android:minHeight="67dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

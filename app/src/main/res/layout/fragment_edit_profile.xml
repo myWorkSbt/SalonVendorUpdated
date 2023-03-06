@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp"
+
+    tools:context=".fragment.EditProfileFragment">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/NestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_menus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/menu"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/edit_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Edit Profile"
+                    android:textColor="#212121"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_menus"
+                    app:layout_constraintStart_toEndOf="@+id/btn_menus"
+                    app:layout_constraintTop_toTopOf="@+id/btn_menus" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/owner_details_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="9dp"
+                    android:layout_marginTop="13dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="9dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edit_profile">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/owner_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/Owner_Details"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/edit_owner_details_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="13dp"
+                            android:src="@drawable/profile_pencile"
+                            app:layout_constraintBottom_toBottomOf="@+id/owner_details"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/owner_details" />
+
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/owner_profile"
+                            android:layout_width="93dp"
+                            android:layout_height="111dp"
+                            android:layout_margin="10dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/owner_details">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/owner_profile_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/no_image_rectangle" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/hidden_tv_img_url"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/owner_profile"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/owner_profile"
+                            app:layout_constraintTop_toBottomOf="@+id/owner_details"
+                            app:layout_constraintTop_toTopOf="@+id/owner_profile">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/name_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text="Name : "
+                                android:textColor="@color/black"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/owner_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text=""
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/name_title"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/name_title"
+                                app:layout_constraintStart_toStartOf="@+id/owner_Mobile_no"
+                                app:layout_constraintTop_toTopOf="@+id/name_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Mobile_no_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/inter"
+                                android:text="Mobile No : "
+                                android:textColor="@color/black"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="@+id/name_title"
+                                app:layout_constraintTop_toBottomOf="@+id/name_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/owner_Mobile_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="18dp"
+                                android:fontFamily="@font/inter"
+                                android:inputType="number"
+                                android:text=""
+                                android:textColor="@color/black"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/Mobile_no_title"
+                                app:layout_constraintTop_toBottomOf="@+id/Mobile_no_title"
+                                app:layout_constraintTop_toTopOf="@+id/Mobile_no_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Date_of_birth_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/inter"
+                                android:text="Date of Birth : "
+                                android:textColor="@color/black"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="@+id/Mobile_no_title"
+                                app:layout_constraintTop_toBottomOf="@+id/Mobile_no_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/owner_date_of_birth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:inputType="number"
+                                android:text=""
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/Date_of_birth_title"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="@+id/owner_Mobile_no"
+                                app:layout_constraintTop_toBottomOf="@+id/owner_Mobile_no"
+                                app:layout_constraintTop_toTopOf="@+id/Date_of_birth_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Email_id_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/inter"
+                                android:text="Email Id : "
+                                android:textColor="@color/black"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="@+id/Date_of_birth_title"
+                                app:layout_constraintTop_toBottomOf="@+id/Date_of_birth_title" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/owner_Email_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:inputType="number"
+                                android:text=""
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/Email_id_title"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="@+id/owner_date_of_birth"
+                                app:layout_constraintTop_toBottomOf="@+id/owner_date_of_birth"
+                                app:layout_constraintTop_toTopOf="@+id/Email_id_title" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/salon_detail_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="9dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="9dp"
+                    app:layout_constraintStart_toStartOf="@+id/owner_details_card"
+                    app:layout_constraintTop_toBottomOf="@+id/owner_details_card">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Salon_Details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/salon_details"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/edit_salon_detail_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/profile_pencile"
+                            app:layout_constraintBottom_toBottomOf="@+id/Salon_Details"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/Salon_Details" />
+
+                        <ScrollView
+                            android:id="@+id/salon_details_recycler_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="horizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/Salon_Details">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/salon_details_recycler"
+                                    android:layout_width="0dp"
+                                    android:layout_height="148dp"
+                                    app:layout_constraintBottom_toBottomOf="@id/add_image_lay"
+                                    app:layout_constraintStart_toEndOf="@id/add_image_lay"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/add_image_lay"
+                                    tools:ignore="SpeakableTextPresentCheck"
+                                    tools:listitem="@layout/item_image_banner" />
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/add_image_lay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    app:cardCornerRadius="25dp"
+
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/salon_details_recycler"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="148dp"
+                                        android:layout_height="148dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/add_image_lay" />
+                                </androidx.cardview.widget.CardView>
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </ScrollView>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/add_more_salon_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/add_more_background"
+                            android:drawableStart="@drawable/plus"
+                            android:drawablePadding="5dp"
+                            android:padding="10dp"
+                            android:text="Add More"
+                            android:textColor="#656565"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/salon_details_recycler_lays" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/tv_salon_name_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintEnd_toEndOf="@id/add_more_salon_details"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/add_more_salon_details">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_salon_name_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="@string/salon_name"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/salon_name_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/tv_salon_name_lays"
+                            app:layout_constraintStart_toStartOf="@+id/tv_salon_name_lays"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_salon_name_lays" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/salon_detail_mobile_no_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toBottomOf="@+id/salon_name_line">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_detail_mobile_no"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Mobile No:"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_mnumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/salon_phoneno"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/salon_detail_mobile_no_lays"
+                            app:layout_constraintStart_toStartOf="@+id/salon_detail_mobile_no_lays"
+                            app:layout_constraintTop_toBottomOf="@+id/salon_detail_mobile_no_lays" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/salon_detail_address_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintStart_toStartOf="@+id/salon_phoneno"
+                            app:layout_constraintTop_toBottomOf="@+id/salon_phoneno">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_detail_Address_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Address :"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_detail_address"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:maxLines="3"
+                                android:text=""
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/line3"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/salon_detail_address_lays"
+                            app:layout_constraintStart_toStartOf="@+id/salon_detail_address_lays"
+                            app:layout_constraintTop_toBottomOf="@id/salon_detail_address_lays" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/salon_details_emai_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintStart_toStartOf="@+id/line3"
+                            app:layout_constraintTop_toBottomOf="@+id/line3">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Tv_salon_details_email_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Email :"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon_details_email"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:ellipsize="end"
+                                android:gravity="start"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/email_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/salon_details_emai_lays"
+                            app:layout_constraintStart_toStartOf="@+id/salon_details_emai_lays"
+                            app:layout_constraintTop_toBottomOf="@id/salon_details_emai_lays" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/TvUpload_Id_Proof_heading"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:fontFamily="@font/inter"
+                            android:text="Upload Id Proof:"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="@+id/email_underline"
+                            app:layout_constraintTop_toBottomOf="@id/email_underline" />
+
+                        <View
+                            android:id="@+id/Upload_Id_Proof_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/TvUpload_Id_Proof_heading"
+                            app:layout_constraintStart_toStartOf="@+id/TvUpload_Id_Proof_heading"
+                            app:layout_constraintTop_toBottomOf="@id/TvUpload_Id_Proof_heading" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/id_proof_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/upload"
+                            app:layout_constraintBottom_toBottomOf="@+id/TvUpload_Id_Proof_heading"
+                            app:layout_constraintEnd_toEndOf="@+id/add_more_salon_details"
+                            app:layout_constraintTop_toBottomOf="@+id/Upload_Id_Proof_underline"
+                            app:layout_constraintTop_toTopOf="@+id/TvUpload_Id_Proof_heading" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Tv_Upload_License"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:fontFamily="@font/inter"
+                            android:text="Upload License :"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="@+id/TvUpload_Id_Proof_heading"
+                            app:layout_constraintTop_toBottomOf="@+id/TvUpload_Id_Proof_heading" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/license_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/upload"
+                            app:layout_constraintBottom_toBottomOf="@+id/Tv_Upload_License"
+                            app:layout_constraintStart_toStartOf="@+id/id_proof_upload"
+                            app:layout_constraintTop_toBottomOf="@+id/id_proof_upload"
+                            app:layout_constraintTop_toTopOf="@+id/Tv_Upload_License" />
+
+                        <View
+                            android:id="@+id/license_upload_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintStart_toStartOf="@+id/Tv_Upload_License"
+                            app:layout_constraintTop_toBottomOf="@+id/Tv_Upload_License" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/et_about_session"
+                            android:layout_width="match_parent"
+                            android:layout_height="130dp"
+                            android:layout_marginTop="13dp"
+                            android:background="@drawable/et_about_session_rectangle"
+                            android:gravity="top"
+                            android:hint="About Salon..."
+                            android:maxLength="500"
+                            android:paddingStart="12dp"
+                            android:paddingTop="12dp"
+                            app:layout_constraintStart_toStartOf="@+id/license_upload_underline"
+                            app:layout_constraintTop_toBottomOf="@+id/license_upload_underline" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Samarth-->
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bank_details_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="9dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="9dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/salon_detail_card"
+                    app:layout_constraintStart_toStartOf="@+id/salon_detail_card"
+                    app:layout_constraintTop_toBottomOf="@+id/salon_detail_card">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Bank_Details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="@string/bank_details"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/edits_bankDetails_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="7dp"
+                            android:src="@drawable/profile_pencile"
+                            app:layout_constraintBottom_toBottomOf="@+id/Bank_Details"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/Bank_Details" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/bank_name_line_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintTop_toBottomOf="@+id/Bank_Details">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_Bank_name_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1.6"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Bank Name:"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/Bank_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@null"
+                                android:enabled="false"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:ellipsize="end"
+                                android:text=""
+                                android:inputType="textPersonName"
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/bank_name_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintTop_toBottomOf="@+id/bank_name_line_lays" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/Tv_Account_holder_name_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintTop_toBottomOf="@+id/bank_name_line">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Tv_Account_holder_name_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1.6"
+                                android:background="@null"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Account holder Name :"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/Account_holder_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@null"
+                                android:ellipsize="end"
+                                android:enabled="false"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:text=""
+                                android:textColor="#5F5D5D"
+                                android:inputType="textPersonName"
+
+                                app:layout_constraintBottom_toBottomOf="@+id/Tv_Account_holder_name_heading"
+                                app:layout_constraintStart_toStartOf="@id/Bank_name"
+                                app:layout_constraintTop_toBottomOf="@+id/Bank_name"
+                                app:layout_constraintTop_toTopOf="@+id/Tv_Account_holder_name_heading" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/salon_Account_holder_heading"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintEnd_toEndOf="@+id/Tv_Account_holder_name_lays"
+                            app:layout_constraintStart_toStartOf="@+id/Tv_Account_holder_name_lays"
+                            app:layout_constraintTop_toBottomOf="@+id/Tv_Account_holder_name_lays" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/Account_number_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintTop_toBottomOf="@+id/salon_Account_holder_heading">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Tv_Account_number_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1.6"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="Account No :"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/Account_number"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@null"
+                                android:ellipsize="end"
+                                android:inputType="text"
+                                android:enabled="false"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:text=""
+                                android:textColor="#5F5D5D" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/Account_number_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintTop_toBottomOf="@id/Account_number_lays" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/ifc_code_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintTop_toBottomOf="@+id/Account_number_underline">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/Tv_ifc_code_heading"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1.6"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:text="IFSC Code :"
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/Tv_ifc_code"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@null"
+                                android:ellipsize="end"
+                                android:enabled="false"
+                                android:fontFamily="@font/inter"
+                                android:gravity="start"
+                                android:text=""
+                                android:textColor="#5F5D5D"
+                                android:inputType="textPassword"
+                                app:layout_constraintBottom_toBottomOf="@+id/Tv_ifc_code_heading"
+                                app:layout_constraintStart_toStartOf="@id/Account_number"
+                                app:layout_constraintTop_toBottomOf="@+id/Account_number"
+                                app:layout_constraintTop_toTopOf="@+id/Tv_ifc_code_heading" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:id="@+id/cancel_check_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintTop_toBottomOf="@id/ifc_code_lays" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/Cancel_check_lays"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:clickable="false"
+                            app:layout_constraintTop_toBottomOf="@id/cancel_check_underline">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/TvCancel_Check_heading"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text="Cancel Check :"
+                                android:textColor="@color/black"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/IvCancel_Check"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="7dp"
+                                android:src="@drawable/upload"
+                                app:layout_constraintBottom_toBottomOf="@+id/TvCancel_Check_heading"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:id="@+id/Cancel_Check_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginBottom="15dp"
+                            android:background="#D0D0D0"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/Cancel_check_lays"
+                            app:layout_constraintStart_toStartOf="@+id/Cancel_check_lays"
+                            app:layout_constraintTop_toBottomOf="@id/Cancel_check_lays" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#87CFD6"
+                    android:cursorVisible="false"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingVertical="15dp"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/bank_details_card"
+                    app:layout_constraintTop_toBottomOf="@id/bank_details_card" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="69dp"
+                    android:layout_height="69dp"
+                    android:elevation="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

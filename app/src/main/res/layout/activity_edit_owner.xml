@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.EditOwner">
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/Fill_your_Profile_lays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/back"
+                    android:layout_width="27dp"
+                    android:layout_height="23dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arrow_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/Fill_your_Profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="@string/edit_owner"
+                    android:textColor="#212121"
+                    android:textSize="23sp"
+                    android:layout_marginEnd="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/layout"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:padding="10dp"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent">-->
+
+            <!--              -->
+
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrool"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/Fill_your_Profile_lays"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/owner_img"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:background="@drawable/oval"
+                            android:src="@drawable/no_image"
+                            app:layout_constraintBottom_toTopOf="@+id/details"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/edit_profile_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/profile_pencile"
+                            app:layout_constraintBottom_toBottomOf="@+id/owner_img"
+                            app:layout_constraintEnd_toEndOf="@+id/owner_img" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/owner_img">
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/name_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/owner_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:elevation="0dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/owner_name"
+                                    android:inputType="textPersonName"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:paddingEnd="0dp"
+                                    android:textSize="16sp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/phone_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:elevation="0dp"
+                                    android:enabled="false"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint=""
+                                    android:inputType="number"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:paddingEnd="0dp"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/dob_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/dob"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/dd_mm_yyyy"
+                                    android:maxLength="20"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:paddingEnd="0dp"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/email_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/owner_email"
+                                    android:inputType="textEmailAddress"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:paddingEnd="0dp"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/gender_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/Gender"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:drawableEnd="@drawable/down"
+                                    android:drawablePadding="20dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/gender"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="20dp"
+                                    android:textColor="#F03E3E3E"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/gender_item_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginTop="3dp"
+                                android:visibility="gone"
+                                app:cardCornerRadius="11dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#33DEEBFF">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/male"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="10dp"
+                                        android:fontFamily="@font/poppins"
+                                        android:padding="10dp"
+                                        android:text="@string/male"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/female"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="10dp"
+                                        android:fontFamily="@font/poppins"
+                                        android:padding="10dp"
+                                        android:text="@string/female"
+                                        app:layout_constraintStart_toStartOf="@+id/male"
+                                        app:layout_constraintTop_toBottomOf="@+id/male" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/service_name_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/service_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/designation"
+                                    android:inputType="text"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:textColor="#E93E3E3E"
+                                    android:paddingEnd="0dp"
+                                    android:textSize="16sp" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginTop="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="@font/poppins_medium"
+                                    android:text="@string/optional" />
+                            </androidx.cardview.widget.CardView>
+
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/submit"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="15dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:backgroundTint="#87CFD6"
+                                android:fontFamily="@font/poppins_medium"
+                                android:paddingVertical="15dp"
+                                android:text="@string/submit"
+                                android:textAllCaps="false"
+                                android:textSize="16sp"
+                                app:cornerRadius="30dp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.core.widget.NestedScrollView>
+
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:minWidth="67dp"
+                android:minHeight="67dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

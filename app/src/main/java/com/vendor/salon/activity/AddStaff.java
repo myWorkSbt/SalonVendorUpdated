@@ -1,0 +1,252 @@
+package com.vendor.salon.activity;
+
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
+import com.bumptech.glide.Glide;
+import com.vendor.salon.R;
+import com.vendor.salon.data_Class.addstaff.AddStaffResponse;
+import com.vendor.salon.data_Class.getStaff.DataItem;
+import com.vendor.salon.databinding.ActivityAddStaffBinding;
+import com.vendor.salon.networking.RetrofitClient;
+import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.GetFileFromUriUsingBufferReader;
+import com.vendor.salon.utilityMethod.loginResponsePref;
+import com.github.dhaval2404.imagepicker.ImagePicker;
+
+import java.io.File;
+import java.util.Calendar;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class AddStaff extends AppCompatActivity {
+
+    private ActivityAddStaffBinding addStaffBinding;
+    private File Staff_Img_File;
+    DataItem staff_data;
+    String uses_type;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addStaffBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_staff);
+
+        staff_data = (DataItem) getIntent().getSerializableExtra("staff_detail");
+        uses_type = getIntent().getStringExtra("layout_head");
+        if (uses_type.equals("edit")) {
+            addStaffBinding.staffDob.setText(staff_data.getDob());
+            addStaffBinding.GenderCustomer.setText(staff_data.getGender());
+            addStaffBinding.tvHeaders.setText("Edit Staff ");
+            addStaffBinding.staffName.setText(staff_data.getName());
+            Glide.with(addStaffBinding.staffImage.getContext()).load(staff_data.getOwnerImage()).error(R.drawable.no_image).into(addStaffBinding.staffImage);
+            addStaffBinding.staffEmail.setText(staff_data.getEmail());
+            addStaffBinding.staffServices.setText(staff_data.getDesignation());
+            addStaffBinding.staffPhoneNo.setText(staff_data.getPhone());
+        } else if (uses_type.equals("add")) {
+
+        }
+        addStaffBinding.dobCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog picker = new DatePickerDialog(AddStaff.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        addStaffBinding.staffDob.setText(day + "/" + (month + 1) + "/" + year);
+                    }
+                }, year, month, day);
+                picker.show();
+                picker.getDatePicker().setMaxDate(cal.getTimeInMillis());
+//            dataPicDialog.datePicker.maxDate();
+            }
+        });
+
+        addStaffBinding.staffImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker.with(AddStaff.this)
+                        .crop()                    //Crop image(Optional), Check Customization for more option
+                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(
+                                1080,
+                                1080
+                        )   //Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
+            }
+        });
+
+        addStaffBinding.GenderCustomerCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (addStaffBinding.genderCustomerItemCard.getVisibility() == View.VISIBLE) {
+                    addStaffBinding.genderCustomerItemCard.setVisibility(View.GONE);
+                    addStaffBinding.customerMale.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addStaffBinding.GenderCustomer.setText(addStaffBinding.customerMale.getText().toString());
+                            if (addStaffBinding.genderCustomerItemCard.getVisibility() == View.VISIBLE) {
+                                addStaffBinding.genderCustomerItemCard.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+
+                    addStaffBinding.customerFemale.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addStaffBinding.GenderCustomer.setText(addStaffBinding.customerFemale.getText().toString());
+                            if (addStaffBinding.genderCustomerItemCard.getVisibility() == View.VISIBLE) {
+                                addStaffBinding.genderCustomerItemCard.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                } else {
+                    addStaffBinding.genderCustomerItemCard.setVisibility(View.VISIBLE);
+                    addStaffBinding.customerMale.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addStaffBinding.GenderCustomer.setText(addStaffBinding.customerMale.getText().toString());
+                            if (addStaffBinding.genderCustomerItemCard.getVisibility() == View.VISIBLE) {
+                                addStaffBinding.genderCustomerItemCard.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+
+                    addStaffBinding.customerFemale.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addStaffBinding.GenderCustomer.setText(addStaffBinding.customerFemale.getText().toString());
+                            if (addStaffBinding.genderCustomerItemCard.getVisibility() == View.VISIBLE) {
+                                addStaffBinding.genderCustomerItemCard.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        addStaffBinding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddStaff.this, Staff.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        addStaffBinding.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addstaffToDbs();
+            }
+        });
+    }
+
+    private void addstaffToDbs() {
+        FunctionCall.showProgressDialog(AddStaff.this);
+        String token = "Bearer " + loginResponsePref.getInstance(AddStaff.this).getToken();
+
+
+        RequestBody staff_Img_Body = null;
+        MultipartBody.Part staff_img_part_val = null;
+        if (Staff_Img_File != null) {
+            staff_Img_Body = RequestBody.create(MediaType.parse("owner_image"), Staff_Img_File);
+            staff_img_part_val = MultipartBody.Part.createFormData("owner_image", Staff_Img_File.getName(), staff_Img_Body);
+        }
+        Call<AddStaffResponse> call;
+        if (uses_type.equals("edit")) {
+            call  = RetrofitClient.getVendorService().editStaffElements(token,
+                    getRequestBody(addStaffBinding.staffName.getText().toString()),
+                    getRequestBody(addStaffBinding.staffPhoneNo.getText().toString()),
+                    getRequestBody(addStaffBinding.staffDob.getText().toString()),
+                    getRequestBody(addStaffBinding.GenderCustomer.getText().toString()),
+                    getRequestBody(addStaffBinding.staffEmail.getText().toString()),
+                    getRequestBody("+91"),
+                    staff_img_part_val,
+                    getRequestBody(staff_data.getId() + ""));
+
+        } else {
+            call = RetrofitClient.getVendorService().addStaffElements(token,
+                    getRequestBody(addStaffBinding.staffName.getText().toString()),
+                    getRequestBody(addStaffBinding.staffPhoneNo.getText().toString()),
+                    getRequestBody(addStaffBinding.staffDob.getText().toString()),
+                    getRequestBody(addStaffBinding.GenderCustomer.getText().toString()),
+                    getRequestBody(addStaffBinding.staffEmail.getText().toString()),
+                    getRequestBody("+91"),
+                    staff_img_part_val);
+        }
+        call.enqueue(new Callback<AddStaffResponse>() {
+            @Override
+            public void onResponse(Call<AddStaffResponse> call, Response<AddStaffResponse> response) {
+                FunctionCall.DismissDialog(AddStaff.this);
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                    Toast.makeText(AddStaff.this, " " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent staffIntent = new Intent(AddStaff.this, Staff.class);
+                    startActivity(staffIntent);
+                    finishAffinity();
+                } else {
+                    if (response.body() != null) {
+                        Toast.makeText(AddStaff.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d("addstaffhit", "onResponse: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddStaffResponse> call, Throwable t) {
+                FunctionCall.DismissDialog(AddStaff.this);
+                Log.d("addstaffhit", "onFailure: " + t.getMessage());
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Staff_Img_File = GetFileFromUriUsingBufferReader.getImageFile(this, data.getData());
+            if (data != null && data.getData() != null) {
+                if (Staff_Img_File != null) {
+                    addStaffBinding.staffImage.setImageURI(Uri.parse(Staff_Img_File.getPath().toString()));
+                }
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(this, "Cancelled. ", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Something went wrong ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AddStaff.this, Staff.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private RequestBody getRequestBody(String str) {
+        return RequestBody.create(str, MediaType.parse("text/plain"));
+    }
+
+}

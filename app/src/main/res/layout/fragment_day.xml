@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.DayFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/day_barchart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_pager"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</FrameLayout>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/services_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="11dp"
+        app:cardCornerRadius="7dp"
+        android:padding="3dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:text="    Select Services"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:textColor="#737373"-->
+<!--                android:textSize="14sp"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                android:id="@+id/services_default_tv"-->
+<!--                />-->
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/row_services_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_add_services_spinner"
+                android:dropDownVerticalOffset="57dp"
+                android:minHeight="53dp"
+                android:text="Select Category"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/arrow_dd"
+                android:layout_marginEnd="11dp"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="@id/row_services_spinner"
+                app:layout_constraintBottom_toBottomOf="@id/row_services_spinner"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="11dp"
+        android:background="@drawable/rectangle_oval"
+        android:id="@+id/mrp_price_lays"
+        app:cardElevation="9dp"
+        app:layout_constraintTop_toBottomOf="@id/services_card"
+        android:layout_marginHorizontal="20dp"
+        android:layout_height="wrap_content"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/row_mrp_price"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:inputType="number"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="MRP Price "
+            android:background="@null"
+            android:maxLength="4"
+            tools:layout_editor_absoluteX="19dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:cardElevation="13dp"
+        android:id="@+id/offer_price_lay"
+        android:layout_marginHorizontal="20dp"
+        app:cardCornerRadius="11dp"
+        android:background="@drawable/rectangle_oval"
+        app:layout_constraintTop_toBottomOf="@id/mrp_price_lays"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:hint="offer Price "
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:fontFamily="@font/poppins_medium"
+            android:background="@null"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:maxLength="4"
+            android:id="@+id/row_et_offer_price" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(optional)"
+            android:layout_marginEnd="7dp"
+            android:fontFamily="@font/poppins"
+            android:layout_gravity="center_vertical|end"
+            />
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/row_service_location_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="13dp"
+        android:padding="3dp"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="11dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/offer_price_lay"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--                            <TextView-->
+            <!--                                android:layout_width="wrap_content"-->
+            <!--                                android:layout_height="wrap_content"-->
+            <!--                                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                                android:text="    Select Services"-->
+            <!--                                android:fontFamily="@font/poppins_medium"-->
+            <!--                                android:textColor="#737373"-->
+            <!--                                android:textSize="14sp"-->
+            <!--                                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                                android:id="@+id/services_default_tv"-->
+            <!--                                />-->
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/row_service_location_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:background="@drawable/bg_add_services_spinner"
+                android:dropDownVerticalOffset="57dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="11dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_dd"
+                app:layout_constraintBottom_toBottomOf="@id/row_service_location_spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/row_service_location_spinner" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        app:layout_constraintTop_toBottomOf="@id/row_service_location_card"
+        android:scaleType="fitXY"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/dotted_line2"
+        android:elevation="1dp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

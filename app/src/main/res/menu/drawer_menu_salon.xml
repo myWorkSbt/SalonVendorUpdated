@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="Home"/>
+
+    <item android:id="@+id/Edit_profile"
+        android:icon="@drawable/edit_profile"
+        android:title="Edit profile" />
+
+
+    <item android:id="@+id/Add_Client"
+        android:icon="@drawable/add_client"
+        android:title="Add Client"/>
+
+
+
+    <item android:id="@+id/Add_Staff"
+        android:icon="@drawable/add_staff"
+        android:title="Add Staff"/>
+
+    <item android:id="@+id/Salon_Time"
+        android:icon="@drawable/salon_time"
+        android:title="Salon Time"/>
+
+
+    <item android:id="@+id/Cover_Range"
+        android:icon="@drawable/cover_range"
+        android:title="Cover Range"/>
+
+    <item android:id="@+id/Inventory"
+        android:icon="@drawable/inventory"
+        android:title="Inventory"/>
+
+    <item android:id="@+id/Language"
+        android:icon="@drawable/language"
+        android:title="Language"/>
+
+    <item android:id="@+id/About_Us"
+        android:icon="@drawable/about_us"
+        android:title="About Us"/>
+
+    <item android:id="@+id/Support"
+        android:icon="@drawable/support"
+        android:title="Support"/>
+
+    <item android:id="@+id/Terms_Condition"
+        android:icon="@drawable/term_condition"
+        android:title="Terms &amp; Condition"/>
+
+
+
+
+</menu>

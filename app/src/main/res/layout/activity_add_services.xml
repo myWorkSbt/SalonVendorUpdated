@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#39FFFFFF"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context=".activity.AddServices">
+
+
+    <LinearLayout
+        android:id="@+id/custom_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_back"
+            android:layout_width="27dp"
+            android:layout_height="23dp"
+            android:background="@color/transparent"
+            android:src="@drawable/arrow_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="start"
+            android:text="@string/add_service"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/service_selection_tops_lay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
+         android:descendantFocusability="blocksDescendants"
+        app:layout_constraintTop_toBottomOf="@id/custom_head"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="47dp"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/switch_lays"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_room_availability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:checked="true"
+                    android:textOff="@string/taken"
+                    android:textOn="@string/available"
+                    android:thumb="@drawable/custom_thumb"
+                    app:switchMinWidth="80dp"
+                    app:track="@drawable/custom_track"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/MaleTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|start"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="0dp"
+                    android:text="@string/male"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/femaleTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|end"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/female"
+                    android:textColor="@color/pink_colr"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/category_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="20dp"
+                android:padding="3dp"
+                app:cardCornerRadius="9dp"
+                app:cardElevation="7dp">
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/category_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_add_services_spinner"
+                        android:dropDownVerticalOffset="57dp"
+                        android:text="@string/select_category"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="11dp"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/arrow_dd"
+                        app:layout_constraintBottom_toBottomOf="@id/category_spinner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/category_spinner"
+                        tools:ignore="ImageContrastCheck" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:layout_marginTop="17dp"
+                android:contentDescription="@string/todo"
+                android:scaleType="fitXY"
+                android:src="@drawable/dotted_line"
+                app:layout_constraintTop_toBottomOf="@id/category_card"
+                tools:ignore="ImageContrastCheck" />
+
+            <TextView
+                android:id="@+id/add_service_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:text="@string/add_service"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/selected_services_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/add_service_head"
+                tools:listitem="item" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/select_services_lays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/selected_services_list">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/services_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="13dp"
+                    android:padding="3dp"
+                    app:cardCornerRadius="7dp"
+                    app:cardElevation="11dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/services_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="53dp"
+                            android:background="@drawable/bg_add_services_spinner"
+                            android:dropDownVerticalOffset="57dp"
+                            android:text="@string/service_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                        <ImageView
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="11dp"
+                            android:contentDescription="@string/todo"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/arrow_dd"
+                            app:layout_constraintBottom_toBottomOf="@id/services_spinner"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/services_spinner"
+                            tools:ignore="ImageContrastCheck" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/mrp_price_lays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle_oval"
+                    app:cardCornerRadius="11dp"
+                    app:cardElevation="9dp"
+                    app:layout_constraintTop_toBottomOf="@id/services_card">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/mrp_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        android:background="@null"
+                        android:fontFamily="@font/poppins_medium"
+                        android:hint="@string/mrp_price"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="#757575"
+                        android:textSize="14sp"
+                        tools:layout_editor_absoluteX="19dp" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/offer_price_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="15dp"
+                    android:background="@drawable/rectangle_oval"
+                    app:cardCornerRadius="11dp"
+                    app:cardElevation="13dp"
+                    app:layout_constraintTop_toBottomOf="@id/mrp_price_lays">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_offer_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp"
+                        android:background="@null"
+                        android:fontFamily="@font/poppins_medium"
+                        android:hint="@string/offer_price"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="#757575"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="17dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/optional" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/service_location_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="3dp"
+                    app:cardCornerRadius="7dp"
+                    app:cardElevation="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/offer_price_lay">
+
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/service_location_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="53dp"
+                            android:background="@drawable/bg_add_services_spinner"
+                            android:dropDownVerticalOffset="57dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                        <ImageView
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="11dp"
+                            android:contentDescription="@string/todo"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/arrow_dd"
+                            app:layout_constraintBottom_toBottomOf="@id/service_location_spinner"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/service_location_spinner"
+                            tools:ignore="ImageContrastCheck" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/btn_add_more_services"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/cutted_corner_box_small"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="13dp"
+                android:text="@string/add_more"
+                android:textAllCaps="false"
+                android:textColor="#656565"
+                android:layout_gravity="end"
+                android:textSize="14sp"
+                app:drawableLeftCompat="@drawable/plus"
+                app:layout_constraintEnd_toEndOf="@id/select_services_lays"
+                app:layout_constraintTop_toBottomOf="@id/select_services_lays" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                />
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_apply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/corner_cutted_box"
+        android:backgroundTint="#87CFD6"
+        android:paddingLeft="27dp"
+        android:paddingTop="10dp"
+        android:paddingRight="27dp"
+        android:paddingBottom="10dp"
+        android:text="@string/apply"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.7" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

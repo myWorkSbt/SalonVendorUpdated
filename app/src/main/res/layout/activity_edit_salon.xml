@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="15dp"
+        tools:context=".activity.EditSalon">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/Fill_your_Profile_lays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/back"
+                        android:layout_width="27dp"
+                        android:layout_height="23dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/arrow_back"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Fill_your_Profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="17dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center_vertical"
+                        android:text="@string/edit_salon"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                android:id="@+id/layout"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:padding="10dp"-->
+                <!--                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                app:layout_constraintTop_toTopOf="parent">-->
+
+                <!--              -->
+
+                <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrool"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/Fill_your_Profile_lays">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/salon_banner_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="SpeakableTextPresentCheck"
+                            tools:layout_editor_absoluteX="20dp"
+                            tools:listitem="@layout/item_image_banner" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/salon_banner_recycler">
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/name_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:layout_margin="4dp"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/salon_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/rectangle"
+                                    android:elevation="0dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/enter_your_salon_name"
+                                    android:inputType="textPersonName"
+                                    android:paddingStart="16dp"
+                                    android:paddingTop="19dp"
+                                    android:paddingEnd="0dp"
+                                    android:paddingBottom="19dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textColorHint="#546E7A"
+                                    android:textSize="16sp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="27dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/salon_phone_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:elevation="0dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:paddingStart="16dp"
+                                    android:paddingTop="19dp"
+                                    android:paddingBottom="19dp"
+                                    android:paddingEnd="0dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/dob_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="27dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/salon_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/enter_your_address_here"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="16dp"
+                                    android:paddingTop="19dp"
+                                    android:paddingEnd="0dp"
+                                    android:paddingBottom="19dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textColorHint="#546E7A"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/email_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="27dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/salon_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/enter_your_email_here"
+                                    android:inputType="textEmailAddress"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="0dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textColorHint="#546E7A"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/id_proof_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/Upload_id_proof_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:drawableEnd="@drawable/upload"
+                                    android:drawablePadding="20dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/upload_id_proof"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textColorHint="#546E7A"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/license_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/rectangle"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/upload_license_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle"
+                                    android:drawableEnd="@drawable/upload"
+                                    android:drawablePadding="20dp"
+                                    android:fontFamily="@font/roboto"
+                                    android:hint="@string/upload_license"
+                                    android:paddingVertical="20dp"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="20dp"
+                                    android:textColor="#3E3E3E"
+                                    android:textColorHint="#546E7A"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/et_about"
+                                android:layout_width="match_parent"
+                                android:layout_height="130dp"
+                                android:layout_marginTop="13dp"
+                                android:background="@drawable/et_about_session_rectangle"
+                                android:gravity="top"
+                                android:hint="@string/about_salon"
+                                android:maxLength="500"
+                                android:paddingStart="12dp"
+                                android:paddingTop="12dp"
+                                android:paddingEnd="0dp"
+                                android:textColor="#3E3E3E"
+                                android:textColorHint="#757575"
+                                app:layout_constraintStart_toStartOf="@+id/license_upload_underline"
+                                app:layout_constraintTop_toBottomOf="@+id/license_upload_underline" />
+
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="17dp"
+                                android:background="@drawable/rectangle">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/gallery_heading"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="17dp"
+                                        android:fontFamily="@font/inter"
+                                        android:text="@string/edit_gallery"
+                                        android:textColor="#3E3E3E"
+                                        android:textSize="19sp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/galler_recyclerView"
+                                        android:layout_width="0dp"
+                                        android:layout_height="97dp"
+                                        android:orientation="horizontal"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                        app:layout_constraintBottom_toBottomOf="@id/btn_add_images"
+                                        app:layout_constraintEnd_toStartOf="@id/btn_add_images"
+                                        app:layout_constraintStart_toStartOf="@id/gallery_heading"
+                                        app:layout_constraintTop_toTopOf="@id/btn_add_images" />
+
+                                    <androidx.cardview.widget.CardView
+                                        android:id="@+id/btn_add_images"
+                                        android:layout_width="76dp"
+                                        android:layout_height="76dp"
+                                        android:layout_margin="10dp"
+                                        app:cardCornerRadius="13dp"
+                                        app:cardElevation="11dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/galler_recyclerView"
+                                        app:layout_constraintTop_toBottomOf="@+id/gallery_heading">
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="#F2F2F2">
+
+                                            <androidx.appcompat.widget.AppCompatImageView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:scaleType="center"
+                                                android:src="@drawable/add_galarys" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/submit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:backgroundTint="#87CFD6"
+                                android:fontFamily="@font/poppins_medium"
+                                android:paddingVertical="15dp"
+                                android:text="@string/submit"
+                                android:textAllCaps="false"
+                                android:textSize="16sp"
+                                app:cornerRadius="30dp" />
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="20dp"
+                    android:minWidth="67dp"
+                    android:minHeight="67dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

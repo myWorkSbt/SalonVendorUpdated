@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/drawer_button"
+        android:icon="@drawable/menu"
+        android:title=""
+
+        />
+
+    <item
+        android:id="@+id/account_balance_wallet"
+        android:icon="@drawable/account_balance_wallet"
+        android:title=""
+        />
+
+
+    <item
+        android:id="@+id/notifications_none"
+        android:icon="@drawable/notifications_none"
+        android:title="" />
+
+
+</menu>

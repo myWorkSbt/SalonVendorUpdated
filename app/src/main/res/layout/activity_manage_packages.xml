@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.ManagePackages">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/service_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="9dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_back"
+                android:layout_width="27dp"
+                android:layout_height="23dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/manage_packages"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/heading_line"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="7dp"
+            android:background="#E0E0E0" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/package_list_main_lays"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/packages_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_package_lays"
+
+                        />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_add_lays"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="27dp"
+                        app:cardElevation="17dp"
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#87CFD6">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_add"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent"
+                                android:text="@string/add_more"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="21sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#D63226"
+                        android:id="@+id/show_no_data_text"
+                        android:textSize="23sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:layout_marginTop="23dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="@string/no_record_available"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_gravity="center"
+                        />
+
+<!--                    <View-->
+<!--                        android:id="@+id/footer_bottom_lines"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="2dp"-->
+<!--                        android:layout_marginTop="13dp"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/btn_add_lays"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:background="@color/black"/>-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Profile">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Fill_your_Profile_lays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/back"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Fill_your_Profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="@string/fill_your_profile"
+                android:textColor="#212121"
+                android:textSize="23sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:id="@+id/layout"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:padding="10dp"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--              -->
+
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrool"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Fill_your_Profile_lays">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_img"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/oval"
+                    android:src="@drawable/no_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/edit_profile_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/profile_pencile"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_img"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_img" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_img">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:id="@+id/name_card"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/name"
+                            android:inputType="textPersonName"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="0dp"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/phone_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:elevation="0dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/phone_no"
+                            android:inputType="number"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="0dp"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/dob_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/dob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:fontFamily="@font/roboto"
+
+                            android:hint="@string/date_of_birth"
+                            android:maxLength="20"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:textSize="16sp"
+                            android:paddingEnd="0dp"/>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/gender_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Gender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:drawableEnd="@drawable/down"
+                            android:drawablePadding="20dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/gender"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/gender_item_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="11dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:visibility="gone"
+                        app:cardElevation="4dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#33DEEBFF">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/male"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/male"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/female"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/female"
+                                app:layout_constraintStart_toStartOf="@+id/male"
+                                app:layout_constraintTop_toBottomOf="@+id/male" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/vendor_type_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/vendor_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:drawableEnd="@drawable/down"
+                            android:drawablePadding="20dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/vendor_type"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/vendor_type_card_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/rectangle"
+                        android:visibility="gone"
+                        app:cardCornerRadius="11dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:background="#33DEEBFF"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/salon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/salon"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/free_lancher"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/door_buddy"
+                                app:layout_constraintStart_toStartOf="@id/salon"
+                                app:layout_constraintEnd_toEndOf="@id/salon"
+                                app:layout_constraintTop_toBottomOf="@id/salon" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/shop_name_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/shop_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/shop_name"
+                            android:inputType="text"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:textSize="16sp"
+                            android:paddingEnd="0dp"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/email_card"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="0dp"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/location_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/location"
+                            android:inputType="text"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:textSize="16sp"
+                            android:paddingEnd="0dp"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_ID_Proof"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Upload_ID_Proof"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:drawableEnd="@drawable/upload"
+                            android:drawablePadding="20dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/upload_id_proof"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_Upload_Licence"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Upload_License"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:drawableEnd="@drawable/upload"
+                            android:drawablePadding="20dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/upload_license"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+<!--                    <androidx.appcompat.widget.AppCompatTextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="30dp"-->
+<!--                        android:fontFamily="@font/roboto"-->
+<!--                        android:text="Bank Details*"-->
+<!--                        android:textSize="16dp" />-->
+
+<!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="3dp"-->
+<!--                        android:background="@drawable/rectangle"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:padding="10dp">-->
+
+<!--                        <androidx.appcompat.widget.AppCompatEditText-->
+<!--                            android:id="@+id/Bank_Name"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            android:fontFamily="@font/roboto"-->
+<!--                            android:hint="Bank Name"-->
+<!--                            android:inputType="text" />-->
+
+<!--                        <androidx.appcompat.widget.AppCompatEditText-->
+<!--                            android:id="@+id/Account_holder_name"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            android:fontFamily="@font/roboto"-->
+<!--                            android:hint="Account holder name"-->
+<!--                            android:inputType="text" />-->
+
+<!--                        <androidx.appcompat.widget.AppCompatEditText-->
+<!--                            android:id="@+id/Account_No"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            android:fontFamily="@font/roboto"-->
+<!--                            android:hint="Account No."-->
+<!--                            android:inputType="number"/>-->
+
+<!--                        <androidx.appcompat.widget.AppCompatEditText-->
+<!--                            android:id="@+id/ifsc_code"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            android:fontFamily="@font/roboto"-->
+<!--                            android:hint="IFSC Code"-->
+<!--                            android:inputType="text" />-->
+
+<!--                        <androidx.appcompat.widget.AppCompatTextView-->
+<!--                            android:id="@+id/cancel_check"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            android:layout_marginBottom="9dp"-->
+<!--                            android:drawableEnd="@drawable/upload"-->
+<!--                            android:fontFamily="@font/roboto"-->
+<!--                            android:hint="Cancel Check"-->
+<!--                            android:textSize="19sp" />-->
+
+<!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/Gender_customer_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@drawable/rectangle"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Gender_customer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:drawableEnd="@drawable/down"
+                            android:drawablePadding="20dp"
+                            android:fontFamily="@font/roboto"
+                            android:hint="@string/service_provided_for"
+                            android:paddingVertical="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/gender_customer_item_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        app:cardCornerRadius="11dp"
+                        android:visibility="gone"
+                        app:cardElevation="4dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#33DEEBFF">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/customer_Male"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/mens"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/customer_female"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/womens"
+                                app:layout_constraintStart_toStartOf="@+id/customer_Male"
+                                app:layout_constraintTop_toBottomOf="@+id/customer_Male" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/trans_gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/poppins"
+                                android:padding="10dp"
+                                android:text="@string/unisex"
+                                app:layout_constraintStart_toStartOf="@+id/customer_female"
+                                app:layout_constraintTop_toBottomOf="@+id/customer_female" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/term_and_condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/terms_amp_conditions"
+                        android:textColor="#A0A0A0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Gender_customer_card" />
+
+                    <!--                        <androidx.cardview.widget.CardView-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_marginHorizontal="4dp"-->
+                    <!--                            android:layout_marginTop="20dp"-->
+                    <!--                            android:background="@drawable/rectangle"-->
+                    <!--                            app:cardCornerRadius="20dp"-->
+                    <!--                            app:cardElevation="4dp">-->
+
+                    <!--                            <androidx.appcompat.widget.AppCompatEditText-->
+                    <!--                                android:id="@+id/password"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:background="@drawable/rectangle"-->
+                    <!--                                android:hint="Password"-->
+                    <!--                                android:paddingVertical="20dp"-->
+                    <!--                                android:inputType="textPassword"-->
+                    <!--                                android:paddingStart="20dp"-->
+                    <!--                                android:textSize="16sp" />-->
+                    <!--                        </androidx.cardview.widget.CardView>-->
+
+
+                    <!--                        <androidx.cardview.widget.CardView-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_marginHorizontal="4dp"-->
+                    <!--                            android:layout_marginTop="20dp"-->
+                    <!--                            android:layout_marginBottom="8dp"-->
+                    <!--                            android:background="@drawable/rectangle"-->
+                    <!--                            app:cardCornerRadius="20dp"-->
+                    <!--                            app:cardElevation="4dp">-->
+
+                    <!--                            <androidx.appcompat.widget.AppCompatEditText-->
+                    <!--                                android:id="@+id/conform_password"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:inputType="textPassword"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:background="@drawable/rectangle"-->
+                    <!--                                android:hint="Confirm Password"-->
+                    <!--                                android:paddingVertical="20dp"-->
+                    <!--                                android:paddingStart="20dp"-->
+                    <!--                                android:textSize="16sp" />-->
+                    <!--                        </androidx.cardview.widget.CardView>-->
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#87CFD6"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingVertical="15dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="@+id/details"
+                    app:layout_constraintStart_toStartOf="@id/details"
+                    app:layout_constraintTop_toBottomOf="@id/details" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="67dp"
+            android:minWidth="67dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

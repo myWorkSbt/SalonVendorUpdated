@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/items_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="9dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="9dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:padding="10dp">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/customer_profile_card"
+                    android:layout_width="97dp"
+                    android:layout_height="91dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/customer_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/no_image"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/time_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="@id/customer_profile_card"
+                    app:layout_constraintBottom_toBottomOf="@id/customer_profile_card"
+                    app:layout_constraintEnd_toEndOf="@id/customer_profile_card"
+                    app:layout_constraintTop_toBottomOf="@id/customer_profile_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:background="#87CFD6">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/time"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rectangle"
+                            android:backgroundTint="#FFFFFF"
+                            android:padding="1dp"
+                            android:text="HH:MM"
+                            android:textColor="#FFFFFF"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/discription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/customer_profile_card"
+                    app:layout_constraintTop_toTopOf="@+id/customer_profile_card">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text=""
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/at_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@+id/name"
+                        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Payment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/payment"
+                        android:textColor="#363535"
+                        app:layout_constraintStart_toStartOf="@+id/at_home"
+                        app:layout_constraintTop_toBottomOf="@+id/at_home" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/online"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:fontFamily="@font/poppins"
+                        android:text=""
+                        android:textColor="#649EA4"
+                        app:layout_constraintBottom_toBottomOf="@+id/Payment"
+                        app:layout_constraintStart_toEndOf="@+id/Payment"
+                        app:layout_constraintTop_toTopOf="@+id/Payment" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Haircut_hair_spa_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/arcticons_services"
+                        android:drawablePadding="3dp"
+                        android:fontFamily="@font/roboto"
+                        android:maxLength="10"
+                        android:text=""
+                        android:textColor="#7A7A7A"
+                        app:layout_constraintStart_toStartOf="@+id/Payment"
+                        app:layout_constraintTop_toBottomOf="@+id/Payment" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/icon_park_massage_chair_one"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/roboto"
+                        android:text=""
+                        android:textColor="#7A7A7A"
+                        app:layout_constraintBottom_toBottomOf="@+id/Haircut_hair_spa_1"
+                        app:layout_constraintEnd_toStartOf="@+id/distance"
+                        app:layout_constraintStart_toEndOf="@+id/Haircut_hair_spa_1"
+                        app:layout_constraintTop_toTopOf="@+id/Haircut_hair_spa_1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/dashicons_location"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/roboto"
+                        android:text=""
+                        android:textColor="#7A7A7A"
+                        app:layout_constraintBottom_toBottomOf="@+id/Male"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/Male" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="@id/discription"
+                    app:layout_constraintTop_toTopOf="@+id/customer_profile_card" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
