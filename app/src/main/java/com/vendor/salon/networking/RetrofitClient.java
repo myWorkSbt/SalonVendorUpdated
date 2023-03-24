@@ -20,8 +20,6 @@ public class RetrofitClient {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
-
-
         return retrofit;
 
 

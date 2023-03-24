@@ -35,6 +35,7 @@ import com.vendor.salon.databinding.ActivityHomeBinding;
 import com.vendor.salon.databinding.FragmentEditProfileBinding;
 import com.vendor.salon.model.Salon_detail_image_model;
 import com.vendor.salon.networking.RetrofitClient;
+import com.vendor.salon.utilityMethod.Compress;
 import com.vendor.salon.utilityMethod.FunctionCall;
 import com.vendor.salon.utilityMethod.GetFileFromUriUsingBufferReader;
 import com.vendor.salon.utilityMethod.loginResponsePref;
@@ -79,6 +80,8 @@ public class EditProfileFragment extends Fragment {
         return editProfileBinding.getRoot();
     }
 
+    public EditProfileFragment() {
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -118,6 +121,7 @@ public class EditProfileFragment extends Fragment {
                     editProfileBinding.BankName.requestFocus();
                     editProfileBinding.AccountHolderName.setBackgroundColor(Color.parseColor("#F5F5F5"));
                     editProfileBinding.TvIfcCode.setEnabled(true);
+                    editProfileBinding.CancelCheckLays.setEnabled(true);
                     editProfileBinding.TvIfcCode.setBackgroundColor(Color.parseColor("#F5F5F5"));
                     editProfileBinding.TvCancelCheckHeading.setTextColor(Color.RED);
                     editProfileBinding.CancelCheckLays.setClickable(true);
@@ -128,6 +132,7 @@ public class EditProfileFragment extends Fragment {
                     editProfileBinding.BankName.setBackgroundColor(Color.parseColor("#ffffff"));
                     isEntriesEnabled = false;
                     editProfileBinding.AccountNumber.setEnabled(false);
+                    editProfileBinding.CancelCheckLays.setEnabled(false );
 
                     editProfileBinding.AccountNumber.setBackgroundColor(Color.parseColor("#ffffff"));
                     editProfileBinding.AccountHolderName.setEnabled(false);
@@ -146,7 +151,8 @@ public class EditProfileFragment extends Fragment {
             public void onClick(View view) {
                 MultipartBody.Part check_Img_part_val = null;
                 if (CheckFile != null) {
-                    RequestBody license_request = RequestBody.create(MediaType.parse("check_image"), CheckFile);
+                    byte[]  imag_arrs = Compress.images( CheckFile.getPath(), 1* 1024);
+                    RequestBody license_request = RequestBody.create(MediaType.parse("check_image"), imag_arrs);
                     check_Img_part_val = MultipartBody.Part.createFormData("check_image", CheckFile.getName(), license_request);
                 }
 
@@ -218,37 +224,7 @@ public class EditProfileFragment extends Fragment {
             }
         });
 
-        editProfileBinding.addMoreSalonDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Image_REQ_CODE = 102;
-//                ImagePicker.with(EditProfile.this)
-//                        .crop()                    //Crop image(Optional), Check Customization for more option
-//                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
-//                        .maxResultSize(
-//                                1080,
-//                                1080
-//                        )   //Final image resolution will be less than 1080 x 1080(Optional)
-//                        .start();
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-            }
-        });
 
-        editProfileBinding.addImageLay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Image_REQ_CODE = 102;
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-            }
-        });
         editProfileBinding.CancelCheckLays.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -283,54 +259,17 @@ public class EditProfileFragment extends Fragment {
     private void moveToSalonEditPage() {
         editProfileBinding.progressBar.setVisibility(View.VISIBLE);
         Intent editSalonDetails = new Intent(getActivity() , EditSalon.class);
+        editSalonDetails.putExtra("vendor_Tp" , vendor_Type ) ;
         editSalonDetails.putExtra("mobile_no", editProfileBinding.salonMnumber.getText().toString());
         editProfileBinding.progressBar.setVisibility(View.GONE);
         startActivity(editSalonDetails);
     }
 
-    private void SaveBannerImages(ArrayList<File> imagesEncodedList) {
-        if (imagesEncodedList != null && imagesEncodedList.size() > 0) {
-            MultipartBody.Part[] banner_image_part = new MultipartBody.Part[imagesEncodedList.size()];
-            for (int i = 0; i < imagesEncodedList.size(); i++) {
-                if (imagesEncodedList.get(i) != null) {
-                    RequestBody thumbBody = RequestBody.create(MediaType.parse("image/jpg"), imagesEncodedList.get(i));
-                    banner_image_part[i] = MultipartBody.Part.createFormData("banner_image[]", imagesEncodedList.get(i).getName(), thumbBody);
-                    ;
-                }
-            }
-            RequestBody phone_body = getRequestBody(editProfileBinding.salonMnumber.getText().toString());
-            RequestBody ccp_bdy = getRequestBody("+91");
-            RequestBody type_body;
-            type_body = getRequestBody(vendor_Type);
-            String token = loginResponsePref.getInstance(homeContext).getToken();
-            Call<EditProfileResponse> call = RetrofitClient.getVendorService().AddSalonBannerImagesEditProfile("Bearer " + token, phone_body, ccp_bdy, banner_image_part, type_body);
-            call.enqueue(new Callback<EditProfileResponse>() {
-                @Override
-                public void onResponse(Call<EditProfileResponse> call, Response<EditProfileResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        if (response.body().isResult()) {
 
-                            getProfileData();
-                        }
-                    } else {
-                        if (response.body() != null) {
-                            Toast.makeText(homeContext, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        Log.d("editprofilehitsalon", "onResponse: " + response.body());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<EditProfileResponse> call, Throwable t) {
-                    Log.d("editprofilehitsalon", "onFailure: " + t.getMessage());
-                }
-            });
-        }
-    }
 
     private void getProfileData() {
-        FunctionCall.showProgressDialog(homeContext);
         String token = loginResponsePref.getInstance(homeContext).getToken();
+        FunctionCall.showProgressDialog(homeContext);
         Call<GetProfileResponse> call = RetrofitClient.getVendorService().getVendorDetails("Bearer " + token);
         call.enqueue(new Callback<GetProfileResponse>() {
             @Override
@@ -374,7 +313,12 @@ public class EditProfileFragment extends Fragment {
     private void setProfileData(GetProfileResponse vendorProfile) {
         if (vendorProfile.getOwnerDetail() != null) {
             vendor_Type = vendorProfile.getOwnerDetail().getVendorType() + "";
-            editProfileBinding.ownerEmailId.setText(vendorProfile.getOwnerDetail().getEmail());
+            if (vendorProfile.getOwnerDetail().getEmail()!= null && vendorProfile.getOwnerDetail().getEmail().length() >13 ) {
+                 editProfileBinding.ownerEmailId.setText(vendorProfile.getOwnerDetail().getEmail().substring(0,11) + "..");
+            }
+            else {
+                editProfileBinding.ownerEmailId.setText(vendorProfile.getOwnerDetail().getEmail());
+            }
             gender = vendorProfile.getOwnerDetail().getGender() + "";
             designation = vendorProfile.getOwnerDetail().getDesignation() + "";
             editProfileBinding.salonMnumber.setText(vendorProfile.getOwnerDetail().getPhone());
@@ -407,6 +351,7 @@ public class EditProfileFragment extends Fragment {
             editProfileBinding.TvIfcCode.setText(vendorProfile.getBankDetail().getIfscCode());
             editProfileBinding.AccountHolderName.setText(vendorProfile.getBankDetail().getAccountHolderName());
             editProfileBinding.BankName.setText(vendorProfile.getBankDetail().getBankName());
+            editProfileBinding.CancelCheckLays.setEnabled(false);
             editProfileBinding.AccountNumber.setText(vendorProfile.getBankDetail().getAccountNo());
 //            profileBinding.cancelCheck.setText(vendorProfile.getBankDetail().getCancelCheck());
 //            profileBinding.UploadIDProof.setText(vendorProfile.getBankDetail().getImage());
@@ -432,77 +377,6 @@ public class EditProfileFragment extends Fragment {
                 Toast.makeText(homeContext, " Cancelled. ", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(homeContext , " Something went wrong .  ", Toast.LENGTH_SHORT).show();
-            }
-        } else if (Image_REQ_CODE == 102) {
-            Image_REQ_CODE = 7;
-            if (resultCode == Activity.RESULT_OK) {
-//                if (data != null && data.getData() != null) {
-//                    BannerImgFile = GetFileFromUriUsingBufferReader.getImageFile(EditProfile.this, data.getData());
-//                    if (BannerImgFile != null) {
-//                        Toast.makeText(this, " ---> " + BannerImgFile.getName()+" . Added to Banner Lists                 ", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-                // When an Image is picked
-                if (null != data) {
-                    // Get the Image from data
-
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    ArrayList<File> imagesEncodedList = new ArrayList<File>();
-                    String imageEncoded;
-                    if (data.getData() != null) {
-
-                        Uri mImageUri = data.getData();
-
-                        //// Get the cursor
-//                        Cursor cursor = getContentResolver().query(mImageUri,
-//                                filePathColumn, null, null, null);
-//                        // Move to first row
-//                        cursor.moveToFirst();
-//
-//                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                        imageEncoded  = cursor.getString(columnIndex);
-//                        cursor.close();
-                        File oneImageFile = GetFileFromUriUsingBufferReader.getImageFile(homeContext, mImageUri);
-                        if (oneImageFile != null) {
-                            imagesEncodedList.add(oneImageFile);
-                        }
-                    } else {
-                        if (data.getClipData() != null) {
-                            ClipData mClipData = data.getClipData();
-                            ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
-                            for (int i = 0; i < mClipData.getItemCount(); i++) {
-
-                                ClipData.Item item = mClipData.getItemAt(i);
-                                Uri uri = item.getUri();
-//                                mArrayUri.add(uri);
-//                                // Get the cursor
-//                                Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-//                                // Move to first row
-//                                cursor.moveToFirst();
-//
-//                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                                imageEncoded  = cursor.getString(columnIndex);
-//                                imagesEncodedList.add(imageEncoded);
-//                                cursor.close();
-                                File oneImageFile = GetFileFromUriUsingBufferReader.getImageFile(homeContext , uri);
-                                if (oneImageFile != null) {
-                                    imagesEncodedList.add(oneImageFile);
-                                }
-                            }
-                            Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
-                        }
-                    }
-                    SaveBannerImages(imagesEncodedList);
-                } else {
-                    Toast.makeText(homeContext, "You haven't picked Image",
-                            Toast.LENGTH_LONG).show();
-                }
-
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(homeContext , " Cancelled. ", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(homeContext , " Something went wrong.  ", Toast.LENGTH_SHORT).show();
             }
         }
     }

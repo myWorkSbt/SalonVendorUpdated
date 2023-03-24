@@ -40,6 +40,9 @@ public class YearFragment extends Fragment {
 
     }
 
+    public YearFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

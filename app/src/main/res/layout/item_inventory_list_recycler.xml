@@ -79,6 +79,7 @@
                         android:fontFamily="@font/poppins"
                         android:text=""
                         android:textColor="#87CFD6"
+                        android:textAlignment="center"
                         android:textSize="9.06sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

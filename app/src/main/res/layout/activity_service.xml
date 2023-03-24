@@ -43,7 +43,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@id/btn_back"
             android:id="@+id/tv_header"
-            android:textSize="19sp"
+            android:textSize="21sp"
             android:text="@string/add_service"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="19dp"

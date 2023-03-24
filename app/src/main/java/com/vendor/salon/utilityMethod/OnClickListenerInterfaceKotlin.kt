@@ -1,5 +1,5 @@
 package com.vendor.salon.utilityMethod
 
 interface OnClickListenerInterfaceKotlin {
-    fun onItemClick(position : Int)
+    fun onItemClick(id : Int ,position : Int )
 }

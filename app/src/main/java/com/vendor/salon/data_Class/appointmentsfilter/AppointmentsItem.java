@@ -56,6 +56,9 @@ public class AppointmentsItem implements Serializable {
 	@SerializedName("created_at")
 	private String createdAt;
 
+	@SerializedName("doorstep_status")
+	private String doorstep_status;
+
 	@SerializedName("updated_at")
 	private String updatedAt;
 
@@ -213,6 +216,14 @@ public class AppointmentsItem implements Serializable {
 
 	public void setAmount(String amount){
 		this.amount = amount;
+	}
+
+	public String getDoorstep_status() {
+		return doorstep_status;
+	}
+
+	public void setDoorstep_status(String doorstep_status) {
+		this.doorstep_status = doorstep_status;
 	}
 
 	public String getAmount(){

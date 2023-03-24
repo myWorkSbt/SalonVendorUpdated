@@ -39,6 +39,10 @@ public class MonthFragment extends Fragment {
 //        this.year = year;
 //    }
 
+
+    public MonthFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

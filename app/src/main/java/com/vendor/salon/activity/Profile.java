@@ -3,14 +3,17 @@ package com.vendor.salon.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,8 +42,10 @@ import com.vendor.salon.R;
 import com.vendor.salon.data_Class.profile.UpdateProfileResponse;
 import com.vendor.salon.databinding.ActivityProfileBinding;
 import com.vendor.salon.networking.RetrofitClient;
+import com.vendor.salon.utilityMethod.Compress;
 import com.vendor.salon.utilityMethod.FunctionCall;
 import com.vendor.salon.utilityMethod.GetFileFromUriUsingBufferReader;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 import com.vendor.salon.utilityMethod.PermissionUtils;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -85,6 +90,8 @@ public class Profile extends AppCompatActivity {
     private String longitude;
     private LocationManager locationManager;
     private int REQUEST_LOCATION    = 1000 ;
+    private boolean isApiCalled = false ;
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +131,7 @@ public class Profile extends AppCompatActivity {
 
             }
         });
-        profileBinding.profileImg.setOnClickListener(new View.OnClickListener() {
+        profileBinding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (takePermissionUtils.isStorageCameraPermissionGranted()) {
@@ -429,32 +436,32 @@ public class Profile extends AppCompatActivity {
 
 
     private void sendDataUsingApi() {
-
-        FunctionCall.showProgressDialog(Profile.this);
-        RequestBody  thumbnailBody =null;
-        MultipartBody.Part ID_Path_part_val =null;
-        if(ID_File!=null) {
-            thumbnailBody =RequestBody.create(MediaType.parse("id_proof_image"), ID_File);
-            ID_Path_part_val = MultipartBody.Part.createFormData("id_proof_image", ID_File.getName(), thumbnailBody);
-        }
-
+        if (!isApiCalled ) {
+            isApiCalled = true;
+            FunctionCall.showProgressDialog(Profile.this);
+            RequestBody thumbnailBody = null;
+            MultipartBody.Part ID_Path_part_val = null;
+            if (ID_File != null) {
+                thumbnailBody = RequestBody.create(MediaType.parse("id_proof_image"), Compress.images(ID_File.getPath(), 1 * 1024 * 1024));
+                ID_Path_part_val = MultipartBody.Part.createFormData("id_proof_image", ID_File.getName(), thumbnailBody);
+            }
 
 
             RequestBody prof_Img_Body = null;
-        MultipartBody.Part prof_image_part_val = null ;
-        if(Prof_Img_File!=null) {
-                prof_Img_Body= RequestBody.create(MediaType.parse("owner_image"), Prof_Img_File);
-                 prof_image_part_val = MultipartBody.Part.createFormData("owner_image", Prof_Img_File.getName(), prof_Img_Body);
+            MultipartBody.Part prof_image_part_val = null;
+            if (Prof_Img_File != null) {
+                prof_Img_Body = RequestBody.create(MediaType.parse("owner_image"), Compress.images(Prof_Img_File.getPath(), 1 * 1024 * 1024));
+                prof_image_part_val = MultipartBody.Part.createFormData("owner_image", Prof_Img_File.getName(), prof_Img_Body);
             }
 
-            RequestBody Licence_Body =null;
-        MultipartBody.Part Licence_part_val = null;
-        if(Licence_File!=null ) {
-                Licence_Body = RequestBody.create(MediaType.parse("licence_image"), Licence_File);
-             Licence_part_val= MultipartBody.Part.createFormData("licence_image", Licence_File.getName(), Licence_Body);
+            RequestBody Licence_Body = null;
+            MultipartBody.Part Licence_part_val = null;
+            if (Licence_File != null) {
+                Licence_Body = RequestBody.create(MediaType.parse("licence_image"), Compress.images(Licence_File.getPath(), 1 * 1024 * 1024));
+                Licence_part_val = MultipartBody.Part.createFormData("licence_image", Licence_File.getName(), Licence_Body);
             }
 
-         getCurrentLatLong();
+            getCurrentLatLong();
 //
 //        RequestBody Cancel_Check_Body = null;
 //        MultipartBody.Part cancel_check_part_val = null;
@@ -462,60 +469,59 @@ public class Profile extends AppCompatActivity {
 //            Cancel_Check_Body= RequestBody.create(MediaType.parse("cancel_check"), Cancel_Check_File);
 //            cancel_check_part_val = MultipartBody.Part.createFormData("cancel_check", Cancel_Check_File.getName(), Cancel_Check_Body);
 //        }
-        Call<UpdateProfileResponse> call = RetrofitClient.getVendorService().updateMyProfile(
-                "Bearer "+token,
-                getRequestBody(profileBinding.email.getText().toString()),
-                getRequestBody(profileBinding.name.getText().toString()),
-                getRequestBody(profileBinding.phoneNo.getText().toString()),
-                getRequestBody(ccp),
-                getRequestBody(profileBinding.Gender.getText().toString()),
-                getRequestBody(profileBinding.dob.getText().toString()),
-                getRequestBody(profileBinding.vendorType.getText().toString().toLowerCase() != "salon" ? "freelancer" : "salon"),
+            Call<UpdateProfileResponse> call = RetrofitClient.getVendorService().updateMyProfile(
+                    "Bearer " + token,
+                    getRequestBody(profileBinding.email.getText().toString()),
+                    getRequestBody(profileBinding.name.getText().toString()),
+                    getRequestBody(profileBinding.phoneNo.getText().toString()),
+                    getRequestBody(ccp),
+                    getRequestBody(profileBinding.Gender.getText().toString()),
+                    getRequestBody(profileBinding.dob.getText().toString()),
+                    getRequestBody(profileBinding.vendorType.getText().toString().toLowerCase() != "salon" ? "freelancer" : "salon"),
 //                getRequestBody(profileBinding.vendorType.getText().toString()),
 //                getRequestBody(profileBinding.BankName.getText().toString()),
 //                cancel_check_part_val,
-                getRequestBody(profileBinding.location.getText().toString()),
-                prof_image_part_val,
-                ID_Path_part_val,
+                    getRequestBody(profileBinding.location.getText().toString()),
+                    prof_image_part_val,
+                    ID_Path_part_val,
 //                getRequestBody(profileBinding.AccountHolderName.getText().toString()),
-                Licence_part_val,
+                    Licence_part_val,
 //                getRequestBody(profileBinding.AccountNo.getText().toString()),
-                getRequestBody(profileBinding.GenderCustomer.getText().toString())
+                    getRequestBody(profileBinding.GenderCustomer.getText().toString())
 //                getRequestBody(profileBinding.ifscCode.getText().toString())
-        );
-        call.enqueue(new Callback<UpdateProfileResponse>() {
-            @Override
-            public void onResponse(Call<UpdateProfileResponse> call, Response<UpdateProfileResponse> response) {
-            FunctionCall.DismissDialog(Profile.this);
-                if(response.isSuccessful() && response.body()!= null ) {
-                    if(response.body().isResult()) {
-                        Log.d("updateprofilehit", "onResponse: "+response.body());
+            );
+            call.enqueue(new Callback<UpdateProfileResponse>() {
+                @Override
+                public void onResponse(Call<UpdateProfileResponse> call, Response<UpdateProfileResponse> response) {
+                    FunctionCall.DismissDialog(Profile.this);
+                    isApiCalled = false;
+                    if (response.isSuccessful() && response.body() != null) {
+                        if (response.body().isResult()) {
+                            Log.d("updateprofilehit", "onResponse: " + response.body());
 
-                        Toast.makeText(Profile.this, " Your Details has been submitted Successfully!.   ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Profile.this, " Your Details has been submitted Successfully!.   ", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(Profile.this, Login.class));
-                        finish();
-                    }
-                    else {
-                        Log.d("updateprofilehit", "onResponseResult: "+ response.body());
+                            finish();
+                        } else {
+                            Log.d("updateprofilehit", "onResponseResult: " + response.body());
+                        }
+                    } else {
+                        if (response.body() != null) {
+                            Toast.makeText(Profile.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d("updateprofilehit", "onResponse: " + response.body());
                     }
                 }
-                else {
-                    if (response.body() != null) {
-                        Toast.makeText(Profile.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    Log.d("updateprofilehit", "onResponse: " + response.body());
+
+                @Override
+                public void onFailure(Call<UpdateProfileResponse> call, Throwable t) {
+                    isApiCalled = false;
+                    FunctionCall.DismissDialog(Profile.this);
+                    Log.d("updateprofilehit", "onFailure: " + t.getMessage());
                 }
-            }
-
-            @Override
-            public void onFailure(Call<UpdateProfileResponse> call, Throwable t) {
-
-                FunctionCall.DismissDialog(Profile.this);
-                Log.d("updateprofilehit", "onFailure: "+ t.getMessage());
-            }
-        });
-
+            });
+        }
     }
 
     private void getCurrentLatLong() {
@@ -986,6 +992,18 @@ public class Profile extends AppCompatActivity {
 
 
 
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
 
 
 

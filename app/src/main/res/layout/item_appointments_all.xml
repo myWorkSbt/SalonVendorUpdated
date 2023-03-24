@@ -23,10 +23,12 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
                 app:layout_constraintTop_toTopOf="parent"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/item_all_appointmn_image_lays"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:cardCornerRadius="11dp">
 
                 <ImageView
@@ -62,7 +64,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_name"
-                android:layout_marginStart="10dp"
                 app:layout_constraintStart_toEndOf="@id/item_all_appointmn_image_lays"
                 android:text=" User 1"
                 android:textStyle="bold"

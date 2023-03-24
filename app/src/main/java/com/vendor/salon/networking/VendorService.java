@@ -2,18 +2,23 @@ package com.vendor.salon.networking;
 
 import com.google.gson.JsonObject;
 import com.vendor.salon.data_Class.AddServicesResponse;
-
-import com.vendor.salon.data_Class.addclient.AddClientActivityResponse;
-import com.vendor.salon.data_Class.enable_disable_packages.DisablePackageItemsResponse;
 import com.vendor.salon.data_Class.LogoutResponse;
 import com.vendor.salon.data_Class.StaffAppointments.StaffAppointmentsResponse;
+import com.vendor.salon.data_Class.addclient.AddClientActivityResponse;
 import com.vendor.salon.data_Class.addstaff.AddStaffResponse;
+import com.vendor.salon.data_Class.appointment_categories.AppointmentCategoriesResponse;
+import com.vendor.salon.data_Class.appointment_sub_categories.AppointmentSubCategoriesResponse;
+import com.vendor.salon.data_Class.appointmentservicesedit.AppointmentServicesEditResponse;
 import com.vendor.salon.data_Class.appointmentsfilter.AppointmentsFilterResponse;
+import com.vendor.salon.data_Class.appointmentstartend.ServiceStartEndResponse;
+import com.vendor.salon.data_Class.areacover.CoverRangeResponse;
 import com.vendor.salon.data_Class.assign_staff.AssignStaffResponse;
 import com.vendor.salon.data_Class.bankedit.BankEditResponse;
 import com.vendor.salon.data_Class.categories.CategoriesResponse;
 import com.vendor.salon.data_Class.category_services.CategoryServicesResponse;
+import com.vendor.salon.data_Class.doorstep_status_update.DoorstepStatusUpdateResponse;
 import com.vendor.salon.data_Class.editprofile.EditProfileResponse;
+import com.vendor.salon.data_Class.enable_disable_packages.DisablePackageItemsResponse;
 import com.vendor.salon.data_Class.getProfile.GetProfileResponse;
 import com.vendor.salon.data_Class.getStaff.GetStaffResponse;
 import com.vendor.salon.data_Class.get_ManagePackageData.getManagePackageResponse;
@@ -28,11 +33,10 @@ import com.vendor.salon.data_Class.removestaff.RemoveStaffResponse;
 import com.vendor.salon.data_Class.sales.SalesResponse;
 import com.vendor.salon.data_Class.salon_timings.SalonDisableTimeData;
 import com.vendor.salon.data_Class.salon_timings.SalonTimeData;
-
 import com.vendor.salon.data_Class.sendotp;
+import com.vendor.salon.data_Class.update_services.UpdateServiceResponse;
 import com.vendor.salon.data_Class.vendor_enable_disable_service.VendorEnableDisableService;
 import com.vendor.salon.data_Class.vendor_sub_catgories.VendorSubCategoryResponse;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +69,10 @@ public interface VendorService {
     @POST("saloon/api/login")
     Call<LoginResponse> verifyOtp(@Body HashMap<String, String> data);
 
+    @POST("saloon/api/update_services")
+    Call<UpdateServiceResponse> updateService(@Header("Authorization") String auths,
+                                              @Body HashMap<String, String> data);
+
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("saloon/api/home")
     Call<HomeResponse> home(@Header("Authorization") String auth);
@@ -72,8 +80,9 @@ public interface VendorService {
 
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("/saloon/api/staff_appointments")
-    Call<StaffAppointmentsResponse> getStaffDetails(@Header("Authorization") String auth,
-                                                    @Query("staff_id") String staff_id);
+    Call<StaffAppointmentsResponse> getStaffAppointments(@Header("Authorization") String auth,
+                                                    @Query("staff_id") String staff_id,
+                                                    @Query("date") String date);
 
     @Multipart
 //    @Headers({"Content-Type: application/json;charset=UTF-8"})
@@ -218,9 +227,13 @@ public interface VendorService {
     );
 
 
-    @GET("saloon/api/manage_timing")
-    Call<SalonTimeData> getTimeSalon(@Header("Authorization") String auth,
-                                     @QueryMap HashMap<String, String> hashMap);
+    @POST("saloon/api/add_client")
+    Call<AddClientActivityResponse> AddClient(@Header("Authorization") String auths,
+                                              @Query("country_code") String country_code,
+                                              @Query("phone") String phone,
+                                              @Query("booking_time") String booking_time,
+                                              @Query("specialist_id") String specialist_id,
+                                              @Query("services[]") List<String> selectedServices);
 
     @POST("saloon/api/manage_timing")
     Call<SalonDisableTimeData> postSalonTime(@Header("Authorization") String auth,
@@ -275,6 +288,12 @@ public interface VendorService {
     @GET("saloon/api/get-profile")
     Call<GetProfileResponse> getVendorDetails(@Header(("Authorization")) String Auth);
 
+
+    @GET("saloon/api/manage_timing")
+    Call<SalonTimeData> getTimeSalon(@Header("Authorization") String auth,
+                                     @QueryMap HashMap<String, String> hashMap);
+
+
     @GET("saloon/api/appointments_filter")
     Call<AppointmentsFilterResponse> getAppointmentSearchedData(@Header(("Authorization")) String Auth,
                                                                 @Query("status") String status,
@@ -282,8 +301,8 @@ public interface VendorService {
                                                                 @Query("end_date") String end_date,
                                                                 @Query("filter") String filter,
                                                                 @Query("search") String search,
-                                                                @Query("user_id") String user_id
-    );
+                                                                @Query("appointment_id") String user_id,
+                                                                @Query("current_page") int current_page);
 
 
     @GET("saloon/api/logout")
@@ -294,12 +313,15 @@ public interface VendorService {
                                            @Query("search") String search);
 
 
-    @GET("/saloon/api/manage_service")
-    Call<ManageServiceResponse> getSavedCategoryList(@Header("Authorization") String auth,
-                                                     @Query("gender") String gender,
-                                                     @Query("is_doorstep") String is_doorstep,
-                                                     @Query("search") String search);
+    @POST("/saloon/api/appointment_services_edit")
+    Call<AppointmentServicesEditResponse> editAppointmentService(@Header("Authorization") String token,
+                                                                 @Query("appointment_id") int appointment_id,
+                                                                 @Query("service_id") int service_id,
+                                                                 @Query("qty") int qty);
 
+    @POST("/saloon/api/area_cover")
+    Call<CoverRangeResponse>  updateCoverRanges(@Header("Authorization") String auth ,
+                                                @Query("coverage") String coverage );
 
     @POST("saloon/api/manage_timing")
     Call<SalonTimeData> getSalonTime(@Header("Authorization") String auths,
@@ -312,7 +334,8 @@ public interface VendorService {
                                                            @Query("is_doorstep") String is_doorstep);
 
     @GET("saloon/api/manage_package")
-    Call<getManagePackageResponse> getPackagesDetail(@Header("Authorization") String auths);
+    Call<getManagePackageResponse> getPackagesDetail(@Header("Authorization") String auths ,
+                                                     @Query("current_page") int current_page) ;
 
     @GET("saloon/api/inventory_category")
     Call<InventoryCategoriessResponse> getInventoryCategories(@Header("Authorization") String auth
@@ -321,23 +344,54 @@ public interface VendorService {
     @GET("saloon/api/sales")
     Call<SalesResponse> salesData(@Header("Authorization") String auths,
                                   @Query("start_date") String start_date,
-                                  @Query("end_date") String end_date);
+                                  @Query("end_date") String end_date,
+                                  @Query("current_page") int current_page);
 
     @GET("saloon/api/categories")
     Call<CategoriesResponse> getCategories(@Header("Authorization") String auth,
                                            @Query("gender") String gender);
 
 
+    @GET("/saloon/api/manage_service")
+    Call<ManageServiceResponse> getSavedCategoryList(@Header("Authorization") String auth,
+                                                     @Query("gender") String gender,
+                                                     @Query("is_doorstep") String is_doorstep,
+                                                     @Query("search") String search);
+
+    @GET("/saloon/api/area_cover")
+    Call<CoverRangeResponse> getRangeValue(@Header("Authorization") String auth );
+
     @GET("saloon/api/manage_inventory")
     Call<ManageInventoryResponse> getInventories(@Header("Authorization") String auth,
                                                  @Query("inventory_category_id") String inventory_category_id);
 
 
-    @POST("saloon/api/add_client")
-    Call<AddClientActivityResponse> AddClient(@Header("Authorization") String auths,
-                                              @Query("country_code") String country_code,
-                                              @Query("phone") String phone  ,
-                                              @Query("booking_time") String booking_time,
-                                              @Query("specialist_id") String specialist_id,
-                                              @Query("services[]") List<String> selectedServices ) ;
+    @GET("/saloon/api/appointment_categories")
+    Call<AppointmentCategoriesResponse> getAppointmentCategories(@Header("Authorization") String token,
+                                                                 @Query("appointment_id") int appointment_id,
+                                                                 @Query("gender") String gender,
+                                                                 @Query("is_doorstep") String is_doorstep);
+
+    @GET("saloon/api/appointment_sub_categories")
+    Call<AppointmentSubCategoriesResponse> getAppointmentCategoryServices(@Header("Authorization") String token,
+                                                                          @Query("category_id") String category_id ,
+                                                                          @Query("gender") String gender,
+                                                                          @Query("is_doorstep") String is_doorstep);
+
+    @POST("/saloon/api/appointment_services_edit_confirm")
+    Call<AppointmentServicesEditResponse> confirmEditAppointmentServices(@Header("Authorization") String token,
+                                                                         @Query("appointment_id") int appointment_id);
+
+
+    @POST("/saloon/api/doorstep_status_update")
+    Call<DoorstepStatusUpdateResponse> updateAppointmentDoorstepStatus(@Header("Authorization") String token,
+                                                                       @Body HashMap<String, String> appointmentStatusInput);
+    @POST("/saloon/api/enter_start_code")
+    Call<ServiceStartEndResponse> verifyAppointmentStartOtp(@Header("Authorization") String token,
+                                                            @Body HashMap<String, String> appointmentStatusInput);
+
+    @POST("/saloon/api/enter_end_code")
+    Call<ServiceStartEndResponse> verifyAppointmentEndOtp(@Header("Authorization") String token,
+                                                            @Body HashMap<String, String> appointmentStatusInput);
+
 }

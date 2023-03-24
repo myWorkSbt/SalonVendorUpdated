@@ -1,5 +1,8 @@
 package com.vendor.salon.fragment;
 
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.vendor.salon.adapters.AppointmentAllApointmentDataAdapter;
 import com.vendor.salon.data_Class.appointmentsfilter.AppointmentsFilterResponse;
@@ -29,10 +34,16 @@ public class AppointmentAllAppointmentFragment extends Fragment {
 
     FragmentAppointmentAllAppointmentBinding appointmentBinding;
     AppointmentAllApointmentDataAdapter allApointmentDataAdapter = null;
-    boolean isDataFiltered;
+    Context homeContext;
+    private int currentPage = 0 ;
+    private boolean isLoading = false ;
+    private boolean isLastPage = false ;
 
-    public AppointmentAllAppointmentFragment(boolean isDataFiltered) {
-        this.isDataFiltered = isDataFiltered;
+    public AppointmentAllAppointmentFragment(Context homeContext) {
+        this.homeContext = homeContext;
+    }
+
+    public AppointmentAllAppointmentFragment() {
     }
 
     @Override
@@ -56,6 +67,28 @@ public class AppointmentAllAppointmentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getSearchedData();
+        appointmentBinding.allApointmentsRecyclers.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        isLoading = true;
+                        currentPage++;
+
+                        getSearchedData();
+
+                    }
+                }
+            }
+        });
     }
 
 
@@ -71,6 +104,8 @@ public class AppointmentAllAppointmentFragment extends Fragment {
 //            allApointmentDataAdapter.notifyDataSetChanged();
             appointmentBinding.allApointmentsRecyclers.setAdapter(allApointmentDataAdapter);
         } else {
+            allApointmentDataAdapter = new AppointmentAllApointmentDataAdapter( AppointmentAllAppointmentFragment.this.getContext() ,appointmentsList);
+            appointmentBinding.allApointmentsRecyclers.setAdapter(allApointmentDataAdapter);
 //            if(appointmentBinding.allApointmentsRecyclers.getVisibility() == View.VISIBLE) {
             appointmentBinding.allApointmentsRecyclers.setVisibility(View.GONE);
 //            }
@@ -87,25 +122,39 @@ public class AppointmentAllAppointmentFragment extends Fragment {
         }
         AppointmentFragment.filter = "" ;
         String token = "Bearer " + loginResponsePref.getInstance(getContext()).getToken();
-        FunctionCall.showProgressDialog( getContext());
-        Call<AppointmentsFilterResponse> call = RetrofitClient.getVendorService().getAppointmentSearchedData(token, AppointmentFragment.status, AppointmentFragment.start_date, AppointmentFragment.end_date, AppointmentFragment.filter, AppointmentFragment.search, "");
+        FunctionCall.showProgressDialog( homeContext);
+        Call<AppointmentsFilterResponse> call = RetrofitClient.getVendorService().getAppointmentSearchedData(token, AppointmentFragment.status, AppointmentFragment.start_date, AppointmentFragment.end_date, AppointmentFragment.filter, AppointmentFragment.search, "", currentPage);
         call.enqueue(new Callback<AppointmentsFilterResponse>() {
             @Override
             public void onResponse(Call<AppointmentsFilterResponse> call, Response<AppointmentsFilterResponse> response) {
-                FunctionCall.DismissDialog(getContext());
+                FunctionCall.DismissDialog(homeContext);
+                AppointmentFragment.isApiCalled = false ;
+                isLoading = false ;
                 if (response.isSuccessful() && (response.body() != null) && response.body().isStatus()) {
-                    setAppointmentData(response.body());
+                    if (currentPage == 0) {
+                        setAppointmentData(response.body());
                 } else {
+                    setNextPageData(response.body().getAppointments());
+                }
+            } else {
                     Log.d("appointmentsfilterhit", "onResponse: " + response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<AppointmentsFilterResponse> call, Throwable t) {
-                FunctionCall.DismissDialog( getContext());
+                FunctionCall.DismissDialog( homeContext);
+                AppointmentFragment.isApiCalled = false ;
                 Log.d("appointmentsfilterhit", "onFailure: s" + t.getMessage());
                 Toast.makeText(getContext(), " ---- " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void setNextPageData(List<AppointmentsItem> data) {
+        if (data.size() == 0) {
+            isLastPage = true;
+        } else {
+            allApointmentDataAdapter.addItems(data);
+        }
     }
 }

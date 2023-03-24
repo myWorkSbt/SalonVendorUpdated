@@ -76,6 +76,15 @@ public class DataItem implements Serializable {
 		return type;
 	}
 
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
 	public void setDeletedAt(Object deletedAt){
 		this.deletedAt = deletedAt;
 	}

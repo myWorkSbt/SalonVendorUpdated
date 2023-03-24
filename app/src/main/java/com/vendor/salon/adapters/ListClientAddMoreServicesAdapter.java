@@ -107,6 +107,7 @@ public class ListClientAddMoreServicesAdapter extends RecyclerView.Adapter<ListC
         return selectedServiceslists.size();
     }
 
+
     public static class ViewHolders extends RecyclerView.ViewHolder {
         ItemSelectedClientServiceLayBinding itemSelectedClientServiceLayBinding ;
         public ViewHolders(@NonNull ItemSelectedClientServiceLayBinding itemSelectedClientServiceLayBinding ) {

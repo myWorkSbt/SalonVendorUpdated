@@ -43,10 +43,15 @@ public class AppointmentFragment extends Fragment {
     public static String filter = "";
     Context homeContext;
     ActivityHomeBinding homeBinding;
+    Context c_contexts ;
+    public static boolean isApiCalled = false ;
 
     public AppointmentFragment(FragmentManager supportFragmentManager, ActivityHomeBinding homeBinding) {
         // Required empty public constructor
         this.homeBinding = homeBinding;
+    }
+
+    public AppointmentFragment() {
     }
 
     @Override
@@ -55,6 +60,10 @@ public class AppointmentFragment extends Fragment {
         // Inflate the layout for this fragment
         appointmentBinding = FragmentAppointmentBinding.inflate(inflater, container, false);
         homeContext = homeBinding.getRoot().getContext();
+        search = "";
+        start_date = "";
+        end_date = "" ;
+        filter = "";
 
         return appointmentBinding.getRoot();
     }
@@ -83,12 +92,9 @@ public class AppointmentFragment extends Fragment {
         appointmentBinding.viewPagerAppointments.setUserInputEnabled(false);
 
 
-        appointmentBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                setFilteredData();
-                appointmentBinding.swipeRefreshLayout.setRefreshing(false);
-            }
+        appointmentBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            setFilteredData();
+            appointmentBinding.swipeRefreshLayout.setRefreshing(false);
         });
         appointmentBinding.btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +138,7 @@ public class AppointmentFragment extends Fragment {
 
 
     private void createBottomSheetDialogs() {
-        bottomFilter = new BottomSheetDialog(homeBinding.getRoot().getContext());
+        bottomFilter = new BottomSheetDialog(homeBinding.getRoot().getContext(), R.style.BottomSheetDialogStyle);
         bottomFilter.setContentView(R.layout.filter_bottom_sheet);
         AppCompatButton reset = bottomFilter.findViewById(R.id.btn_reset);
         AppCompatButton applyfilters = bottomFilter.findViewById(R.id.btn_apply_filter);
@@ -298,32 +304,39 @@ public class AppointmentFragment extends Fragment {
     private void setFilteredData() {
         int pos = appointmentBinding.viewPagerAppointments.getCurrentItem();
 //        appointmentBinding.tabLayout.getSelectedTabPosition();
-        switch (pos) {
-            case 0:
+        if (!isApiCalled) {
+            isApiCalled = true ;
+            switch (pos) {
+                case 0:
 //                FunctionCall.showProgressDialog(AppointmentFragment.this.getContext());
 //                AppointmentAllAppointmentFragment allFragment = (AppointmentAllAppointmentFragment) this.getSupportFragmentManager().findFragmentById(appointmentBinding.viewPagerAppointments.getCurrentItem());
-                AppointmentAllAppointmentFragment allFragment = (AppointmentAllAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
-                allFragment.getSearchedData();
+                    AppointmentAllAppointmentFragment allFragment = (AppointmentAllAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
+//                    AppointmentAllAppointmentFragment allFragment = new AppointmentAllAppointmentFragment(homeContext);
+                    allFragment.getSearchedData();
 //                FunctionCall.DismissDialog(AppointmentFragment.this.getContext()) ;
-                break;
-            case 1:
-                AppointmentRecentAppointmentFragment recentFragment = (AppointmentRecentAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
+                    break;
+                case 1:
+                    AppointmentRecentAppointmentFragment recentFragment = (AppointmentRecentAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
 //                AppointmentRecentAppointmentFragment recentFragment = (AppointmentRecentAppointmentFragment) this.getSupportFragmentManager().findFragmentById(appointmentBinding.viewPagerAppointments.getId());
-                recentFragment.getSearchedData();
-                break;
-            case 2:
+//                    AppointmentRecentAppointmentFragment recentFragment = new AppointmentRecentAppointmentFragment(homeContext);
+                    recentFragment.getSearchedData();
+                    break;
+                case 2:
 //                AppointmentTodayAppointmentFragment todayAppointmentFragment = (AppointmentTodayAppointmentFragment) this.getSupportFragmentManager().findFragmentById(appointmentBinding.viewPagerAppointments.getId());
-                AppointmentTodayAppointmentFragment todayAppointmentFragment = (AppointmentTodayAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
-                todayAppointmentFragment.getSearchedData();
-                break;
-            case 3:
+                    AppointmentTodayAppointmentFragment todayAppointmentFragment = (AppointmentTodayAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
+//                    AppointmentTodayAppointmentFragment todayAppointmentFragment = new AppointmentTodayAppointmentFragment(homeContext);
+                    todayAppointmentFragment.getSearchedData();
+                    break;
+                case 3:
 //                AppointmentUpcomingAppointmentFragment upcomingFragment = (AppointmentUpcomingAppointmentFragment) this.getSupportFragmentManager().findFragmentById(appointmentBinding.viewPagerAppointments.getId());
-                AppointmentUpcomingAppointmentFragment upcomingFragment = (AppointmentUpcomingAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
-                upcomingFragment.getSearchedData();
+                    AppointmentUpcomingAppointmentFragment upcomingFragment = (AppointmentUpcomingAppointmentFragment) appointmentTabLayoutAdapter.getRegisteredFragment(pos);
+//                    AppointmentUpcomingAppointmentFragment upcomingFragment = new AppointmentUpcomingAppointmentFragment(homeContext);
+                    upcomingFragment.getSearchedData();
 
-        }
+            }
 //        appointmentTabLayoutAdapter.getRegisteredFragment(pos);
 //        appointmentTabLayoutAdapter = null;
+        }
 //        appointmentTabLayoutAdapter = new AppointmentTabLayoutAdapter(getSupportFragmentManager(), getLifecycle(), true);
     }
 
@@ -347,7 +360,7 @@ public class AppointmentFragment extends Fragment {
     private void setTabLayoutWithViewPagerWithFragments(View view) {
 //        appointmentTabLayoutAdapter = new AppointmentTabLayoutAdapter( Appointment.this.getSupportFragmentManager(), getLifecycle(),  appointments, Appointment.this);
 
-        appointmentTabLayoutAdapter = new AppointmentTabLayoutAdapter(getParentFragmentManager(), getLifecycle(), false);
+        appointmentTabLayoutAdapter = new AppointmentTabLayoutAdapter(getParentFragmentManager(), getLifecycle(), homeContext);
         appointmentBinding.viewPagerAppointments.setAdapter(appointmentTabLayoutAdapter);
         (new TabLayoutMediator(appointmentBinding.tabLayout, appointmentBinding.viewPagerAppointments,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -372,4 +385,12 @@ public class AppointmentFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        search = "" ;
+        start_date = "";
+        end_date = "" ;
+        filter = "";
+    }
 }

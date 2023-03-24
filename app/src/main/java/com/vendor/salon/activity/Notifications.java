@@ -1,6 +1,9 @@
 package com.vendor.salon.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +15,7 @@ import com.vendor.salon.R;
 import com.vendor.salon.adapters.AllNotificationAdapter;
 import com.vendor.salon.databinding.ActivityNotificationsBinding;
 import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,8 @@ public class Notifications extends AppCompatActivity {
 
     private ActivityNotificationsBinding notificationsBinding;
     ArrayList<AllNotificationDataClass> notificationDataClassList;
+    private boolean isApiCalled = false ;
+    private NetworkChangeListener networkChangeListener = new NetworkChangeListener() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +48,29 @@ public class Notifications extends AppCompatActivity {
         notificationsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Notifications.this, Home.class);
-                startActivity(intent);
                 finish();
             }
         });
     }
 
     private void getNotificationData() {
-        List<NotificationItem> notificationList = new ArrayList<>();
-        notificationList.add(new NotificationItem(R.drawable.no_image_rectangle, "As there is no \"Mark directory as\" menu in Android Studio, I found out that such settings like including and excluding directories are stored in a \".iml\" file. Name"));
-        notificationList.add(new NotificationItem(R.drawable.image, "id Studio, I found "));
-        notificationList.add(new NotificationItem(R.drawable.no_image, "sdkfsjd asd sd; sd sd;k ;sdf sd a;a fd  droid Studio, I found out that such settings "));
+        if (!isApiCalled) {
+            isApiCalled = true ;
+            List<NotificationItem> notificationList = new ArrayList<>();
+            notificationList.add(new NotificationItem(R.drawable.no_image_rectangle, "As there is no \"Mark directory as\" menu in Android Studio, I found out that such settings like including and excluding directories are stored in a \".iml\" file. Name"));
+            notificationList.add(new NotificationItem(R.drawable.image, "id Studio, I found "));
+            notificationList.add(new NotificationItem(R.drawable.no_image, "sdkfsjd asd sd; sd sd;k ;sdf sd a;a fd  droid Studio, I found out that such settings "));
 
-        notificationDataClassList = new ArrayList<>();
-        notificationDataClassList.add(new AllNotificationDataClass("today", notificationList));
-        notificationDataClassList.add(new AllNotificationDataClass("Yesterday", notificationList));
-        AllNotificationDataClass notificationData = new AllNotificationDataClass("23-11-2023", notificationList);
-        notificationDataClassList.add(notificationData);
-        notificationDataClassList.add(new AllNotificationDataClass("27-11-20223", notificationList));
-        notificationDataClassList.add(new AllNotificationDataClass("27-07-2024", notificationList));
-        notificationsBinding.everyDayNotificationRecycler.setAdapter(new AllNotificationAdapter(this, notificationDataClassList));
-
+            notificationDataClassList = new ArrayList<>();
+            notificationDataClassList.add(new AllNotificationDataClass("today", notificationList));
+            notificationDataClassList.add(new AllNotificationDataClass("Yesterday", notificationList));
+            AllNotificationDataClass notificationData = new AllNotificationDataClass("23-11-2023", notificationList);
+            notificationDataClassList.add(notificationData);
+            notificationDataClassList.add(new AllNotificationDataClass("27-11-20223", notificationList));
+            notificationDataClassList.add(new AllNotificationDataClass("27-07-2024", notificationList));
+            notificationsBinding.everyDayNotificationRecycler.setAdapter(new AllNotificationAdapter(this, notificationDataClassList));
+            isApiCalled = false ;
+        }
     }
 
     public class AllNotificationDataClass {
@@ -108,5 +115,19 @@ public class Notifications extends AppCompatActivity {
         Intent intent = new Intent(Notifications.this, Home.class);
         startActivity(intent);
         finish();
+    }
+
+
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

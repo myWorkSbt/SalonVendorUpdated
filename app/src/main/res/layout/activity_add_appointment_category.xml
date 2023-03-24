@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_lays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="27dp"
+                android:layout_height="23dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_back"
+                app:layout_constraintBottom_toBottomOf="@id/tv_category_headers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_category_headers" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_category_headers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Our Services"
+                android:textColor="@color/black"
+                android:textSize="23sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/switch_lays"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_lays">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_ones"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:checked="true"
+            android:textOff="@string/taken"
+            android:textOn="@string/available"
+            android:thumb="@drawable/custom_thumb"
+            app:switchMinWidth="80dp"
+            app:track="@drawable/custom_track"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/MaleTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|start"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
+            android:text="@string/male"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/femaleTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|end"
+            android:paddingStart="0dp"
+            android:paddingEnd="12dp"
+            android:text="@string/female"
+            android:textColor="@color/pink_colr"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appointment_category_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/button_card"
+            app:layout_constraintTop_toBottomOf="@id/switch_lays"
+            tools:listitem="@layout/item_appointment_category_lays" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/button_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/salon_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/bg_saloonbutton"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingVertical="15dp"
+                    android:text="@string/salon"
+                    android:textAllCaps="false"
+                    android:textColor="#0D47A1"
+                    app:cornerRadius="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    app:layout_constraintEnd_toStartOf="@+id/DoorStep"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/DoorStep"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/cardcorner_whit_cut"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingVertical="15dp"
+                    android:text="@string/doorstep"
+                    android:textAllCaps="false"
+                    app:cornerRadius="15dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/salon_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/salon_button"
+                    app:layout_constraintTop_toTopOf="@+id/salon_button" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#D63226"
+            android:id="@+id/show_no_data_text"
+            android:textSize="23sp"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="23dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            android:text="@string/no_record_available"
+            android:layout_gravity="center"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_apply"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#87CFD6"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:paddingVertical="15dp"
+            android:text="@string/apply"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="30dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

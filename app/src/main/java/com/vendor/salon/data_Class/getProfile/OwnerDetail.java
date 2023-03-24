@@ -30,6 +30,9 @@ public class OwnerDetail implements Serializable {
 	@SerializedName("is_registered")
 	private int isRegistered;
 
+	@SerializedName("service_for")
+	private String service_for;
+
 	public String getVendorType() {
 		return vendorType;
 	}
@@ -102,6 +105,14 @@ public class OwnerDetail implements Serializable {
 
 	public void setIsApproved(int isApproved){
 		this.isApproved = isApproved;
+	}
+
+	public String getService_for() {
+		return service_for;
+	}
+
+	public void setService_for(String service_for) {
+		this.service_for = service_for;
 	}
 
 	public int getIsApproved(){

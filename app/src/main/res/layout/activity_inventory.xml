@@ -3,28 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/swipe_refresh_Layout"
+        android:layout_height="match_parent"
+        >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.InventoryActivity">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_back"
-            android:paddingStart="15sp"
+            android:layout_width="27dp"
+            android:layout_height="23dp"
+            android:scaleType="fitXY"
             android:src="@drawable/arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/heading_inventory"
-            app:layout_constraintTop_toTopOf="@id/heading_inventory"
+            android:layout_marginStart="19dp"
             app:layout_constraintBottom_toBottomOf="@id/heading_inventory"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/heading_inventory" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/heading_inventory"
             android:text="Inventory"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="20sp"
+            android:textSize="21sp"
             android:textColor="#212121"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
@@ -36,7 +44,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="11dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_options_list_recycler"
             app:layout_constraintTop_toBottomOf="@id/heading_inventory"
@@ -47,12 +55,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/recycler_view_inventory"
             app:layout_constraintTop_toBottomOf="@id/optiOns_RecYClEr_list"
             tools:listitem="@layout/item_inventory_list_recycler"
             />
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/recycler_view_inventory"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -84,4 +99,7 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

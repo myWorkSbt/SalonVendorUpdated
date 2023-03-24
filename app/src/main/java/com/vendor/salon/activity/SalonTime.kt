@@ -1,7 +1,9 @@
 package com.vendor.salon.activity
 
 import android.annotation.SuppressLint
+import android.content.IntentFilter
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,12 +12,12 @@ import androidx.databinding.DataBindingUtil
 import com.vendor.salon.OnItemClickInterface
 import com.vendor.salon.R
 import com.vendor.salon.adapters.SalonTimingAdapter
-import com.vendor.salon.data_Class.salon_timings.SalonData
 import com.vendor.salon.data_Class.salon_timings.SalonDisableTimeData
 import com.vendor.salon.data_Class.salon_timings.SalonTimeData
 import com.vendor.salon.databinding.ActivitySalonTimeBinding
 import com.vendor.salon.networking.RetrofitClient
 import com.vendor.salon.utilityMethod.FunctionCall
+import com.vendor.salon.utilityMethod.NetworkChangeListener
 import com.vendor.salon.utilityMethod.loginResponsePref
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,8 +26,10 @@ import retrofit2.Response
 
 var place = "salon"
 var IsSalonSelected: Boolean = true
+var isApiCalled: Boolean = false
 
 class SalonTime : AppCompatActivity(), OnItemClickInterface {
+    private val networkChangeListener:  NetworkChangeListener = NetworkChangeListener()
     private lateinit var adapterSalon: SalonTimingAdapter
     private lateinit var binding: ActivitySalonTimeBinding
 
@@ -33,10 +37,10 @@ class SalonTime : AppCompatActivity(), OnItemClickInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
-            DataBindingUtil.setContentView(this, com.vendor.salon.R.layout.activity_salon_time)
+            DataBindingUtil.setContentView(this, R.layout.activity_salon_time)
 
 
-        adapterSalon = SalonTimingAdapter(this@SalonTime, ArrayList<SalonData>(), this@SalonTime)
+        adapterSalon = SalonTimingAdapter(this@SalonTime, ArrayList(), this@SalonTime)
         binding.itemSalonTimeRecyclerLays.adapter = adapterSalon
         "".getSelectedSalonVendor("", "", "")
 
@@ -58,6 +62,11 @@ class SalonTime : AppCompatActivity(), OnItemClickInterface {
             finish()
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            "".getSelectedSalonVendor("", "", "")
+             binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.salon.setOnClickListener {
             place = "salon"
             if (!IsSalonSelected) {
@@ -73,35 +82,44 @@ class SalonTime : AppCompatActivity(), OnItemClickInterface {
 
 
     private fun String.getSelectedSalonVendor(day: String, start_time: String, end_time: String) {
-        FunctionCall.showProgressDialog(this@SalonTime)
-        val token: String
-        token = loginResponsePref.getInstance(applicationContext).token
-        var hash = HashMap<String, String>()
-        hash["update"] = this
-        hash["day"] = day
-        hash["place"] = place
-        hash["start_time"] = start_time
-        hash["end_time"] = end_time
+        if(!isApiCalled) {
+            FunctionCall.showProgressDialog(this@SalonTime)
+            isApiCalled = true;
+            val token: String
+            token = loginResponsePref.getInstance(applicationContext).token
+            val hash = HashMap<String, String>()
+            hash["update"] = this
+            hash["day"] = day
+            hash["place"] = place
+            hash["start_time"] = start_time
+            hash["end_time"] = end_time
 
-        val call: Call<SalonTimeData> =
-            RetrofitClient.getVendorService().getTimeSalon("Bearer " + token, hash)
+            val call: Call<SalonTimeData> =
+                RetrofitClient.getVendorService().getTimeSalon("Bearer " + token, hash)
 
-        call.enqueue(object : Callback<SalonTimeData> {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<SalonTimeData>, response: Response<SalonTimeData>) {
-                FunctionCall.DismissDialog(this@SalonTime)
-                if (response.isSuccessful) {
-                    Log.d("salonTimegone", "salondata " + response)
-                    adapterSalon.refreshDataLst(ArrayList(response.body()!!.data))
-                    adapterSalon.notifyDataSetChanged()
+            call.enqueue(object : Callback<SalonTimeData> {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<SalonTimeData>,
+                    response: Response<SalonTimeData>,
+                ) {
+                    FunctionCall.DismissDialog(this@SalonTime)
+                    isApiCalled = false
+                    if (response.isSuccessful) {
+                        Log.d("salonTimegone", "salondata " + response)
+                        adapterSalon.refreshDataLst(ArrayList(response.body()!!.data))
+                        adapterSalon.notifyDataSetChanged()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<SalonTimeData>, t: Throwable) {
-                Toast.makeText(this@SalonTime, "Not getting Response", Toast.LENGTH_SHORT).show()
-                FunctionCall.DismissDialog(this@SalonTime)
-            }
-        })
+                override fun onFailure(call: Call<SalonTimeData>, t: Throwable) {
+                    Toast.makeText(this@SalonTime, "Not getting Response", Toast.LENGTH_SHORT)
+                        .show()
+                    FunctionCall.DismissDialog(this@SalonTime)
+                    isApiCalled = false
+                }
+            })
+        }
     }
 
 
@@ -111,7 +129,7 @@ class SalonTime : AppCompatActivity(), OnItemClickInterface {
 
     private fun disableStatus(day: String) {
         FunctionCall.showProgressDialog(this@SalonTime)
-        var hashMap = HashMap<String, String>()
+        val hashMap = HashMap<String, String>()
         hashMap["update"] = "disable_status"
         hashMap["day"] = day
         hashMap["place"] = place
@@ -134,5 +152,17 @@ class SalonTime : AppCompatActivity(), OnItemClickInterface {
                 FunctionCall.DismissDialog(this@SalonTime)
             }
         })
+    }
+
+
+    override fun onStart() {
+        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(networkChangeListener, intentFilter)
+        super.onStart()
+    }
+
+    override fun onStop() {
+        unregisterReceiver(networkChangeListener)
+        super.onStop()
     }
 }

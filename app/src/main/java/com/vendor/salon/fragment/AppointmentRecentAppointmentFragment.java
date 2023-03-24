@@ -1,5 +1,8 @@
 package com.vendor.salon.fragment;
 
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +25,9 @@ import com.vendor.salon.databinding.FragmentAppointmentRecentAppointmentBinding;
 import com.vendor.salon.databinding.ItemRecentAppointmentsBinding;
 import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
-import com.vendor.salon.utilityMethod.OnRecentBindingItemsClickListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,11 +37,17 @@ import retrofit2.Response;
 public class AppointmentRecentAppointmentFragment extends Fragment {
 
     private FragmentAppointmentRecentAppointmentBinding recentAppointmentBinding;
-    boolean isDataFiltered;
+    Context homeContext;
     RecentAppointmentRecyclerAdapter recentAppointmentRecyclerAdapter = null;
+    private int currentPage = 0;
+    private boolean isLoading = false ;
+    private boolean isLastPage = false ;
 
-    public AppointmentRecentAppointmentFragment(boolean isDataFiltered) {
-        this.isDataFiltered = isDataFiltered;
+    public AppointmentRecentAppointmentFragment(Context homeContext) {
+        this.homeContext = homeContext;
+    }
+
+    public AppointmentRecentAppointmentFragment() {
     }
 
     @Override
@@ -52,7 +61,6 @@ public class AppointmentRecentAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         recentAppointmentBinding = FragmentAppointmentRecentAppointmentBinding.inflate(getLayoutInflater(), container, false);
-        recentAppointmentBinding.appointmentRecentAppointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return recentAppointmentBinding.getRoot();
     }
@@ -63,9 +71,35 @@ public class AppointmentRecentAppointmentFragment extends Fragment {
 
         AppointmentFragment.status = "3";
         getSearchedData();
+
+
+        recentAppointmentBinding.appointmentRecentAppointmentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        isLoading = true;
+                        currentPage++;
+
+                        getSearchedData();
+
+                    }
+                }
+            }
+        });
+
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setAppointmentData(AppointmentsFilterResponse appointmentsFilterResponse) {
 
         List<AppointmentsItem> recentAppointmentsList = appointmentsFilterResponse.getAppointments();
@@ -77,6 +111,8 @@ public class AppointmentRecentAppointmentFragment extends Fragment {
             recentAppointmentBinding.appointmentRecentAppointmentsRecyclerView.setAdapter(recentAppointmentRecyclerAdapter);
             recentAppointmentRecyclerAdapter.notifyDataSetChanged();
         } else {
+            recentAppointmentRecyclerAdapter = new RecentAppointmentRecyclerAdapter(AppointmentRecentAppointmentFragment.this, new ArrayList<>());
+            recentAppointmentBinding.appointmentRecentAppointmentsRecyclerView.setAdapter(recentAppointmentRecyclerAdapter);
             recentAppointmentBinding.appointmentRecentAppointmentsRecyclerView.setVisibility(View.GONE);
             recentAppointmentBinding.showNoDataText.setVisibility(View.VISIBLE);
         }
@@ -86,15 +122,22 @@ public class AppointmentRecentAppointmentFragment extends Fragment {
 
         AppointmentFragment.status = "3" ;
         AppointmentFragment.filter = "";
+
         String token = "Bearer " + loginResponsePref.getInstance(AppointmentRecentAppointmentFragment.this.getContext()).getToken();
-//        FunctionCall.showProgressDialog(getContext());
-        Call<AppointmentsFilterResponse> call = RetrofitClient.getVendorService().getAppointmentSearchedData(token, AppointmentFragment.status, AppointmentFragment.start_date, AppointmentFragment.end_date, AppointmentFragment.filter, AppointmentFragment.search, "");
+//        FunctionCall.showProgressDialog(homeContext);
+        Call<AppointmentsFilterResponse> call = RetrofitClient.getVendorService().getAppointmentSearchedData(token, AppointmentFragment.status, AppointmentFragment.start_date, AppointmentFragment.end_date, AppointmentFragment.filter, AppointmentFragment.search, "", currentPage);
         call.enqueue(new Callback<AppointmentsFilterResponse>() {
             @Override
             public void onResponse(Call<AppointmentsFilterResponse> call, Response<AppointmentsFilterResponse> response) {
-//                FunctionCall.DismissDialog(getContext());
+//                FunctionCall.DismissDialog(homeContext);
+                AppointmentFragment.isApiCalled = false ;
                 if (response.isSuccessful() && (response.body() != null) && response.body().isStatus()) {
-                    setAppointmentData(response.body());
+                    if ( currentPage == 0) {
+                        setAppointmentData(response.body());
+                    }
+                    else {
+                        setNextPageData(response.body().getAppointments());
+                    }
                 } else {
                     Log.d("categoriesfilterhit", "onResponse: " + response.body());
                 }
@@ -102,10 +145,19 @@ public class AppointmentRecentAppointmentFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AppointmentsFilterResponse> call, Throwable t) {
-//                FunctionCall.DismissDialog(getContext());
+//                FunctionCall.DismissDialog(homeContext);
+                AppointmentFragment.isApiCalled = false ;
                 Log.d("categoriesfilterhit", "onFailure: s" + t.getMessage());
             }
         });
+    }
+
+    private void setNextPageData(List<AppointmentsItem> appointments) {
+        if (appointments.size() == 0) {
+                isLastPage = true;
+            } else {
+                recentAppointmentRecyclerAdapter.addItems(appointments);
+            }
     }
 
 

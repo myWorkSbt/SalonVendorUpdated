@@ -7,18 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
 import com.vendor.salon.R;
 import com.vendor.salon.activity.AddServices;
 import com.vendor.salon.activity.AppointmentDetail;
 import com.vendor.salon.activity.CategoryDetails;
+import com.vendor.salon.activity.Home;
 import com.vendor.salon.activity.ManagePackages;
 import com.vendor.salon.activity.ManageServices;
 import com.vendor.salon.activity.Notifications;
@@ -28,6 +32,7 @@ import com.vendor.salon.adapters.ChartviewpagerAdapter;
 import com.vendor.salon.adapters.MangeServiceAdapter;
 import com.vendor.salon.adapters.SliderAdapter;
 import com.vendor.salon.adapters.TopServiceAdapter;
+import com.vendor.salon.data_Class.getProfile.GetProfileResponse;
 import com.vendor.salon.data_Class.home.BannerItem;
 import com.vendor.salon.data_Class.home.CategoriesItem;
 import com.vendor.salon.data_Class.home.HomeResponse;
@@ -39,8 +44,6 @@ import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
 import com.vendor.salon.utilityMethod.OnClickListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.SliderAnimations;
 
 import java.util.List;
 
@@ -59,18 +62,24 @@ public class HomeFragment extends Fragment {
     List<RecentAppointmentItem> recentAppointment;
     Context homeContext;
     ActivityHomeBinding homeBinding;
+    private String vendor_services_for = "none";
 
     public HomeFragment(ActivityHomeBinding homeBinding) {
         // Required empty public constructor
         this.homeBinding = homeBinding;
     }
 
+    public HomeFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         viewDataBinding = FragmentHomeBinding.inflate(inflater, container, false);
+        if (homeBinding == null ) {
+            homeBinding = Home.homeBinding ;
+        }
         homeContext = homeBinding.getRoot().getContext();
 
         return viewDataBinding.getRoot();
@@ -89,6 +98,7 @@ public class HomeFragment extends Fragment {
                 false
         );
 
+        getVendor_Details ();
         viewDataBinding.recyclerManageServices.setLayoutManager(layoutManager);
 
         manager = new LinearLayoutManager(
@@ -141,6 +151,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ManageServices.class);
+                intent.putExtra("services_for" , vendor_services_for);
                 startActivity(intent);
             }
         });
@@ -163,20 +174,45 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        viewDataBinding.seeAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ManageServices.class);
-                startActivity(intent);
-            }
-        });
         viewDataBinding.manageAddServicesTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent addServicesIntent = new Intent(getActivity(), AddServices.class);
+                addServicesIntent.putExtra("services_for" , vendor_services_for);
                 startActivity(addServicesIntent);
             }
         });
+    }
+
+    private void getVendor_Details() {
+        String token = "Bearer "+ loginResponsePref.getInstance(homeContext).getToken();
+        Call<GetProfileResponse> call = RetrofitClient.getVendorService().getVendorDetails("Bearer " + token);
+        call.enqueue(new Callback<GetProfileResponse>() {
+            @Override
+            public void onResponse(Call<GetProfileResponse> call, Response<GetProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isStatus()) {
+                        if (response.body().getOwnerDetail() != null) {
+                            vendor_services_for = String.valueOf(response.body().getOwnerDetail().getService_for()).toLowerCase() ;
+                            Home.services_gender = vendor_services_for ;
+                        }
+                    }
+                } else {
+                    if (response.body() != null) {
+                        Toast.makeText(homeContext, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d("getprofilehit", "onResponse: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetProfileResponse> call, Throwable t) {
+                Toast.makeText(homeContext , "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("getprofilehit", "onFailure: " + t.getMessage());
+            }
+        });
+
+
     }
 
     private void getData() {
@@ -195,20 +231,26 @@ public class HomeFragment extends Fragment {
                         if (response.body().getCategories() != null) {
                             setServices(response.body().getCategories());
                         }
-                        if (response.body().getRecentAppointment() != null) {
+                        if (response.body().getRecentAppointment() != null  && response.body().getRecentAppointment().size()>0 )  {
                             recentAppointment = response.body().getRecentAppointment();
+                            viewDataBinding.Appointment.setVisibility(View.VISIBLE);
+                            viewDataBinding.appointmentSeeAll.setVisibility(View.VISIBLE);
                             setAppointments(response.body().getRecentAppointment());
                         } else {
                             viewDataBinding.Appointment.setVisibility(View.GONE);
                             viewDataBinding.appointmentSeeAll.setVisibility(View.GONE);
                         }
-                        if (response.body().getTopServices() != null) {
+                        if (response.body().getTopServices() != null && response.body().getTopServices().size()>0 ) {
+                            viewDataBinding.topServices.setVisibility(View.VISIBLE);
+                            viewDataBinding.seeAll3.setVisibility(View.VISIBLE);
                             setTopServices(response.body().getTopServices());
                         } else {
                             viewDataBinding.topServices.setVisibility(View.GONE);
                             viewDataBinding.seeAll3.setVisibility(View.GONE);
                         }
                         if (response.body().getDailySales() != null) {
+                            viewDataBinding.Revenue.setVisibility(View.VISIBLE);
+                            viewDataBinding.viewPager.setVisibility(View.VISIBLE);
                             setRevenue(response.body());
                         } else {
                             viewDataBinding.Revenue.setVisibility(View.GONE);
@@ -216,6 +258,12 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 } else {
+                    viewDataBinding.Appointment.setVisibility(View.GONE);
+                    viewDataBinding.appointmentSeeAll.setVisibility(View.GONE);
+                    viewDataBinding.topServices.setVisibility(View.GONE);
+                    viewDataBinding.seeAll3.setVisibility(View.GONE);
+                    viewDataBinding.Revenue.setVisibility(View.GONE);
+                    viewDataBinding.viewPager.setVisibility(View.GONE);
                     Log.d("homehit", "onResponse: " + response.body());
                 }
             }
@@ -224,6 +272,12 @@ public class HomeFragment extends Fragment {
             public void onFailure(Call<HomeResponse> call, Throwable t) {
                 FunctionCall.DismissDialog(homeContext);
                 Log.d("homehit", "onFailure:  " + t.getMessage());
+                viewDataBinding.Appointment.setVisibility(View.GONE);
+                viewDataBinding.appointmentSeeAll.setVisibility(View.GONE);
+                viewDataBinding.topServices.setVisibility(View.GONE);
+                viewDataBinding.seeAll3.setVisibility(View.GONE);
+                viewDataBinding.Revenue.setVisibility(View.GONE);
+                viewDataBinding.viewPager.setVisibility(View.GONE);
             }
         });
     }
@@ -283,8 +337,9 @@ public class HomeFragment extends Fragment {
             public void onItemClickListener(Context context, int position) {
                 Intent intent = new Intent(context.getApplicationContext(), CategoryDetails.class);
                 intent.putExtra("id", categories.get(position).getId());
-                intent.putExtra("positions", categories.get(position).getName());
-                intent.putExtra("gender", "male");
+                intent.putExtra("names" ,  categories.get(position).getName());
+                intent.putExtra("gender",  "male" );
+                intent.putExtra("services_for" , vendor_services_for );
                 context.startActivity(intent);
             }
         });
@@ -301,4 +356,5 @@ public class HomeFragment extends Fragment {
         viewDataBinding.imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
         viewDataBinding.imageSlider.startAutoCycle();
     }
+
 }

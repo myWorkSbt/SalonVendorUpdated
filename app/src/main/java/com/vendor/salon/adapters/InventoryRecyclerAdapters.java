@@ -1,5 +1,6 @@
 package com.vendor.salon.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -69,11 +70,13 @@ public class InventoryRecyclerAdapters extends RecyclerView.Adapter<InventoryRec
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshLists(List<DataItem> myInventoryList) {
         this.myInventoryList = myInventoryList;
+        notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ItemInventoryListRecyclerBinding itemInventoryListRecyclerBinding;
 

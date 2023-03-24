@@ -55,20 +55,21 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             }
 
             holder.appointmentRecyclerviewItemBinding.HaircutHairSpa1.setText(servicesLists);
+            if (apiList.getClientGender() == null) {
+                holder.appointmentRecyclerviewItemBinding.Male.setVisibility(View.GONE);
+             }
 
             holder.appointmentRecyclerviewItemBinding.Male.setText(apiList.getClientGender());
+            if (apiList.getDistance() ==  null ) {
+                holder.appointmentRecyclerviewItemBinding.distance.setVisibility(View.GONE);
+            }
             holder.appointmentRecyclerviewItemBinding.distance.setText(apiList.getDistance());
             if (apiList.getStartTime() != null && !apiList.getStartTime().isEmpty()) {
-                holder.appointmentRecyclerviewItemBinding.today.setText(apiList.getStartTime().toString().split(" ")[0]);
+                holder.appointmentRecyclerviewItemBinding.today.setText(apiList.getStartTime().split(" ")[0]);
             }
-            int item_id = Integer.parseInt(apiList.getUserId());
+            int item_id = apiList.getId();
 
-            holder.appointmentRecyclerviewItemBinding.itemsCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClickListener(view.getContext(), item_id );
-                }
-            });
+            holder.appointmentRecyclerviewItemBinding.itemsCard.setOnClickListener(view -> listener.onItemClickListener(view.getContext(), item_id));
             if (apiList.getStartTime() != null && !apiList.getStartTime().isEmpty()) {
                 holder.appointmentRecyclerviewItemBinding.time.setText(apiList.getStartTime().split(" ")[apiList.getStartTime().split(" ").length - 1]);
             }
@@ -83,7 +84,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return 4;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final AppointmentRecyclerviewItemBinding appointmentRecyclerviewItemBinding;
 
         public ViewHolder(AppointmentRecyclerviewItemBinding appointmentRecyclerviewItemBinding) {

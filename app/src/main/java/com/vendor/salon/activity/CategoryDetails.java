@@ -1,30 +1,29 @@
 package com.vendor.salon.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vendor.salon.R;
 import com.vendor.salon.adapters.ServicesListAdapter;
-import com.vendor.salon.data_Class.category_services.CategoriesItem;
-import com.vendor.salon.data_Class.category_services.CategoryServicesResponse;
 import com.vendor.salon.data_Class.vendor_sub_catgories.DataItem;
 import com.vendor.salon.data_Class.vendor_sub_catgories.VendorSubCategoryResponse;
 import com.vendor.salon.databinding.ActivityServiceBinding;
 import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,6 +42,8 @@ public class CategoryDetails extends AppCompatActivity {
     String token;
     boolean isSaloonButtonSelected = true ;
     String is_DoorStep = "" ;
+    boolean isApiCalled = false ;
+    private final NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +55,32 @@ public class CategoryDetails extends AppCompatActivity {
         category_gender = getIntent().getStringExtra("gender");
         token = "Bearer " + loginResponsePref.getInstance(CategoryDetails.this).getToken();
         serviceBinding.serviceItemsList.setLayoutManager(new LinearLayoutManager(CategoryDetails.this));
+        String services_for = getIntent().getStringExtra("services_for");
+
+        if (services_for.equals("mens")) {
+            gender = "male";
+            serviceBinding.switchLay.setVisibility(View.GONE);
+        }
+        else if (services_for.equals("womens")){
+            serviceBinding.switchLay.setVisibility(View.GONE);
+            gender = "female";
+        }
+        else {
+            serviceBinding.switchLay.setVisibility(View.VISIBLE );
+        }
+
         getServicesValue();
          serviceBinding.tvHeader.setText( category_name);
 
-        serviceBinding.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentss = new Intent(CategoryDetails.this, Home.class);
-                startActivity(intentss);
-                finishAffinity();
-            }
+        serviceBinding.btnBack.setOnClickListener(view -> {
+            finish();
         });
 
 
 
-        serviceBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getServicesValue();
-                serviceBinding.swipeRefreshLayout.setRefreshing(false);
-            }
+        serviceBinding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            getServicesValue();
+            serviceBinding.swipeRefreshLayout.setRefreshing(false);
         });
 
 
@@ -97,35 +104,29 @@ public class CategoryDetails extends AppCompatActivity {
         });
 
 
-        serviceBinding.salonButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isSaloonButtonSelected) {
-                    isSaloonButtonSelected = true;
-                    serviceBinding.DoorStep.setBackground(getDrawable(R.drawable.cardcorner_whit_cut));
-                    serviceBinding.salonButton3.setBackground(getDrawable(R.drawable.bg_saloonbutton));
-                    serviceBinding.salonButton3.setTextColor(Color.WHITE);
-                    serviceBinding.DoorStep.setTextColor(Color.BLACK);
-                    is_DoorStep = "";
-                    getServicesValue();
+        serviceBinding.salonButton3.setOnClickListener(view -> {
+            if (!isSaloonButtonSelected) {
+                isSaloonButtonSelected = true;
+                serviceBinding.DoorStep.setBackground(getDrawable(R.drawable.cardcorner_whit_cut));
+                serviceBinding.salonButton3.setBackground(getDrawable(R.drawable.bg_saloonbutton));
+                serviceBinding.salonButton3.setTextColor(Color.WHITE);
+                serviceBinding.DoorStep.setTextColor(Color.BLACK);
+                is_DoorStep = "";
+                getServicesValue();
 
-                }
             }
         });
 
-        serviceBinding.DoorStep.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                if (isSaloonButtonSelected) {
-                    isSaloonButtonSelected = false;
-                    serviceBinding.salonButton3.setBackground(getDrawable(R.drawable.cardcorner_whit_cut));
-                    serviceBinding.salonButton3.setTextColor(Color.BLACK);
-                    serviceBinding.DoorStep.setBackground(getDrawable(R.drawable.bg_saloonbutton));
-                    serviceBinding.DoorStep.setTextColor(Color.WHITE);
-                    is_DoorStep = "2";
-                    getServicesValue();
-                }
+        serviceBinding.DoorStep.setOnClickListener(view -> {
+            if (isSaloonButtonSelected) {
+                isSaloonButtonSelected = false;
+                serviceBinding.salonButton3.setBackground(getDrawable(R.drawable.cardcorner_whit_cut));
+                serviceBinding.salonButton3.setTextColor(Color.BLACK);
+                serviceBinding.DoorStep.setBackground(getDrawable(R.drawable.bg_saloonbutton));
+                serviceBinding.DoorStep.setTextColor(Color.WHITE);
+                is_DoorStep = "2";
+                getServicesValue();
             }
         });
 
@@ -134,37 +135,41 @@ public class CategoryDetails extends AppCompatActivity {
 
     }
 
-    private void getServicesValue() {
-        FunctionCall.showProgressDialog(CategoryDetails.this);
-        String token =  "Bearer "  + loginResponsePref.getInstance(CategoryDetails.this).getToken();
-        Call<VendorSubCategoryResponse> call =  RetrofitClient.getVendorService().getServiceFilteredData( token , received_category_id +"" , gender , is_DoorStep ) ;
-        call.enqueue(new Callback<VendorSubCategoryResponse>() {
-            @Override
-            public void onResponse(Call<VendorSubCategoryResponse> call, Response<VendorSubCategoryResponse> response) {
-                FunctionCall.DismissDialog(CategoryDetails.this);
-                if (response.isSuccessful() && response.body() != null && response.body().isStatus() ) {
-                     setServicesItems( response.body().getData());
-                }
-                else {
-                    if (response.body() != null ) {
-                        Toast.makeText(CategoryDetails.this, "" + response.body().getMessage() , Toast.LENGTH_SHORT).show();
+    void getServicesValue() {
+        if (!isApiCalled ) {
+            isApiCalled = true;
+            FunctionCall.showProgressDialog(CategoryDetails.this);
+            String token = "Bearer " + loginResponsePref.getInstance(CategoryDetails.this).getToken();
+            Call<VendorSubCategoryResponse> call = RetrofitClient.getVendorService().getServiceFilteredData(token, received_category_id + "", gender, is_DoorStep);
+            call.enqueue(new Callback<VendorSubCategoryResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<VendorSubCategoryResponse> call, @NonNull Response<VendorSubCategoryResponse> response) {
+                    isApiCalled = false ;
+                    FunctionCall.DismissDialog(CategoryDetails.this);
+                    if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                        setServicesItems(response.body().getData());
+                    } else {
+                        if (response.body() != null) {
+                            Toast.makeText(CategoryDetails.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d(TAG, "onResponse: " + response);
                     }
-                    Log.d(TAG, "onResponse: " + response );
                 }
-            }
 
-            @Override
-            public void onFailure(Call<VendorSubCategoryResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage() );
-                FunctionCall.DismissDialog(CategoryDetails.this);
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<VendorSubCategoryResponse> call, @NonNull Throwable t) {
+                    Log.d(TAG, "onFailure: " + t.getMessage());
+                    isApiCalled = false ;
+                    FunctionCall.DismissDialog(CategoryDetails.this);
+                }
+            });
+        }
     }
 
 
     private void setServicesItems(List<DataItem> categoryServicesResponse) {
         serviceList = categoryServicesResponse;
-            servicesAdapter = new ServicesListAdapter( CategoryDetails.this,serviceList);
+            servicesAdapter = new ServicesListAdapter(CategoryDetails.this, serviceList );
             if (serviceList == null || serviceList.size() == 0 ) {
                     serviceBinding.showNoDataText.setVisibility(View.VISIBLE);
             }
@@ -175,10 +180,24 @@ public class CategoryDetails extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onBackPressed() {
-        Intent intents = new Intent(CategoryDetails.this, Home.class);
-        startActivity(intents);
-        finishAffinity();
+        finish();
     }
+
+
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
+
 }

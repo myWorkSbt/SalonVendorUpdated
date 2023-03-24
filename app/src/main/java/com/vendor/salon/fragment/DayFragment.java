@@ -31,6 +31,8 @@ public class DayFragment extends Fragment {
         this.salesData = sales;
     }
 
+    public DayFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

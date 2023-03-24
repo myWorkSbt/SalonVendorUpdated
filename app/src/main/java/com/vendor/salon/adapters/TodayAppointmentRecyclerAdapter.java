@@ -40,12 +40,23 @@ public class TodayAppointmentRecyclerAdapter extends RecyclerView.Adapter<TodayA
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AppointmentsItem appointmentsItemLists = recentAppointmentsList.get(position);
         if(appointmentsItemLists != null ) {
-            holder.todayAppointmentsBinding.itemName.setText(appointmentsItemLists.getUserName());
+            if (appointmentsItemLists.getUserName().length()<15) {
+                holder.todayAppointmentsBinding.itemName.setText(appointmentsItemLists.getUserName());
+            }
+            else {
+                holder.todayAppointmentsBinding.itemName.setText(appointmentsItemLists.getUserName().substring(0,13) + "..");
+            }
+            if (appointmentsItemLists.getClientGender() == null ) {
+                holder.todayAppointmentsBinding.itemGender.setVisibility(View.GONE);
+            }
             holder.todayAppointmentsBinding.itemGender.setText(appointmentsItemLists.getClientGender());
             Glide.with(holder.todayAppointmentsBinding.itemAllAppointmnImage.getContext()).load(appointmentsItemLists.getUserImage()).into(holder.todayAppointmentsBinding.itemAllAppointmnImage);
 
 
             holder.todayAppointmentsBinding.saloonSite.setText(appointmentsItemLists.getServiceSite());
+            if (appointmentsItemLists.getDistance() == null ) {
+                holder.todayAppointmentsBinding.distance.setVisibility(View.GONE);
+            }
             holder.todayAppointmentsBinding.distance.setText(appointmentsItemLists.getDistance());
 
             String services_name = appointmentsItemLists.getServicesName() + "";
@@ -71,6 +82,16 @@ public class TodayAppointmentRecyclerAdapter extends RecyclerView.Adapter<TodayA
         return recentAppointmentsList.size();
     }
 
+    public void addItems(List<AppointmentsItem> appointments) {
+        recentAppointmentsList.addAll(appointments);
+        notifyDataSetChanged();
+    }
+
+    public void refreshList(List<AppointmentsItem> appointmentsItems) {
+        this.recentAppointmentsList = appointmentsItems ;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemTodayAppointmentsBinding todayAppointmentsBinding;
 
@@ -79,4 +100,5 @@ public class TodayAppointmentRecyclerAdapter extends RecyclerView.Adapter<TodayA
             this.todayAppointmentsBinding = todayAppointmentsBinding ;
         }
     }
+
 }

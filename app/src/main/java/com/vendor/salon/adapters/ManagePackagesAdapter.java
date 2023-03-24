@@ -2,6 +2,7 @@ package com.vendor.salon.adapters;
 
 import static okhttp3.RequestBody.create;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -90,7 +91,7 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
 //            holder.et_about_package.setText(packageOne.getAbout());
             holder.et_offer_price.setText(packageOne.getOfferPrice());
             if (packageOne.getImage() != null) {
-                Glide.with(holder.edit_package_image.getContext()).load(Uri.parse(packageOne.getImage().toString())).into(holder.item_image);
+                Glide.with(holder.edit_package_image.getContext()).load(Uri.parse(packageOne.getImage())).into(holder.item_image);
             }
             categoriesList = new ArrayList<>();
             CategoriesItem categoryOne = new CategoriesItem();
@@ -100,12 +101,13 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
             }
             else {
                 categoryOne.setId(-1);
+                categoryOne.setName("No category selected ");
             }
             categoryOne.setName(packageOne.getCategoryName());
             categoriesList.add(categoryOne);
             holder.categorySpinner.setAdapter(new AddServicesCategorySpinnerAdapter(holder.categorySpinner.getContext(), categoriesList));
             holder.categorySpinner.setSelection(0);
-            if (packageOne.getGender().toLowerCase().equals("male")) {
+            if ( packageOne.getGender() != null && packageOne.getGender().equalsIgnoreCase("male")) {
                 holder.male_btn_lay.setChecked(true);
             }
             else {
@@ -118,33 +120,27 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
                 holder.salon_btn.setChecked(true);
             }
 
-            holder.gender_lay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    onPackageSelectClick.onGenderSwitchClicked(position, i);
-                }
-            });
-            holder.service_at_lay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    onPackageSelectClick.onServicesAtClicked(position, i);
-                }
-            });
+            holder.gender_lay.setOnCheckedChangeListener((radioGroup, i) -> onPackageSelectClick.onGenderSwitchClicked(position, i));
+            holder.service_at_lay.setOnCheckedChangeListener((radioGroup, i) -> onPackageSelectClick.onServicesAtClicked(position, i));
             for (ServicesListingItem servicesListingItem : packageOne.getServicesListing()) {
                 com.vendor.salon.data_Class.vendor_sub_catgories.DataItem dataItm = new com.vendor.salon.data_Class.vendor_sub_catgories.DataItem();
                 dataItm.setServiceName(servicesListingItem.getName());
                 dataItm.setServiceId(String.valueOf(servicesListingItem.getId()));
-                if (servicesListingItem.getSelected().toString().equals("0")) {
-                    dataItm.setSelected(false);
-
-                } else {
-                    dataItm.setSelected(true);
-                }
+                dataItm.setSelected(!Objects.equals(servicesListingItem.getSelected(), "0"));
 
                 servicesList.add(dataItm);
             }
             holder.servicesSpinner.setAdapter(new AddPackageServicesAdapter(holder.servicesSpinner.getContext(), servicesList));
-            holder.servicesSpinner.setSelection(0);
+            int selected_services_position = 0 ;
+                for (int i = 0; i < servicesList.size(); i++) {
+                    if (packageOne.getServicesListing() != null && packageOne.getServicesListing().size() > 0 && packageOne.getServicesListing().get(0) != null ) {
+                    if (packageOne.getServicesListing().get(0).getId() == servicesList.get(i).getId()) {
+                        selected_services_position = i;
+                        break;
+                    }
+                }
+            }
+            holder.servicesSpinner.setSelection(selected_services_position);
 
             if (packageOne.getDisabled().equals("2")) {
                 holder.item_package_full_lay.setAlpha(0.7f);
@@ -167,7 +163,7 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
         });
 
 
-        holder.edit_package_image.setOnClickListener(View -> onSumitButtonClicked.onImageViewClick(position));
+        holder.edit_package_image.setOnClickListener(View -> onSumitButtonClicked.onImageViewClick(position , holder.item_image ));
 
 //
 //        holder.btn_edit_name.setOnClickListener( View  -> {
@@ -180,7 +176,6 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
             String packageName = Objects.requireNonNull(holder.et_package_name.getText()).toString();
             String mrp_vals = Objects.requireNonNull(holder.et_mrp_price.getText()).toString();
             String about_package_val = Objects.requireNonNull(holder.et_about_package.getText()).toString();
-            onSumitButtonClicked.onBtnClicked(holder.btn_itm_apply, position);
 
             if (packageName.isEmpty()) {
                 holder.et_package_name.requestFocus();
@@ -197,6 +192,7 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
                 File ItemImgFile = new File(String.valueOf(packageOne.getImage()));
                 updatePackageItemDatas(token, packageName, about_package_val, mrp_vals, Objects.requireNonNull(holder.et_offer_price.getText()).toString(), ItemImgFile, packageOne.getId() + "", position);
 
+                onSumitButtonClicked.onBtnClicked(holder.btn_itm_apply, position);
             }
         });
 
@@ -365,11 +361,17 @@ public class ManagePackagesAdapter extends RecyclerView.Adapter<ManagePackagesAd
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<DataItem> dataLists) {
         this.packagesLists = dataLists;
+        notifyDataSetChanged();
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
+    public void addItems(List<DataItem> dataList) {
+        this.packagesLists.addAll(dataList);
+        notifyDataSetChanged();
+    }
     public interface OnPackageSelectClick {
         void onGenderSwitchClicked(int position, int genderPosition);
 

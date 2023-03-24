@@ -2,12 +2,15 @@ package com.vendor.salon.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
@@ -24,6 +27,7 @@ import com.vendor.salon.data_Class.login.LoginResponse;
 import com.vendor.salon.databinding.ActivityOtpBinding;
 import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +48,7 @@ public class otp extends AppCompatActivity {
     private String latitude;
     private String longitude;
     private LocationManager locationManager;
+     NetworkChangeListener networkChangeListener = new NetworkChangeListener() ;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -260,5 +265,19 @@ public class otp extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
 
 }

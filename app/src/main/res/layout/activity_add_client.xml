@@ -27,6 +27,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="27dp"
                 android:layout_height="23dp"
+                android:scaleType="fitXY"
                 android:background="@color/transparent"
                 android:src="@drawable/arrow_back" />
 
@@ -36,7 +37,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/add_client"
-                android:textSize="15sp"
+                android:textSize="21sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -125,8 +126,7 @@
                         android:background="@null"
                         android:fontFamily="@font/poppins_medium"
                         android:hint="@string/namehint"
-                        android:inputType="number"
-                        android:maxLength="4"
+                        android:inputType="textPersonName"
                         android:paddingStart="20dp"
                         android:paddingTop="15dp"
                         android:paddingEnd="0dp"
@@ -287,7 +287,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/cutted_corner_box_small"
                     android:fontFamily="@font/roboto_medium"
-                    android:padding="13dp"
+                    android:paddingVertical="7dp"
+                    android:paddingHorizontal="13dp"
                     android:text="@string/add_more"
                     android:textAllCaps="false"
                     android:textColor="#656565"
@@ -329,16 +330,95 @@
             android:layout_marginEnd="10dp"
             />
 
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:id="@+id/anyone_item_staff_lay"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:cardCornerRadius="21dp"-->
+<!--            app:cardUseCompatPadding="true"-->
+<!--            app:cardElevation="7dp"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/btn_apply">-->
+
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="123dp"-->
+<!--                android:id="@+id/card_layss"-->
+<!--                android:background="@drawable/dark_blue_green_cut_corner"-->
+<!--                android:backgroundTintMode="add"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:id="@+id/profile_card"-->
+<!--                    android:layout_width="89dp"-->
+<!--                    android:background="@drawable/cutted_corner_box_small"-->
+<!--                    android:layout_height="57dp"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    app:cardCornerRadius="13dp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent">-->
+
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/image"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:scaleType="fitXY"-->
+<!--                        android:src="@drawable/no_image_rectangle" />-->
+
+<!--                </androidx.cardview.widget.CardView>-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/text"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginVertical="15dp"-->
+<!--                    android:padding="4dp"-->
+<!--                    android:text="Staff  Name"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textAlignment="center"-->
+<!--                    app:fontFamily="@font/inter"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/profile_card"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/profile_card"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="137dp"
             android:id="@+id/staff_list"
-            app:layout_constraintBottom_toTopOf="@id/btn_apply"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_see_all_specialst"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btn_apply"
             tools:listitem="@layout/item_assign_specialist"
             />
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#D63226"
+            android:id="@+id/show_no_data_text"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_apply"
+            app:layout_constraintTop_toBottomOf="@id/specialist_heading3"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="130dp"
+            android:text="No Record Available "
+            android:layout_gravity="center"
+            />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_apply"
             android:layout_width="0dp"

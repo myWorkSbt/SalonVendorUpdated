@@ -16,12 +16,14 @@ import com.vendor.salon.activity.AddClientActivity;
 import com.vendor.salon.data_Class.getStaff.DataItem;
 import com.vendor.salon.databinding.ItemAssignSpecialistBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssignSpecialistAdapter extends RecyclerView.Adapter<AssignSpecialistAdapter.ViewHolder> {
 
     List<DataItem> staffLists;
-    private int selectstaFfposition = -1 ;
+    private int selectstaFfposition = -1;
+    String usetype;
 
     public AssignSpecialistAdapter(List<DataItem> data) {
         this.staffLists = data;
@@ -37,41 +39,44 @@ public class AssignSpecialistAdapter extends RecyclerView.Adapter<AssignSpeciali
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DataItem staff_ones = staffLists.get(position);
-        if(staff_ones != null ) {
+        if (staff_ones != null) {
             holder.itemAssignSpecialistBinding.text.setText(staff_ones.getName());
-            holder.itemAssignSpecialistBinding.specialistDesignation.setText(staff_ones.getDesignation());
-            Glide.with(holder.itemAssignSpecialistBinding.image.getContext()).load(Uri.parse(staff_ones.getOwnerImage())).into(holder.itemAssignSpecialistBinding.image);
+            if (staff_ones.getDesignation() != null) {
+                holder.itemAssignSpecialistBinding.specialistDesignation.setText(staff_ones.getDesignation());
+            } else {
+                holder.itemAssignSpecialistBinding.specialistDesignation.setText("--");
+            }
             if (staff_ones.isSelected()) {
-                holder.itemAssignSpecialistBinding.cardLayss.setBackgroundColor(Color.parseColor( "#87CFD6"));
+                holder.itemAssignSpecialistBinding.cardLayss.setBackgroundColor(Color.parseColor("#87CFD6"));
+                if (selectstaFfposition != position) {
+                    if (selectstaFfposition != -1) {
+
+                        staffLists.get(selectstaFfposition).setSelected(false);
+                        notifyItemChanged(selectstaFfposition);
+                    }
+                }
+                selectstaFfposition = position;
+                AddClientActivity.selected_specialists_id = String.valueOf(staff_ones.getId());
+            } else {
+                holder.itemAssignSpecialistBinding.cardLayss.setBackgroundColor(Color.parseColor("#ffffff"));
             }
-            else {
-                holder.itemAssignSpecialistBinding.cardLayss.setBackgroundColor(Color.parseColor( "#ffffff"));
+            if (position == 0) {
+                holder.itemAssignSpecialistBinding.image.setImageResource(R.drawable.anyone);
+                AddClientActivity.selected_specialists_id = "0";
+                holder.itemAssignSpecialistBinding.specialistDesignation.setVisibility(View.GONE);
+//                String anyone_background_colors = "#0EDFF4";
+//                holder.itemAssignSpecialistBinding.cardLayss.setBackgroundColor(Color.parseColor(anyone_background_colors));
+            } else {
+                Glide.with(holder.itemAssignSpecialistBinding.image.getContext()).load(Uri.parse(staff_ones.getOwnerImage())).into(holder.itemAssignSpecialistBinding.image);
             }
+
         }
 
         holder.itemAssignSpecialistBinding.servicesItemLays.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                notifyItemChanged(holder.getBindingAdapterPosition());
-                if(selectstaFfposition !=holder.getBindingAdapterPosition()) {
-                    if(selectstaFfposition != -1 ) {
-                        staffLists.get(selectstaFfposition).setSelected(false);
-                        notifyItemChanged(selectstaFfposition);
-                    }
-
-                    selectstaFfposition = holder.getBindingAdapterPosition() ;
-                    AddClientActivity.selected_specialists_id = staff_ones.getId()+"";
-                    staff_ones.setSelected(true);
-                    notifyItemChanged(selectstaFfposition);
-//            recentAppointmentsBinding.btnRecentAccept.setVisibility(View.GONE);
-//            recentAppointmentsBinding.btnRecentReject.setVisibility(View.GONE);
-//            getStaffData(holder.getBindingAdapterPosition());
-                }
-                else {
-                    notifyItemChanged(selectstaFfposition);
-                    selectstaFfposition = -1 ;
-                }
+                setSelectedItem(position);
             }
         });
 
@@ -82,13 +87,33 @@ public class AssignSpecialistAdapter extends RecyclerView.Adapter<AssignSpeciali
         return staffLists.size();
     }
 
-    public class ViewHolder  extends RecyclerView.ViewHolder {
+    public void refreshLists(List<DataItem> staff_list) {
+        this.staffLists = staff_list;
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedItem(int selected_staff_position) {
+        if (selectstaFfposition != -1) {
+            staffLists.get(selectstaFfposition).setSelected(false);
+            notifyItemChanged(selectstaFfposition);
+        }
+        this.selectstaFfposition = selected_staff_position;
+        if (selected_staff_position == 0 ) {
+            AddClientActivity.selected_specialists_id = "";
+        } else {
+            AddClientActivity.selected_specialists_id = staffLists.get(selected_staff_position).getId() + "";
+        }
+        staffLists.get(selected_staff_position).setSelected(true);
+        notifyItemChanged(selectstaFfposition);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemAssignSpecialistBinding itemAssignSpecialistBinding;
 
         public ViewHolder(@NonNull ItemAssignSpecialistBinding itemAssignSpecialistBinding) {
             super(itemAssignSpecialistBinding.getRoot());
-            this.itemAssignSpecialistBinding = itemAssignSpecialistBinding ;
+            this.itemAssignSpecialistBinding = itemAssignSpecialistBinding;
         }
     }
 }

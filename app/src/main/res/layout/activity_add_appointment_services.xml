@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.AddAppointmentServices">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:id="@+id/header_lays"
+    app:layout_constraintTop_toTopOf="parent"
+
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:layout_width="27dp"
+        android:layout_height="23dp"
+        android:id="@+id/btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_category_headers"
+        app:layout_constraintBottom_toBottomOf="@id/tv_category_headers"
+        android:src="@drawable/arrow_back"
+        android:scaleType="fitXY"
+        android:layout_margin="10dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="category Name"
+        android:textSize="23sp"
+        android:id="@+id/tv_category_headers"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/btn_back"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/header_lays"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:id="@+id/appointment_services_recycler"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_appointment_services_lays" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_apply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17dp"
+            android:background="@drawable/corner_cutted_box"
+            android:backgroundTint="#87CFD6"
+            android:paddingLeft="27dp"
+            android:paddingTop="10dp"
+            android:paddingRight="27dp"
+            android:paddingBottom="10dp"
+            android:text="@string/apply"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/appointment_services_recycler"
+            android:layout_height="57dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#D63226"
+            android:id="@+id/show_no_data_text"
+            android:textSize="23sp"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="23dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            android:text="@string/no_record_available"
+            android:layout_gravity="center"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -154,7 +154,6 @@
                             android:id="@+id/nested_scrooll"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="130dp"
                             app:layout_constraintEnd_toEndOf="@+id/see_All"
                             android:scrollbars="none"
                             app:layout_constraintStart_toStartOf="@+id/Manage_Services"
@@ -162,7 +161,7 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="140dp">
+                                android:layout_height="wrap_content">
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recycler_manage_services"
@@ -173,58 +172,62 @@
                                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     tools:listitem="@layout/manage_services_items" />
 
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/manage_add_services_tab"
-                                    android:layout_width="90dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="10dp"
-                                    app:cardCornerRadius="40dp"
-                                    app:cardElevation="7dp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/recycler_manage_services"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/recycler_manage_services"
-                                    app:layout_constraintTop_toTopOf="@+id/recycler_manage_services">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:background="#F5F5F5">
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="90dp"
+                                        android:layout_height="145dp"
+                                        android:id="@+id/manage_add_services_tab"
+                                        app:cardCornerRadius="40dp"
+                                        app:cardUseCompatPadding="true"
+                                        app:cardBackgroundColor="#F5F5F5"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/recycler_manage_services"
+                                        app:layout_constraintTop_toTopOf="parent">
 
-                                        <androidx.appcompat.widget.AppCompatImageView
-                                            android:id="@+id/kaichi"
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginHorizontal="15dp"
-                                            android:layout_marginTop="10dp"
-                                            android:adjustViewBounds="true"
-                                            android:background="@drawable/oval_recycler"
-                                            android:src="@drawable/add_services"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
+                                            android:layout_height="match_parent"
+                                            android:layout_margin="4dp">
 
 
-                                        <androidx.appcompat.widget.AppCompatTextView
-                                            android:id="@+id/kaichi_text"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="7dp"
-                                            android:layout_marginBottom="8dp"
-                                            android:fontFamily="@font/poppins"
-                                            android:text="@string/add_services"
-                                            android:textColor="#296064"
-                                            android:textSize="12sp"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            android:textAlignment="center"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toBottomOf="@+id/kaichi" />
+                                            <androidx.appcompat.widget.AppCompatImageView
+                                                android:id="@+id/kaichi"
+                                                android:layout_width="45dp"
+                                                android:layout_height="45dp"
+                                                android:layout_marginTop="18dp"
+                                                android:adjustViewBounds="true"
+                                                android:scaleType="fitCenter"
+                                                android:src="@drawable/add_services"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"/>
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                            <androidx.appcompat.widget.AppCompatTextView
+                                                android:id="@+id/kaichi_text"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="10dp"
+                                                android:text="@string/add_service"
+                                                android:textAlignment="center"
+                                                android:textColor="#296064"
+                                                android:textSize="10dp"
+                                                app:fontFamily="@font/poppins_medium"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintHorizontal_bias="0.615"
+                                                app:layout_constraintStart_toStartOf="@+id/kaichi"
+                                                app:layout_constraintTop_toBottomOf="@+id/kaichi"
+                                                app:layout_constraintVertical_bias="0.0" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                                </androidx.cardview.widget.CardView>
+                                    </androidx.cardview.widget.CardView>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

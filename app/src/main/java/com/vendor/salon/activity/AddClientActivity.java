@@ -1,23 +1,29 @@
 package com.vendor.salon.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.JsonParser;
 import com.vendor.salon.R;
 import com.vendor.salon.adapters.AddServicesCategorySpinnerAdapter;
 import com.vendor.salon.adapters.AddServicesServiceSpinnerAdapter;
@@ -27,21 +33,18 @@ import com.vendor.salon.data_Class.addclient.AddClientActivityResponse;
 import com.vendor.salon.data_Class.categories.CategoriesItem;
 import com.vendor.salon.data_Class.categories.CategoriesResponse;
 import com.vendor.salon.data_Class.category_services.CategoryServicesResponse;
+import com.vendor.salon.data_Class.getStaff.DataItem;
 import com.vendor.salon.data_Class.getStaff.GetStaffResponse;
 import com.vendor.salon.databinding.ActivityAddClientBinding;
 import com.vendor.salon.model.ClientSelectedListModel;
-import com.vendor.salon.model.SelectedServicesListModel;
 import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +52,7 @@ import retrofit2.Response;
 
 public class AddClientActivity extends AppCompatActivity {
 
-    public static String selected_specialists_id = "-1";
+    public static String selected_specialists_id = "";
     ActivityAddClientBinding addClientBinding;
     boolean isNoClicked = true;
     private MaterialAlertDialogBuilder confirmDataLossDialogBox;
@@ -57,13 +60,16 @@ public class AddClientActivity extends AppCompatActivity {
     boolean serviceSelectionHided = true;
     int selected_category_position = 0;
     int selected_services_position = 0;
-     public static List<ClientSelectedListModel> selectedServiceslists = new ArrayList<>();
+    public static List<ClientSelectedListModel> selectedServiceslists = new ArrayList<>();
 
     ArrayList<com.vendor.salon.data_Class.category_services.CategoriesItem> servicesList;
-    ArrayList<CategoriesItem> categoriesList = new ArrayList<>() ;
-    ListClientAddMoreServicesAdapter listClientAddMoreServicesAdapter ;
+    ArrayList<CategoriesItem> categoriesList = new ArrayList<>();
+    ListClientAddMoreServicesAdapter listClientAddMoreServicesAdapter;
     AddServicesCategorySpinnerAdapter category_adapter;
     AddServicesServiceSpinnerAdapter services_adapter;
+    private List<DataItem> staff_List = new ArrayList<>() ;
+    private AssignSpecialistAdapter assignSpecialistAdapter;
+    private final NetworkChangeListener networkChangeListener = new NetworkChangeListener() ;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -72,10 +78,44 @@ public class AddClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         addClientBinding = DataBindingUtil.setContentView(AddClientActivity.this, R.layout.activity_add_client);
 
-        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN );
-        listClientAddMoreServicesAdapter = new ListClientAddMoreServicesAdapter(AddClientActivity.this, selectedServiceslists , selectedGender,  categoriesList );
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        listClientAddMoreServicesAdapter = new ListClientAddMoreServicesAdapter(AddClientActivity.this, selectedServiceslists, selectedGender, categoriesList);
         addClientBinding.selectedServicesList.setAdapter(listClientAddMoreServicesAdapter);
+
+        DataItem anyoneItem = new DataItem();
+        anyoneItem.setName("Anyone");
+        anyoneItem.setDesignation(null);
+        anyoneItem.setId(-1);
+        anyoneItem.setSelected(true);
+        staff_List.add(anyoneItem);
+        assignSpecialistAdapter = new AssignSpecialistAdapter(staff_List);
+        addClientBinding.staffList.setAdapter(assignSpecialistAdapter);
         getSpecialistData();
+        String services_for = getIntent().getStringExtra("services_for");
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                 if ( result.getResultCode() == Activity.RESULT_OK) {
+                     Intent data = result.getData();
+                     int selected_staff_position = Objects.requireNonNull(data).getIntExtra("selected_staff_position" , -1);
+                     if (selected_staff_position != -1 ) {
+                         selected_specialists_id = String.valueOf(staff_List.get(selected_staff_position).getId());
+                         setSelectedStaff(selected_staff_position);
+                     }
+                 }
+            }
+        });
+
+        if (services_for.equals("mens")) {
+            selectedGender = "male";
+            addClientBinding.switchLays.setVisibility(View.GONE);
+        } else if (services_for.equals("womens")) {
+            addClientBinding.switchLays.setVisibility(View.GONE);
+            selectedGender = "female";
+        } else {
+            addClientBinding.switchLays.setVisibility(View.VISIBLE);
+        }
 
         addClientBinding.switchRoomAvailability.setOnCheckedChangeListener((compoundButton, b) -> {
             if (!isNoClicked) {
@@ -142,6 +182,7 @@ public class AddClientActivity extends AppCompatActivity {
         getCategoryData();
 
         addClientBinding.btnAddMoreServices.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
                 addClientBinding.serviceSelectionTopsLay.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -173,8 +214,8 @@ public class AddClientActivity extends AppCompatActivity {
                         addClientBinding.servicesSpinner.requestFocus();
                     } else {
                         addClientBinding.addClientSelectionLays.setVisibility(View.GONE);
-                        selectedServiceslists.add(new ClientSelectedListModel(selected_category_position, selected_services_position ,servicesList));
-                        listClientAddMoreServicesAdapter.refreshLists(selectedServiceslists );
+                        selectedServiceslists.add(new ClientSelectedListModel(selected_category_position, selected_services_position, servicesList));
+                        listClientAddMoreServicesAdapter.refreshLists(selectedServiceslists);
                         listClientAddMoreServicesAdapter.notifyDataSetChanged();
                         addClientBinding.servicesSpinner.setSelection(0);
                         addClientBinding.categorySpinner.setSelection(0);
@@ -188,10 +229,17 @@ public class AddClientActivity extends AppCompatActivity {
 
         addClientBinding.btnBack.setOnClickListener(view -> finish());
 
+        addClientBinding.btnSeeAllSpecialst.setOnClickListener(View -> {
+             Intent intent = new Intent(AddClientActivity.this ,  Staff.class);
+             intent.putExtra("use_type" , "add_client");
+             launcher.launch(intent );
+
+        });
+
         addClientBinding.btnApply.setOnClickListener(view -> {
 //                Toast.makeText(AddClientActivity.this, " APi is not prepared. ", Toast.LENGTH_SHORT).show();
-            String name = addClientBinding.clientName.getText().toString();
-            String contact = addClientBinding.etcontact.getText().toString();
+            String name = Objects.requireNonNull(addClientBinding.clientName.getText()).toString();
+            String contact = Objects.requireNonNull(addClientBinding.etcontact.getText()).toString();
 //                getCurrentSelectedServicesValue();
             if (name.isEmpty()) {
                 addClientBinding.clientName.setError(" Mandatory Field! ");
@@ -199,97 +247,85 @@ public class AddClientActivity extends AppCompatActivity {
             } else if (contact.length() != 10) {
                 addClientBinding.etcontact.setError(" Mandatory Field! ");
                 addClientBinding.etcontact.requestFocus();
-            } else if ( selectedServiceslists == null || selectedServiceslists.size()< 1 ) {
-                Toast.makeText(this, " Select at least one service ", Toast.LENGTH_SHORT).show();
-            }
-            else if (selected_specialists_id.equals("-1")) {
-                Toast.makeText(this, " Select an specialist for your services ", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                FunctionCall.showProgressDialog(AddClientActivity.this);
-                //        JSONArray jsonArraySelectedList = parseIntoJsonArrays(selectedClientServiceslists);
-                JSONObject finalObjct = new JSONObject();
-                JsonParser jsonParser = new JsonParser();
-                List<String> selectedServicesList = new ArrayList<>();
-                for (int i = 0; i < selectedServiceslists.size(); i++) {
-//                    selectedServicesList[i] = selectedServiceslists.get(i).getSelected_service_id();
-                    selectedServicesList.add(String.valueOf(selectedServiceslists.get(i).getServicesList().get(selectedServiceslists.get(i).getSelected_services_position()).getId()));
+            } else if (selectedServiceslists == null || selectedServiceslists.size() < 1) {
+                if (selected_category_position < 1) {
+                    Toast.makeText(AddClientActivity.this, "Select any Category", Toast.LENGTH_SHORT).show();
+                    addClientBinding.categorySpinner.requestFocus();
+                } else if (selected_services_position < 1) {
+                    Toast.makeText(AddClientActivity.this, "Select any services", Toast.LENGTH_SHORT).show();
+                    addClientBinding.servicesSpinner.requestFocus();
+                } else if (selected_specialists_id.equals("-1")) {
+                    Toast.makeText(this, " Select an specialist for your services ", Toast.LENGTH_SHORT).show();
+                } else {
+//                    addClientBinding.addClientSelectionLays.setVisibility(View.GONE);
+                    Objects.requireNonNull(selectedServiceslists).add(new ClientSelectedListModel(selected_category_position, selected_services_position, servicesList));
+                    addClient(contact);
                 }
-//            try {
-//                finalObjct.put("services", selectedServicesList);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            JsonObject gsonObject = new JsonObject();
-//            gsonObject = (JsonObject) jsonParser.parse(finalObjct.toString());
-                Log.d("convertedjsonArray", " " + selectedServicesList.toString());
-                String token = "Bearer " + loginResponsePref.getInstance(AddClientActivity.this).getToken();
-//                HashMap<String, String > myValmaps = new HashMap<>();
-//                myValmaps.put("country_code" ,"+91" );
-//                myValmaps.put("phone" ,contact );
-//                myValmaps.put("booking_time" , "skd kds k sdj" );
-//                myValmaps.put("specialist_id" , selected_specialists_id );
-//                myValmaps.put("services" , selectedServicesList );
-                Call<AddClientActivityResponse> call = RetrofitClient.getVendorService().AddClient(token, "+91", contact , "skjfdj;sdlmdlsd;l", selected_specialists_id, selectedServicesList);
-                call.enqueue(new Callback<AddClientActivityResponse>() {
-                    @Override
-                    public void onResponse(Call<AddClientActivityResponse> call, Response<AddClientActivityResponse> response) {
-                        FunctionCall.DismissDialog(AddClientActivity.this);
-                        if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(AddClientActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (selected_specialists_id.equals("-1")) {
+                Toast.makeText(this, " Select an specialist for your services ", Toast.LENGTH_SHORT).show();
+            } else {
+                addClient(contact);
 
-                            if (response.body().isStatus()) {
-                                Intent manageServices = new Intent(AddClientActivity.this, Home.class);
-                                startActivity(manageServices);
-                                finish();
-                            }
-                        } else {
-                            if (response.body() != null) {
-                                Toast.makeText(AddClientActivity.this, " " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            Log.d("AddClientActivityhit", "onErors: " + response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<AddClientActivityResponse> call, Throwable t) {
-                        FunctionCall.DismissDialog(AddClientActivity.this);
-                        Log.d("AddClientActivityhit", "onFailure:  " + t.getMessage());
-                    }
-                });
             }
         });
 
     }
 
-
-    private JSONArray parseIntoJsonArrays(List<SelectedServicesListModel> selectedServiceslists) {
-        JSONArray jsonArraySelectedList = new JSONArray();
-        for (int i = 0; i < selectedServiceslists.size(); i++) {
-            SelectedServicesListModel selectedServiceItem = selectedServiceslists.get(i);
-            JSONObject single_serivces_value = new JSONObject();
-            try {
-                single_serivces_value.put("service_id", servicesList.get(selectedServiceItem.getSelected_service_position()).getId());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            jsonArraySelectedList.put(single_serivces_value);
-        }
-
-
-        return jsonArraySelectedList;
+    private void setSelectedStaff(int selected_staff_position) {
+        assignSpecialistAdapter.setSelectedItem ( selected_staff_position);
     }
+
+    private void addClient(String contact) {
+
+        FunctionCall.showProgressDialog(AddClientActivity.this);
+        //        JSONArray jsonArraySelectedList = parseIntoJsonArrays(selectedClientServiceslists);
+        List<String> selectedServicesList = new ArrayList<>();
+        for (int i = 0; i < selectedServiceslists.size(); i++) {
+//                    selectedServicesList[i] = selectedServiceslists.get(i).getSelected_service_id();
+            selectedServicesList.add(String.valueOf(selectedServiceslists.get(i).getServicesList().get(selectedServiceslists.get(i).getSelected_services_position()).getId()));
+        }
+        Log.d("convertedjsonArray", " " + selectedServicesList);
+        String token = "Bearer " + loginResponsePref.getInstance(AddClientActivity.this).getToken();
+        Call<AddClientActivityResponse> call = RetrofitClient.getVendorService().AddClient(token, "+91", contact, "skjfdj;sdlmdlsd;l", selected_specialists_id, selectedServicesList);
+        call.enqueue(new Callback<AddClientActivityResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AddClientActivityResponse> call, @NonNull Response<AddClientActivityResponse> response) {
+                FunctionCall.DismissDialog(AddClientActivity.this);
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(AddClientActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    if (response.body().isStatus()) {
+                        Intent manageServices = new Intent(AddClientActivity.this, Home.class);
+                        startActivity(manageServices);
+                        finish();
+                    }
+                } else {
+                    if (response.body() != null) {
+                        Toast.makeText(AddClientActivity.this, " " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d("AddClientActivityhit", "onErors: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AddClientActivityResponse> call, @NonNull Throwable t) {
+                FunctionCall.DismissDialog(AddClientActivity.this);
+                Log.d("AddClientActivityhit", "onFailure:  " + t.getMessage());
+            }
+        });
+    }
+
 
     private void getServicesData() {
         FunctionCall.showProgressDialog(AddClientActivity.this);
         Call<CategoryServicesResponse> call = RetrofitClient.getVendorService().getAllServicesOfCategory("Bearer " + loginResponsePref.getInstance(getApplicationContext()).getToken(), categoriesList.get(selected_category_position).getId() + "", selectedGender);
         call.enqueue(new Callback<CategoryServicesResponse>() {
             @Override
-            public void onResponse(Call<CategoryServicesResponse> call, Response<CategoryServicesResponse> response) {
+            public void onResponse(@NonNull Call<CategoryServicesResponse> call, @NonNull Response<CategoryServicesResponse> response) {
                 FunctionCall.DismissDialog(AddClientActivity.this);
                 if (response.isSuccessful() && response.body() != null) {
                     servicesList.addAll(response.body().getCategories());
-                    listClientAddMoreServicesAdapter = new ListClientAddMoreServicesAdapter(AddClientActivity.this, selectedServiceslists, selectedGender, categoriesList );
+                    listClientAddMoreServicesAdapter = new ListClientAddMoreServicesAdapter(AddClientActivity.this, selectedServiceslists, selectedGender, categoriesList);
                     addClientBinding.selectedServicesList.setAdapter(listClientAddMoreServicesAdapter);
 
                 } else {
@@ -303,7 +339,7 @@ public class AddClientActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CategoryServicesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<CategoryServicesResponse> call, @NonNull Throwable t) {
                 FunctionCall.DismissDialog(AddClientActivity.this);
                 Log.d("categoryserviceshit", "onFailure: " + t.getMessage());
             }
@@ -359,7 +395,7 @@ public class AddClientActivity extends AppCompatActivity {
         Call<CategoriesResponse> call = RetrofitClient.getVendorService().getCategories("Bearer " + loginResponsePref.getInstance(getApplicationContext()).getToken(), selectedGender);
         call.enqueue(new Callback<CategoriesResponse>() {
             @Override
-            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
+            public void onResponse(@NonNull Call<CategoriesResponse> call, @NonNull Response<CategoriesResponse> response) {
                 FunctionCall.DismissDialog(getApplicationContext());
                 if (response.isSuccessful() && response.body() != null) {
                     categoriesList.addAll(response.body().getCategories());
@@ -372,7 +408,7 @@ public class AddClientActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<CategoriesResponse> call, @NonNull Throwable t) {
                 FunctionCall.DismissDialog(AddClientActivity.this);
                 Log.d("categorieshit", "onFailure: is - " + t.getMessage());
             }
@@ -423,17 +459,20 @@ public class AddClientActivity extends AppCompatActivity {
 
     private void getSpecialistData() {
         String token = "Bearer " + loginResponsePref.getInstance(AddClientActivity.this).getToken();
-        Call<GetStaffResponse> call = RetrofitClient.getVendorService().getAllStaffList(token , "" );
+        Call<GetStaffResponse> call = RetrofitClient.getVendorService().getAllStaffList(token, "");
         call.enqueue(new Callback<GetStaffResponse>() {
             @Override
-            public void onResponse(Call<GetStaffResponse> call, Response<GetStaffResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
-                    setSpecialistDatas(response.body() );
+            public void onResponse(@NonNull Call<GetStaffResponse> call, @NonNull Response<GetStaffResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus() && response.body().getData() != null && response.body().getData().size() >0 ) {
+                    addClientBinding.showNoDataText.setVisibility(View.GONE);
+                    setSpecialistDatas(response.body());
+                } else {
+                     addClientBinding.showNoDataText.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onFailure(Call<GetStaffResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<GetStaffResponse> call, @NonNull Throwable t) {
                 Log.d("getstaffhit", "onFailure: " + t.getMessage());
             }
         });
@@ -441,10 +480,42 @@ public class AddClientActivity extends AppCompatActivity {
 
 
     private void setSpecialistDatas(GetStaffResponse staffData) {
-        final AssignSpecialistAdapter assignSpecialistAdapter = new AssignSpecialistAdapter(staffData.getData());
-        addClientBinding.staffList.setAdapter(assignSpecialistAdapter);
 
+        staff_List.clear();
+        DataItem anyoneItem = new DataItem();
+        anyoneItem.setName("Anyone");
+        anyoneItem.setDesignation(null);
+        anyoneItem.setId(-1);
+        anyoneItem.setSelected(true);
+        staff_List.add(anyoneItem);
+        staff_List.addAll(staffData.getData());
+        assignSpecialistAdapter.refreshLists(staff_List);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        serviceSelectionHided = false;
+        selectedServiceslists.clear();
     }
 
 
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
 }

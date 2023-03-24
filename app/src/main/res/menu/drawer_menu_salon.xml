@@ -26,9 +26,9 @@
         android:title="Salon Time"/>
 
 
-    <item android:id="@+id/Cover_Range"
-        android:icon="@drawable/cover_range"
-        android:title="Cover Range"/>
+<!--    <item android:id="@+id/Cover_Range"-->
+<!--        android:icon="@drawable/cover_range"-->
+<!--        android:title="Cover Range"/>-->
 
     <item android:id="@+id/Inventory"
         android:icon="@drawable/inventory"

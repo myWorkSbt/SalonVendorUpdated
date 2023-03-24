@@ -1,5 +1,7 @@
 package com.vendor.salon.fragment;
 
+import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
+
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vendor.salon.R;
@@ -47,16 +51,21 @@ public class SaleFragment extends Fragment {
     SalesDataAdapter dataAdapter;
     BottomSheetDialog salesFiltersSheet;
     FragmentManager supportFragmentManager;
+    private int currentPage = 0 ;
+    private boolean isLastPage = false ;
     FragmentSaleBinding binding;
     ActivityHomeBinding homeBinding;
     private String start_date = "";
     private String end_date = "";
+    private boolean isLoading = false ;
 
     public SaleFragment(ActivityHomeBinding homeBinding, FragmentManager supportFragmentManager) {
         this.homeBinding = homeBinding;
         this.supportFragmentManager = supportFragmentManager;
     }
 
+    public SaleFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +87,10 @@ public class SaleFragment extends Fragment {
         end_date_lays = salesFiltersSheet.findViewById(R.id.tv_to_date);
         btn_to_date = salesFiltersSheet.findViewById(R.id.to_date_lay);
 
+         binding.swipeRefreshLayout.setOnRefreshListener(()-> {
+              getSaleData();
+              binding.swipeRefreshLayout.setRefreshing(false );
+         });
 //            view.findViewById<CardView>(R.id.from_lays)!!.setOnClickListener { View ->
 //                run {
 //                    setCalenderDates(start_date_lays)
@@ -87,6 +100,28 @@ public class SaleFragment extends Fragment {
             setCalenderDates(start_date_lays);
         });
 
+        binding.salesListsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        isLoading = true;
+                        currentPage++;
+
+                        getSaleData();
+
+                    }
+                }
+            }
+        });
 
         btn_to_date.setOnClickListener(View -> {
             this.setCalenderDates(end_date_lays);
@@ -127,10 +162,6 @@ public class SaleFragment extends Fragment {
             end_date_lays.setText(R.string.ddmmyyyy);
         });
 
-        binding.btnBack.setOnClickListener(View -> {
-            homeBinding.bottomNegivation.getMenu().getItem(0).setChecked(true);
-            this.supportFragmentManager.beginTransaction().replace(R.id.frag_containers, new HomeFragment(homeBinding )).commit();
-        });
 
         dataAdapter = new SalesDataAdapter(SaleFragment.this.getContext(), new ArrayList<Data>());
         binding.salesListsRecycler.setAdapter(dataAdapter);
@@ -163,14 +194,21 @@ public class SaleFragment extends Fragment {
         String token = loginResponsePref.getInstance(requireContext()).getToken();
 
         Call<SalesResponse> call = RetrofitClient.getVendorService().salesData(
-                "Bearer " + token, start_date, end_date
+                "Bearer " + token, start_date,
+                end_date,
+                currentPage
         );
         call.enqueue(new Callback<SalesResponse>() {
             @Override
             public void onResponse(Call<SalesResponse> call, Response<SalesResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
                     FunctionCall.DismissDialog(getActivity());
-                    dataAdapter.refreshsaleList(response.body().getData());
+                    if ( currentPage == 0 ) {
+                        dataAdapter.refreshsaleList(response.body().getData());
+                    }
+                    else {
+                        dataAdapter.addItems (response.body().getData());
+                    }
                     dataAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getActivity(), "" + Objects.requireNonNull(response.body()).getMessage(), Toast.LENGTH_SHORT).show();

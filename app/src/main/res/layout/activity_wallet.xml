@@ -31,8 +31,7 @@
             android:paddingVertical="15dp"
             android:text="@string/mywallet"
             android:textColor="@color/black"
-            android:textSize="23sp"
-            android:textStyle="bold"
+            android:textSize="21sp"
             app:layout_constraintStart_toEndOf="@id/btn_back"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +57,6 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@color/black"
                     android:textSize="21sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/wallet_balance_img"
                     app:layout_constraintHorizontal_weight="1"
@@ -69,7 +67,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/wallet_balance_img"
                     android:layout_width="wrap_content"
-                    android:layout_height="117dp"
+                    android:layout_height="97dp"
                     android:layout_marginEnd="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/wallet_statuss"
@@ -125,6 +123,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/et_transfer_amount"
         android:textSize="17sp"
+        android:inputType="number"
         android:padding="15dp"
         android:hint="enter your amount"
         android:background="@drawable/rectangle"

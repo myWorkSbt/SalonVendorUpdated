@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vendor.salon.R;
@@ -22,11 +21,13 @@ public class Manage_service_recyclerAdapter extends RecyclerView.Adapter<Manage_
 
     Context context;
     String selectedGender;
+    private  String services_for ;
     List<DataItem> categoriesItemList;
-    public Manage_service_recyclerAdapter(Context context, List<DataItem> list, String gender) {
+    public Manage_service_recyclerAdapter(Context context, List<DataItem> list, String gender, String services_for) {
         this.context = context;
         this.categoriesItemList = list;
         this.selectedGender = gender ;
+        this.services_for = services_for ;
     }
 
 
@@ -54,6 +55,7 @@ public class Manage_service_recyclerAdapter extends RecyclerView.Adapter<Manage_
                 intents.putExtra("id", categoriesItem.getId());
                 intents.putExtra( "names" , categoriesItem.getName() ) ;
                 intents.putExtra("gender", selectedGender );
+                intents.putExtra("services_for" , services_for );
                       context.startActivity(intents);
             }
         });
@@ -64,6 +66,11 @@ public class Manage_service_recyclerAdapter extends RecyclerView.Adapter<Manage_
         return categoriesItemList.size();
     }
 
+    public void refreshList(List<DataItem> categories) {
+        this.categoriesItemList = categories ;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemManageServicesRecyclerViewBinding itemManageServicesRecyclerViewBinding;
 
@@ -72,4 +79,15 @@ public class Manage_service_recyclerAdapter extends RecyclerView.Adapter<Manage_
             this.itemManageServicesRecyclerViewBinding = itemManageServicesRecyclerViewBinding;
         }
     }
+
+
+    public void addItems(List<DataItem> data) {
+        categoriesItemList.addAll(data);
+        notifyDataSetChanged();
+    }
+
+
+
+
+
 }

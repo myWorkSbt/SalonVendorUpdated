@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -11,11 +12,11 @@
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="97dp"
+            android:layout_width="107dp"
             android:id="@+id/services_item_lays"
             android:layout_height="wrap_content"
-            android:layout_margin="9dp"
             app:cardCornerRadius="13dp"
+            app:cardUseCompatPadding="true"
             app:cardElevation="7dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,13 +31,13 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile_card"
-                    android:layout_width="89dp"
-                    android:background="@drawable/cutted_corner_box_small"
-                    android:layout_height="57dp"
+                    android:layout_width="95dp"
+                    android:layout_height="59dp"
                     android:layout_margin="5dp"
+                    android:background="@drawable/cutted_corner_box_small"
                     app:cardCornerRadius="13dp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
 
@@ -44,6 +45,7 @@
                         android:id="@+id/image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginHorizontal="3dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/no_image_rectangle" />
 

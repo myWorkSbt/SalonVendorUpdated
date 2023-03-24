@@ -295,6 +295,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="@id/add_image_lay"
                                     tools:ignore="SpeakableTextPresentCheck"
+                                    app:layout_constraintEnd_toEndOf="parent"
                                     tools:listitem="@layout/item_image_banner" />
 
 
@@ -321,21 +322,6 @@
 
                         </ScrollView>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/add_more_salon_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/add_more_background"
-                            android:drawableStart="@drawable/plus"
-                            android:drawablePadding="5dp"
-                            android:padding="10dp"
-                            android:text="Add More"
-                            android:textColor="#656565"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/salon_details_recycler_lays" />
-
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/tv_salon_name_lays"
                             android:layout_width="match_parent"
@@ -343,9 +329,9 @@
                             android:layout_marginTop="22dp"
                             android:orientation="horizontal"
                             android:weightSum="3"
-                            app:layout_constraintEnd_toEndOf="@id/add_more_salon_details"
+                            app:layout_constraintEnd_toEndOf="@id/salon_details_recycler_lays"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/add_more_salon_details">
+                            app:layout_constraintTop_toBottomOf="@+id/salon_details_recycler_lays">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_salon_name_heading"
@@ -545,7 +531,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/upload"
                             app:layout_constraintBottom_toBottomOf="@+id/TvUpload_Id_Proof_heading"
-                            app:layout_constraintEnd_toEndOf="@+id/add_more_salon_details"
+                            app:layout_constraintEnd_toEndOf="@+id/Upload_Id_Proof_underline"
                             app:layout_constraintTop_toBottomOf="@+id/Upload_Id_Proof_underline"
                             app:layout_constraintTop_toTopOf="@+id/TvUpload_Id_Proof_heading" />
 

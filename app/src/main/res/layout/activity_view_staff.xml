@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_back"
                     android:text="Staff"
-                    android:textSize="23sp"
+                    android:textSize="21sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -40,13 +40,13 @@
                     />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="3dp"
-                    android:layout_height="13dp"
+                    android:layout_width="7dp"
+                    android:layout_height="17dp"
                     android:layout_marginVertical="3dp"
                     android:src="@drawable/dot_menu"
                     android:id="@+id/btn_menu"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="21dp"
+                    android:layout_marginEnd="27dp"
                     android:scaleType="fitXY"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +90,7 @@
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/no_image"
+                                android:src="@drawable/no_image_rectangle"
                                 android:scaleType="fitXY"
                                 android:id="@+id/staff_image"
                                 />
@@ -404,15 +404,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="#D63226"
                     android:id="@+id/show_no_data_text"
-                    android:textSize="23dp"
+                    android:textSize="23sp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:layout_marginTop="23dp"
+                    android:layout_marginTop="47dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/date_label"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="No Record Available "
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_gravity="center"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>

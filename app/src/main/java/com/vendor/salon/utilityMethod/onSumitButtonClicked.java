@@ -5,5 +5,5 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 public interface onSumitButtonClicked {
     public  void onBtnClicked (AppCompatButton context , int position );
-    public  void onImageViewClick(int position );
+    public  void onImageViewClick(int position, AppCompatImageView context);
 }

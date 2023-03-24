@@ -4,21 +4,19 @@ package com.vendor.salon.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonObject;
@@ -33,10 +31,10 @@ import com.vendor.salon.data_Class.categories.CategoriesItem;
 import com.vendor.salon.data_Class.categories.CategoriesResponse;
 import com.vendor.salon.data_Class.category_services.CategoryServicesResponse;
 import com.vendor.salon.databinding.ActivityAddServicesBinding;
-import com.vendor.salon.databinding.RowAddMoreServicesBinding;
 import com.vendor.salon.model.SelectedServicesListModel;
 import com.vendor.salon.networking.RetrofitClient;
 import com.vendor.salon.utilityMethod.FunctionCall;
+import com.vendor.salon.utilityMethod.NetworkChangeListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
 import org.json.JSONArray;
@@ -52,21 +50,22 @@ import retrofit2.Response;
 
 public class AddServices extends AppCompatActivity {
 
-    private final String[] serviceLocationLists = new String[]{"Both", "At DoorStep"};
+    private final String[] serviceLocationLists = new String[]{"At Salon", "At DoorStep"};
     List<SelectedServicesListModel> selectedServiceslists = new ArrayList<>();
     String selectedGender = "male";
     int selected_services_position = 0;
     int selected_category_position = 0;
     List<com.vendor.salon.data_Class.category_services.CategoriesItem> servicesList;
     List<CategoriesItem> categoriesList = new ArrayList<>();
-    AddServicesServiceSpinnerAdapter services_adapter =null ;
+    AddServicesServiceSpinnerAdapter services_adapter = null;
     MaterialAlertDialogBuilder confirmDataLossDialogBox;
     boolean isNoClicked = false;
     int selectedServiceLocationPosition = 0;
     private ActivityAddServicesBinding addServicesBinding;
     private boolean serviceSelectionHided = false;
-    AddServicesCategorySpinnerAdapter category_adapter = null ;
+    AddServicesCategorySpinnerAdapter category_adapter = null;
     ListAddMoreServicesAdapter listAddMoreServicesAdapter = null;
+    private final NetworkChangeListener networkChangeListener = new NetworkChangeListener() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,74 +74,78 @@ public class AddServices extends AppCompatActivity {
         addServicesBinding = ActivityAddServicesBinding.inflate(getLayoutInflater());
         setContentView(addServicesBinding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        String services_for = getIntent().getStringExtra("services_for");
 
+         if (services_for.equals("mens")) {
+             selectedGender = "male";
+             addServicesBinding.switchLays.setVisibility(View.GONE);
+         }
+         else if (services_for.equals("womens")){
+             addServicesBinding.switchLays.setVisibility(View.GONE);
+             selectedGender = "female";
+         }
+         else {
+             addServicesBinding.switchLays.setVisibility(View.VISIBLE );
+         }
+        addServicesBinding.switchRoomAvailability.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (!isNoClicked) {
 
-        addServicesBinding.switchRoomAvailability.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (!isNoClicked) {
-
-                    if (selectedServiceslists != null && selectedServiceslists.size() > 0) {
-                        confirmDataLossDialogBox = new MaterialAlertDialogBuilder(AddServices.this , R.style.warning_dialog_style);
-                        confirmDataLossDialogBox.setTitle(" Are you sure! ");
-                        confirmDataLossDialogBox.setMessage(" Your selected services list will be lost since  you have not added your selected services .");
-                        confirmDataLossDialogBox.setCancelable(false);
-                        confirmDataLossDialogBox.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (!b) {
-                                    addServicesBinding.MaleTv.setVisibility(View.GONE);
-                                    addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.female_thumb));
-                                    selectedGender = "female";
-                                    addServicesBinding.femaleTv.setVisibility(View.VISIBLE);
-                                } else {
-                                    addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.custom_thumb));
-                                    addServicesBinding.femaleTv.setVisibility(View.GONE);
-                                    selectedGender = "male";
-                                    addServicesBinding.MaleTv.setVisibility(View.VISIBLE);
-                                    addServicesBinding.MaleTv.setTextColor(Color.BLACK);
-                                }
-                                selectedServiceslists = new ArrayList<>();
-                                getCategoryData();
-                                listAddMoreServicesAdapter = new ListAddMoreServicesAdapter(AddServices.this, servicesList, serviceLocationLists, selectedServiceslists);
-                                addServicesBinding.selectedServicesList.setAdapter(listAddMoreServicesAdapter);
-                                listAddMoreServicesAdapter.notifyDataSetChanged();
-                                 addServicesBinding.selectServicesLays.setVisibility(View.VISIBLE);
-                                setServicesData();
+                if (selectedServiceslists != null && selectedServiceslists.size() > 0) {
+                    confirmDataLossDialogBox = new MaterialAlertDialogBuilder(AddServices.this, R.style.warning_dialog_style);
+                    confirmDataLossDialogBox.setTitle(" Are you sure! ");
+                    confirmDataLossDialogBox.setMessage(" Your selected services list will be lost since  you have not added your selected services .");
+                    confirmDataLossDialogBox.setCancelable(false);
+                    confirmDataLossDialogBox.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (!b) {
+                                addServicesBinding.MaleTv.setVisibility(View.GONE);
+                                addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.female_thumb));
+                                selectedGender = "female";
+                                addServicesBinding.femaleTv.setVisibility(View.VISIBLE);
+                            } else {
+                                addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.custom_thumb));
+                                addServicesBinding.femaleTv.setVisibility(View.GONE);
+                                selectedGender = "male";
+                                addServicesBinding.MaleTv.setVisibility(View.VISIBLE);
+                                addServicesBinding.MaleTv.setTextColor(Color.BLACK);
                             }
-                        });
-                        confirmDataLossDialogBox.setNegativeButton("No ", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(AddServices.this, " Click on \"Apply\" Button to add selected services. ", Toast.LENGTH_SHORT).show();
-                                        isNoClicked = true;
-                                        if (!addServicesBinding.switchRoomAvailability.isChecked()) {
-                                            addServicesBinding.switchRoomAvailability.setChecked(true);
-                                        } else {
-                                            addServicesBinding.switchRoomAvailability.setChecked(false);
-                                        }
-                                    }
-                                })
-                                .show();
-
-                    } else {
-                        if (!b) {
-                            addServicesBinding.MaleTv.setVisibility(View.GONE);
-                            addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.female_thumb));
-                            selectedGender = "female";
-                            addServicesBinding.femaleTv.setVisibility(View.VISIBLE);
-                        } else {
-                            addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.custom_thumb));
-                            addServicesBinding.femaleTv.setVisibility(View.GONE);
-                            selectedGender = "male";
-                            addServicesBinding.MaleTv.setVisibility(View.VISIBLE);
-                            addServicesBinding.MaleTv.setTextColor(Color.BLACK);
+                            selectedServiceslists = new ArrayList<>();
+                            getCategoryData();
+                            listAddMoreServicesAdapter = new ListAddMoreServicesAdapter(AddServices.this, servicesList, serviceLocationLists, selectedServiceslists);
+                            addServicesBinding.selectedServicesList.setAdapter(listAddMoreServicesAdapter);
+                            listAddMoreServicesAdapter.notifyDataSetChanged();
+                            addServicesBinding.selectServicesLays.setVisibility(View.VISIBLE);
+                            setServicesData();
                         }
-                    }
+                    });
+                    confirmDataLossDialogBox.setNegativeButton("No ", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(AddServices.this, " Click on \"Apply\" Button to add selected services. ", Toast.LENGTH_SHORT).show();
+                                    isNoClicked = true;
+                                    addServicesBinding.switchRoomAvailability.setChecked(!addServicesBinding.switchRoomAvailability.isChecked());
+                                }
+                            })
+                            .show();
+
                 } else {
-                    isNoClicked = false;
+                    if (!b) {
+                        addServicesBinding.MaleTv.setVisibility(View.GONE);
+                        addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.female_thumb));
+                        selectedGender = "female";
+                        addServicesBinding.femaleTv.setVisibility(View.VISIBLE);
+                    } else {
+                        addServicesBinding.switchRoomAvailability.setThumbDrawable(getDrawable(R.drawable.custom_thumb));
+                        addServicesBinding.femaleTv.setVisibility(View.GONE);
+                        selectedGender = "male";
+                        addServicesBinding.MaleTv.setVisibility(View.VISIBLE);
+                        addServicesBinding.MaleTv.setTextColor(Color.BLACK);
+                    }
                 }
+            } else {
+                isNoClicked = false;
             }
         });
 
@@ -163,6 +166,7 @@ public class AddServices extends AppCompatActivity {
 
         addServicesBinding.serviceLocationSpinner.setAdapter(serviceLocationAdapter);
         addServicesBinding.btnAddMoreServices.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
                 addServicesBinding.serviceSelectionTopsLay.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -235,65 +239,90 @@ public class AddServices extends AppCompatActivity {
                             serviceSelectionHided = true;
 
                         }
-                        addServicesBinding.serviceSelectionTopsLay.scrollTo(0 , addServicesBinding.serviceSelectionTopsLay.getBottom() );
+                        addServicesBinding.serviceSelectionTopsLay.scrollTo(0, addServicesBinding.serviceSelectionTopsLay.getBottom());
                     }
                 }
             }
         });
 
 
-        addServicesBinding.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        addServicesBinding.btnBack.setOnClickListener(view -> finish());
 
-        addServicesBinding.btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        addServicesBinding.btnApply.setOnClickListener(view -> {
 //                Toast.makeText(AddServices.this, " APi is not prepared. ", Toast.LENGTH_SHORT).show();
 //                getCurrentSelectedServicesValue();
-                FunctionCall.showProgressDialog(AddServices.this);
-                JSONArray jsonArraySelectedList = parseIntoJsonArrays(selectedServiceslists);
-                JSONObject finalObjct = new JSONObject();
-                JsonParser jsonParser = new JsonParser();
-                try {
-                    finalObjct = finalObjct.put("service_data", jsonArraySelectedList);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JsonObject gsonObject = new JsonObject();
-                gsonObject = (JsonObject) jsonParser .parse(finalObjct.toString());
-                Log.d("convertedjsonArray", " " + gsonObject.toString());
-                String token = "Bearer " + loginResponsePref.getInstance(AddServices.this).getToken();
-                Call<AddServicesResponse> call = RetrofitClient.getVendorService().addServices(token, gsonObject );
-                call.enqueue(new Callback<AddServicesResponse>() {
-                    @Override
-                    public void onResponse(Call<AddServicesResponse> call, Response<AddServicesResponse> response) {
-                        FunctionCall.DismissDialog(AddServices.this) ;
-                        if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(AddServices.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
-                            if (response.body().isStatus()) {
-                                Intent manageServices = new Intent(AddServices.this, ManageServices.class);
-                                startActivity(manageServices);
-                                finish();
-                            }
-                        } else {
-                            if (response.body() != null) {
-                                Toast.makeText(AddServices.this, " " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            Log.d("addserviceshit", "onErors: " + response.body());
+            if (selectedServiceslists.size() == 0) {
+                String mrp_price = addServicesBinding.mrpPrice.getText() + "";
+                String offer_price = addServicesBinding.etOfferPrice.getText() + "";
+                if (selected_category_position < 1) {
+                    Toast.makeText(AddServices.this, "Select any Category", Toast.LENGTH_SHORT).show();
+                    addServicesBinding.categorySpinner.requestFocus();
+                } else if (selected_services_position < 1) {
+                    Toast.makeText(AddServices.this, "Select any services", Toast.LENGTH_SHORT).show();
+                    addServicesBinding.servicesSpinner.requestFocus();
+                } else if (mrp_price.isEmpty()) {
+                    addServicesBinding.servicesSpinner.setBackgroundColor(Color.WHITE);
+                    addServicesBinding.mrpPrice.setError("Mandatory field ");
+                    addServicesBinding.mrpPrice.requestFocus();
+                } else {
+                    if (!offer_price.isEmpty()) {
+                        if (Float.parseFloat(offer_price) > 0f && (Float.parseFloat(offer_price) > Float.parseFloat(mrp_price))) {
+                            addServicesBinding.etOfferPrice.setError(" Offer price should be less than Mrp . ");
+                            addServicesBinding.etOfferPrice.requestFocus();
                         }
+//                    else if (selectedServiceLocationPosition == 0) {
+//                        Toast.makeText(AddServices.this, "Please Select service Location . ", Toast.LENGTH_SHORT).show();
+//                        addServicesBinding.serviceLocationSpinner.requestFocus();
+//                    }
+                        else {
+                            selectedServiceslists.add(new SelectedServicesListModel(mrp_price, offer_price, categoriesList.get(selected_category_position).getId() + "", selectedServiceLocationPosition == 1, selected_services_position, selectedGender));
+                        }
+                    } else {
+                        selectedServiceslists.add(new SelectedServicesListModel(mrp_price, offer_price, categoriesList.get(selected_category_position).getId() + "", selectedServiceLocationPosition == 1, selected_services_position, selectedGender));
+
                     }
 
-                    @Override
-                    public void onFailure(Call<AddServicesResponse> call, Throwable t) {
-                        FunctionCall.DismissDialog(AddServices.this) ;
-                        Log.d("addserviceshit", "onFailure:  " + t.getMessage());
+                    FunctionCall.showProgressDialog(AddServices.this);
+                    JSONArray jsonArraySelectedList = parseIntoJsonArrays(selectedServiceslists);
+                    JSONObject finalObjct = new JSONObject();
+                    JsonParser jsonParser = new JsonParser();
+                    try {
+                        finalObjct = finalObjct.put("service_data", jsonArraySelectedList);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+                    JsonObject gsonObject;
+                    gsonObject = (JsonObject) jsonParser.parse(finalObjct.toString());
+                    Log.d("convertedjsonArray", " " + gsonObject.toString());
+                    String token = "Bearer " + loginResponsePref.getInstance(AddServices.this).getToken();
+                    Call<AddServicesResponse> call = RetrofitClient.getVendorService().addServices(token, gsonObject);
+                    call.enqueue(new Callback<AddServicesResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<AddServicesResponse> call, @NonNull Response<AddServicesResponse> response) {
+                            FunctionCall.DismissDialog(AddServices.this);
+                            if (response.isSuccessful() && response.body() != null) {
+                                Toast.makeText(AddServices.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                if (response.body().isStatus()) {
+                                    Intent manageServices = new Intent(AddServices.this, ManageServices.class);
+                                    startActivity(manageServices);
+                                    finish();
+                                }
+                            } else {
+                                if (response.body() != null) {
+                                    Toast.makeText(AddServices.this, " " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                                Log.d("addserviceshit", "onErors: " + response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<AddServicesResponse> call, @NonNull Throwable t) {
+                            FunctionCall.DismissDialog(AddServices.this);
+                            Log.d("addserviceshit", "onFailure:  " + t.getMessage());
+                        }
+                    });
+                }
             }
         });
     }
@@ -401,8 +430,8 @@ public class AddServices extends AppCompatActivity {
         Call<CategoryServicesResponse> call = RetrofitClient.getVendorService().getAllServicesOfCategory("Bearer " + loginResponsePref.getInstance(getApplicationContext()).getToken(), categoriesList.get(selected_category_position).getId() + "", selectedGender);
         call.enqueue(new Callback<CategoryServicesResponse>() {
             @Override
-            public void onResponse(Call<CategoryServicesResponse> call, Response<CategoryServicesResponse> response) {
-                FunctionCall.DismissDialog( AddServices.this);
+            public void onResponse(@NonNull Call<CategoryServicesResponse> call, @NonNull Response<CategoryServicesResponse> response) {
+                FunctionCall.DismissDialog(AddServices.this);
                 if (response.isSuccessful() && response.body() != null) {
                     servicesList.addAll(response.body().getCategories());
                 } else {
@@ -414,8 +443,8 @@ public class AddServices extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CategoryServicesResponse> call, Throwable t) {
-                FunctionCall.DismissDialog(AddServices.this) ;
+            public void onFailure(@NonNull Call<CategoryServicesResponse> call, @NonNull Throwable t) {
+                FunctionCall.DismissDialog(AddServices.this);
                 Log.d("categoryserviceshit", "onFailure: " + t.getMessage());
             }
         });
@@ -440,9 +469,6 @@ public class AddServices extends AppCompatActivity {
                         // It returns the clicked item.
                         selected_services_position = position;
 
-//                                 String name = selected_category.getName();
-//                        selected_service_id =
-//                        Toast.makeText(AddServices.this, name + " selected", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -466,11 +492,11 @@ public class AddServices extends AppCompatActivity {
         servicesList.add(serviceDefaultpositionItems);
         setServicesData();
 
-        FunctionCall.showProgressDialog( AddServices.this);
+        FunctionCall.showProgressDialog(AddServices.this);
         Call<CategoriesResponse> call = RetrofitClient.getVendorService().getCategories("Bearer " + loginResponsePref.getInstance(getApplicationContext()).getToken(), selectedGender);
         call.enqueue(new Callback<CategoriesResponse>() {
             @Override
-            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
+            public void onResponse(@NonNull Call<CategoriesResponse> call, @NonNull Response<CategoriesResponse> response) {
                 FunctionCall.DismissDialog(getApplicationContext());
                 if (response.isSuccessful() && response.body() != null) {
                     categoriesList.addAll(response.body().getCategories());
@@ -483,8 +509,8 @@ public class AddServices extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
-                FunctionCall.DismissDialog(AddServices.this) ;
+            public void onFailure(@NonNull Call<CategoriesResponse> call, @NonNull Throwable t) {
+                FunctionCall.DismissDialog(AddServices.this);
                 Log.d("categorieshit", "onFailure: is - " + t.getMessage());
             }
         });
@@ -537,6 +563,20 @@ public class AddServices extends AppCompatActivity {
                     }
                 });
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener , intentFilter );
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 
 

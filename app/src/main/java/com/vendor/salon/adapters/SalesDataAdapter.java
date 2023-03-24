@@ -35,7 +35,7 @@ public class SalesDataAdapter extends RecyclerView.Adapter<SalesDataAdapter.View
     public void onBindViewHolder(@NonNull SalesDataAdapter.ViewHolder holder, int position) {
          Data mySingleSalesData = salesDataLists.get(position);
          if (mySingleSalesData != null ) {
-              holder.saleLayBinding.amountPrice.setText( String.valueOf(mySingleSalesData.getAmount()) );
+              holder.saleLayBinding.amountPrice.setText(String.format("₹-%d", mySingleSalesData.getAmount()));
               int error_start_position = mySingleSalesData.getStartDate().indexOf("T");
           //    holder.saleLayBinding.timeHeading.setText(mySingleSalesData.getStartDate().toString().substring(0, error_start_position ) );
               holder.saleLayBinding.clientNo.setText(String.valueOf(mySingleSalesData.getNoOfClients()) );
@@ -47,6 +47,10 @@ public class SalesDataAdapter extends RecyclerView.Adapter<SalesDataAdapter.View
     @Override
     public int getItemCount() {
         return salesDataLists.size();
+    }
+
+    public void addItems(List<Data> data) {
+        salesDataLists.addAll(data) ;
     }
 
 
