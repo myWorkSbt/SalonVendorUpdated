@@ -234,7 +234,7 @@ public class Home extends AppCompatActivity {
                         AppCompatTextView tv_vendor_name = homeBinding.drawerLayout.findViewById(R.id.vendor_name);
                         if (response.body().getOwnerDetail() != null) {
                             tv_vendor_name.setText(response.body().getOwnerDetail().getName());
-                            Glide.with(((ImageView) homeBinding.drawerLayout.findViewById(R.id.profile_vendor_img)).getContext()).load((response.body().getOwnerDetail().getUserImage())).into((ImageView) homeBinding.drawerLayout.findViewById(R.id.profile_vendor_img));
+                            Glide.with(homeBinding.drawerLayout.findViewById(R.id.profile_vendor_img).getContext()).load((response.body().getOwnerDetail().getUserImage())).into((ImageView) homeBinding.drawerLayout.findViewById(R.id.profile_vendor_img));
                         }
                     }
                 } else {
@@ -312,7 +312,7 @@ public class Home extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        unregisterReceiver(networkChangeListener ); ;
+        unregisterReceiver(networkChangeListener );
         super.onStop();
     }
 }

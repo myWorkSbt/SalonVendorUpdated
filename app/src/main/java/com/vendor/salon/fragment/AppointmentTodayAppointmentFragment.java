@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -121,7 +122,6 @@ public class AppointmentTodayAppointmentFragment extends Fragment {
             public void onResponse(Call<AppointmentsFilterResponse> call, Response<AppointmentsFilterResponse> response) {
 //                FunctionCall.DismissDialog(homeContext);
                 AppointmentFragment.isApiCalled = false ;
-                Log.d("categoriesfilterhit", "onResponse: " + response.body().getAppointments());
                 if (response.isSuccessful() && (response.body() != null) && response.body().isStatus()) {
                     if (currentPage == 0 ) {
                         setAppointmentData(response.body());
@@ -131,6 +131,8 @@ public class AppointmentTodayAppointmentFragment extends Fragment {
                     }
                 }
                 else {
+            
+                    Log.d("categoriesfilterhit", "onResponse: " + response);
                 }
             }
 

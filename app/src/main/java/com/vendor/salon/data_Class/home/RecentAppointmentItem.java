@@ -14,11 +14,11 @@ public class RecentAppointmentItem implements Serializable {
 	@SerializedName("vendor_id")
 	private String vendorId;
 
-	@SerializedName("start_time")
-	private String startTime;
+	@SerializedName("appointment_date")
+	private String appointmentDate;
 
-	@SerializedName("end_time")
-	private String endTime;
+	@SerializedName("slote_time")
+	private Object sloteTime;
 
 	@SerializedName("service_site")
 	private String serviceSite;
@@ -32,20 +32,29 @@ public class RecentAppointmentItem implements Serializable {
 	@SerializedName("transaction_id")
 	private Object transactionId;
 
+	@SerializedName("payment_method")
+	private Object paymentMethod;
+
 	@SerializedName("no_of_people")
-	private String noOfPeople;
+	private Object noOfPeople;
+
+	@SerializedName("booking_time")
+	private String bookingTime;
 
 	@SerializedName("client_gender")
-	private String clientGender;
+	private Object clientGender;
 
 	@SerializedName("status")
 	private String status;
+
+	@SerializedName("doorstep_status")
+	private Object doorstepStatus;
 
 	@SerializedName("specialist")
 	private String specialist;
 
 	@SerializedName("specialist_id")
-	private Object specialistId;
+	private String specialistId;
 
 	@SerializedName("amount")
 	private String amount;
@@ -53,30 +62,23 @@ public class RecentAppointmentItem implements Serializable {
 	@SerializedName("reminder")
 	private String reminder;
 
+	@SerializedName("address_id")
+	private String addressId;
+
+	@SerializedName("reason")
+	private Object reason;
+
+	@SerializedName("start_code")
+	private Object startCode;
+
+	@SerializedName("end_code")
+	private Object endCode;
+
+	@SerializedName("is_deleted")
+	private String isDeleted;
+
 	@SerializedName("created_at")
 	private String createdAt;
-
-	public String getUser_lng() {
-		return user_lng;
-	}
-
-	public void setUser_lng(String user_lng) {
-		this.user_lng = user_lng;
-	}
-
-	public String getUser_lat() {
-		return user_lat;
-	}
-
-	public void setUser_lat(String user_lat) {
-		this.user_lat = user_lat;
-	}
-
-	@SerializedName("user_lng")
-	private String user_lng;
-
-	@SerializedName("user_lat")
-	private String user_lat;
 
 	@SerializedName("updated_at")
 	private String updatedAt;
@@ -91,10 +93,16 @@ public class RecentAppointmentItem implements Serializable {
 	private String userPhone;
 
 	@SerializedName("user_location")
-	private String userLocation;
+	private Object userLocation;
 
 	@SerializedName("distance")
 	private String distance;
+
+	@SerializedName("user_lat")
+	private String userLat;
+
+	@SerializedName("user_lng")
+	private String userLng;
 
 	@SerializedName("user_image")
 	private String userImage;
@@ -123,20 +131,20 @@ public class RecentAppointmentItem implements Serializable {
 		return vendorId;
 	}
 
-	public void setStartTime(String startTime){
-		this.startTime = startTime;
+	public void setAppointmentDate(String appointmentDate){
+		this.appointmentDate = appointmentDate;
 	}
 
-	public String getStartTime(){
-		return startTime;
+	public String getAppointmentDate(){
+		return appointmentDate;
 	}
 
-	public void setEndTime(String endTime){
-		this.endTime = endTime;
+	public void setSloteTime(Object sloteTime){
+		this.sloteTime = sloteTime;
 	}
 
-	public String getEndTime(){
-		return endTime;
+	public Object getSloteTime(){
+		return sloteTime;
 	}
 
 	public void setServiceSite(String serviceSite){
@@ -171,20 +179,36 @@ public class RecentAppointmentItem implements Serializable {
 		return transactionId;
 	}
 
-	public void setNoOfPeople(String noOfPeople){
+	public void setPaymentMethod(Object paymentMethod){
+		this.paymentMethod = paymentMethod;
+	}
+
+	public Object getPaymentMethod(){
+		return paymentMethod;
+	}
+
+	public void setNoOfPeople(Object noOfPeople){
 		this.noOfPeople = noOfPeople;
 	}
 
-	public String getNoOfPeople(){
+	public Object getNoOfPeople(){
 		return noOfPeople;
 	}
 
-	public void setClientGender(String clientGender){
+	public void setBookingTime(String bookingTime){
+		this.bookingTime = bookingTime;
+	}
+
+	public String getBookingTime(){
+		return bookingTime;
+	}
+
+	public void setClientGender(Object clientGender){
 		this.clientGender = clientGender;
 	}
 
 	public String getClientGender(){
-		return clientGender;
+		return (String)clientGender;
 	}
 
 	public void setStatus(String status){
@@ -195,6 +219,14 @@ public class RecentAppointmentItem implements Serializable {
 		return status;
 	}
 
+	public void setDoorstepStatus(Object doorstepStatus){
+		this.doorstepStatus = doorstepStatus;
+	}
+
+	public Object getDoorstepStatus(){
+		return doorstepStatus;
+	}
+
 	public void setSpecialist(String specialist){
 		this.specialist = specialist;
 	}
@@ -203,11 +235,11 @@ public class RecentAppointmentItem implements Serializable {
 		return specialist;
 	}
 
-	public void setSpecialistId(Object specialistId){
+	public void setSpecialistId(String specialistId){
 		this.specialistId = specialistId;
 	}
 
-	public Object getSpecialistId(){
+	public String getSpecialistId(){
 		return specialistId;
 	}
 
@@ -225,6 +257,46 @@ public class RecentAppointmentItem implements Serializable {
 
 	public String getReminder(){
 		return reminder;
+	}
+
+	public void setAddressId(String addressId){
+		this.addressId = addressId;
+	}
+
+	public String getAddressId(){
+		return addressId;
+	}
+
+	public void setReason(Object reason){
+		this.reason = reason;
+	}
+
+	public Object getReason(){
+		return reason;
+	}
+
+	public void setStartCode(Object startCode){
+		this.startCode = startCode;
+	}
+
+	public Object getStartCode(){
+		return startCode;
+	}
+
+	public void setEndCode(Object endCode){
+		this.endCode = endCode;
+	}
+
+	public Object getEndCode(){
+		return endCode;
+	}
+
+	public void setIsDeleted(String isDeleted){
+		this.isDeleted = isDeleted;
+	}
+
+	public String getIsDeleted(){
+		return isDeleted;
 	}
 
 	public void setCreatedAt(String createdAt){
@@ -267,11 +339,11 @@ public class RecentAppointmentItem implements Serializable {
 		return userPhone;
 	}
 
-	public void setUserLocation(String userLocation){
+	public void setUserLocation(Object userLocation){
 		this.userLocation = userLocation;
 	}
 
-	public String getUserLocation(){
+	public Object getUserLocation(){
 		return userLocation;
 	}
 
@@ -281,6 +353,22 @@ public class RecentAppointmentItem implements Serializable {
 
 	public String getDistance(){
 		return distance;
+	}
+
+	public void setUserLat(String userLat){
+		this.userLat = userLat;
+	}
+
+	public String getUserLat(){
+		return userLat;
+	}
+
+	public void setUserLng(String userLng){
+		this.userLng = userLng;
+	}
+
+	public String getUserLng(){
+		return userLng;
 	}
 
 	public void setUserImage(String userImage){

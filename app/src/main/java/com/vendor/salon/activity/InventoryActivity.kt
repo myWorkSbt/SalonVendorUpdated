@@ -19,6 +19,7 @@ import com.vendor.salon.adapters.InventoryOptionsItemRecyclerAdapter
 import com.vendor.salon.adapters.InventoryRecyclerAdapters
 import com.vendor.salon.data_Class.inventoryCategory.InventoryCategoriessResponse
 import com.vendor.salon.data_Class.manage_inventory.DataItem
+import com.vendor.salon.data_Class.manage_inventory.DeleteInventoryResponse
 import com.vendor.salon.data_Class.manage_inventory.ManageInventoryResponse
 import com.vendor.salon.databinding.ActivityInventoryBinding
 import com.vendor.salon.networking.RetrofitClient
@@ -33,7 +34,7 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
     lateinit var listItemRecyclerAdapter: InventoryRecyclerAdapters
     private lateinit var binding: ActivityInventoryBinding
     var networkChangeListener = NetworkChangeListener()
-    private var isApiCalled : Boolean = false
+    private var isApiCalled: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_inventory)
@@ -110,51 +111,48 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
             }
         })
         binding.swipeRefreshLayout.setOnRefreshListener {
-            getInventoryData("")
+            getInventoryData(inventory_Category_Id)
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
-    override fun onItemClick(id: Int, position: Int) {
-        getInventoryData(id.toString())
-    }
 
     private fun getInventoryData(id: String) {
-        if(!isApiCalled) {
+        if (!isApiCalled) {
             isApiCalled = true
-        this.inventory_Category_Id = id
-        FunctionCall.showProgressDialog(this@InventoryActivity)
-        val token: String = loginResponsePref.getInstance(this@InventoryActivity).token
-        val call: Call<ManageInventoryResponse> = RetrofitClient.getVendorService()
-            .getInventories("Bearer " + token, inventory_Category_Id)
-        call.enqueue(object : Callback<ManageInventoryResponse> {
-            override fun onResponse(
-                call: Call<ManageInventoryResponse>,
-                response: Response<ManageInventoryResponse>,
-            ) {
-                FunctionCall.DismissDialog(this@InventoryActivity)
-                isApiCalled = false
-                if (response.isSuccessful && response.body()!!.isStatus) {
-                    if (response.body()!!.data!!.size > 0) {
-                        binding.showNoDataText.visibility = View.GONE
+            this.inventory_Category_Id = id
+            FunctionCall.showProgressDialog(this@InventoryActivity)
+            val token: String = loginResponsePref.getInstance(this@InventoryActivity).token
+            val call: Call<ManageInventoryResponse> = RetrofitClient.getVendorService()
+                .getInventories("Bearer " + token, inventory_Category_Id)
+            call.enqueue(object : Callback<ManageInventoryResponse> {
+                override fun onResponse(
+                    call: Call<ManageInventoryResponse>,
+                    response: Response<ManageInventoryResponse>,
+                ) {
+                    FunctionCall.DismissDialog(this@InventoryActivity)
+                    isApiCalled = false
+                    if (response.isSuccessful && response.body()!!.isStatus) {
+                        if (response.body()!!.data!!.size > 0) {
+                            binding.showNoDataText.visibility = View.GONE
+                        } else {
+                            binding.showNoDataText.visibility = View.VISIBLE
+                        }
+                        listItemRecyclerAdapter.refreshLists(response.body()!!.data)
                     } else {
-                        binding.showNoDataText.visibility = View.VISIBLE
+                        Toast.makeText(this@InventoryActivity,
+                            " " + response.body()?.message,
+                            Toast.LENGTH_SHORT).show()
+                        Log.d("manage_inventory_hit", "onResponse: " + response.body())
                     }
-                    listItemRecyclerAdapter.refreshLists(response.body()!!.data)
-                } else {
-                    Toast.makeText(this@InventoryActivity,
-                        " " + response.body()?.message,
-                        Toast.LENGTH_SHORT).show()
-                    Log.d("manage_inventory_hit", "onResponse: " + response.body())
                 }
-            }
 
-            override fun onFailure(call: Call<ManageInventoryResponse>, t: Throwable) {
-                FunctionCall.DismissDialog(this@InventoryActivity)
-                isApiCalled = false
-                Log.d("manage_inventory_hit", "onFailure: " + t.message)
-            }
-        })
+                override fun onFailure(call: Call<ManageInventoryResponse>, t: Throwable) {
+                    FunctionCall.DismissDialog(this@InventoryActivity)
+                    isApiCalled = false
+                    Log.d("manage_inventory_hit", "onFailure: " + t.message)
+                }
+            })
         }
 
     }
@@ -166,17 +164,17 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
     ) {
         val token: String = loginResponsePref.getInstance(this@InventoryActivity).token
         FunctionCall.showProgressDialog(this@InventoryActivity)
-        val call: Call<ManageInventoryResponse> = RetrofitClient.getVendorService()
+        val call: Call<DeleteInventoryResponse> = RetrofitClient.getVendorService()
             .editInventoryItems("Bearer " + token,
                 inventory_Category_Id,
                 inventory_id,
                 "updatecreate",
                 item,
                 qty)
-        call.enqueue(object : Callback<ManageInventoryResponse> {
+        call.enqueue(object : Callback<DeleteInventoryResponse> {
             override fun onResponse(
-                call: Call<ManageInventoryResponse>,
-                response: Response<ManageInventoryResponse>,
+                call: Call<DeleteInventoryResponse>,
+                response: Response<DeleteInventoryResponse>,
             ) {
                 FunctionCall.DismissDialog(this@InventoryActivity)
                 if (response.isSuccessful && response.body()!!.isStatus) {
@@ -185,14 +183,16 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
                         Toast.LENGTH_SHORT).show()
                     getInventoryData(inventory_Category_Id)
                 } else {
-                    Toast.makeText(applicationContext,
-                        "" + response.body()!!.message,
-                        Toast.LENGTH_SHORT).show()
+                    if (response.body() != null) {
+                        Toast.makeText(applicationContext,
+                            "" + response.body()?.message,
+                            Toast.LENGTH_SHORT).show()
+                    }
                     Log.d("manage_inventory_hit", "onResponse: " + response)
                 }
             }
 
-            override fun onFailure(call: Call<ManageInventoryResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DeleteInventoryResponse>, t: Throwable) {
                 Log.d("manage_inventory_hit", "onFailure: " + t.message)
                 FunctionCall.DismissDialog(this@InventoryActivity)
             }
@@ -255,7 +255,7 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
             alertDialog.dismiss()
             FunctionCall.showProgressDialog(this@InventoryActivity)
             val token: String = loginResponsePref.getInstance(this@InventoryActivity).token
-            val call: Call<ManageInventoryResponse> = RetrofitClient.getVendorService()
+            val call: Call<DeleteInventoryResponse> = RetrofitClient.getVendorService()
                 .editInventoryItems("Bearer " + token,
                     inventory_Category_Id,
                     inventory_id.toString(),
@@ -263,10 +263,10 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
                     "",
                     "")
 
-            call.enqueue(object : Callback<ManageInventoryResponse> {
+            call.enqueue(object : Callback<DeleteInventoryResponse> {
                 override fun onResponse(
-                    call: Call<ManageInventoryResponse>,
-                    response: Response<ManageInventoryResponse>,
+                    call: Call<DeleteInventoryResponse>,
+                    response: Response<DeleteInventoryResponse>,
                 ) {
                     FunctionCall.DismissDialog(this@InventoryActivity)
                     if (response.isSuccessful && response.body()!!.isStatus) {
@@ -279,7 +279,7 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
                     }
                 }
 
-                override fun onFailure(call: Call<ManageInventoryResponse>, t: Throwable) {
+                override fun onFailure(call: Call<DeleteInventoryResponse>, t: Throwable) {
                     FunctionCall.DismissDialog(this@InventoryActivity)
                     Log.d("manage_inventoryhit", "onFailure: " + t.message)
                 }
@@ -292,13 +292,18 @@ class InventoryActivity : AppCompatActivity(), OnClickListenerInterfaceKotlin, O
 
     override fun onStart() {
         var intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        registerReceiver(networkChangeListener , intentFilter )
+        registerReceiver(networkChangeListener, intentFilter)
         super.onStart()
     }
 
     override fun onStop() {
         unregisterReceiver(networkChangeListener)
         super.onStop()
+    }
+
+    override fun onItemClicks(id: Int, position: Int) {
+
+            getInventoryData(id.toString())
     }
 }
 

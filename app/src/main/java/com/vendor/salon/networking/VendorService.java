@@ -25,6 +25,7 @@ import com.vendor.salon.data_Class.get_ManagePackageData.getManagePackageRespons
 import com.vendor.salon.data_Class.home.HomeResponse;
 import com.vendor.salon.data_Class.inventoryCategory.InventoryCategoriessResponse;
 import com.vendor.salon.data_Class.login.LoginResponse;
+import com.vendor.salon.data_Class.manage_inventory.DeleteInventoryResponse;
 import com.vendor.salon.data_Class.manage_inventory.ManageInventoryResponse;
 import com.vendor.salon.data_Class.manage_package.ManagePackageResponse;
 import com.vendor.salon.data_Class.manage_service.ManageServiceResponse;
@@ -245,7 +246,7 @@ public interface VendorService {
                                                                 @Query("id") String package_id);
 
     @POST("saloon/api/manage_inventory")
-    Call<ManageInventoryResponse> editInventoryItems(@Header("Authorization") String auths,
+    Call<DeleteInventoryResponse> editInventoryItems(@Header("Authorization") String auths,
                                                      @Query("inventory_category_id") String inventoryCategoryId,
                                                      @Query("inventory_id") String inventoryId,
                                                      @Query("status") String status,

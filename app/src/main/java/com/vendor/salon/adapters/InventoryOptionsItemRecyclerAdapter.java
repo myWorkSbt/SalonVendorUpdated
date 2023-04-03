@@ -51,7 +51,7 @@ public class InventoryOptionsItemRecyclerAdapter extends RecyclerView.Adapter<In
                 notifyItemChanged(position);
                 notifyItemChanged(prev_selected);
                 prev_selected = position;
-                onClickListener.onItemClick(dataItems.getId(), position);
+                onClickListener.onItemClicks(dataItems.getId(), position);
 
             });
             if (position == 0 && prev_selected == -1) {

@@ -176,7 +176,7 @@ public class EditSalon extends AppCompatActivity {
         });
 
          editSalonBinding.addMoreSalonDetails.setOnClickListener(view -> {
-             Image_REQ_CODE = 102;
+             Image_REQ_CODE = 1013;
 //                ImagePicker.with(EditProfile.this)
 //                        .crop()                    //Crop image(Optional), Check Customization for more option
 //                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
@@ -342,7 +342,7 @@ public class EditSalon extends AppCompatActivity {
 
             }
 
-            else if (Image_REQ_CODE == 102) {
+            else if (Image_REQ_CODE == 1013) {
                 Image_REQ_CODE = -1;
 
                 if (null != data) {
@@ -398,44 +398,54 @@ public class EditSalon extends AppCompatActivity {
 
     private void SaveBannerImages(ArrayList<File> imagesEncodedBannerList) {
         FunctionCall.showProgressDialog(EditSalon.this);
+        MultipartBody.Part[] banner_image_parts = new MultipartBody.Part[0];
         if (imagesEncodedBannerList != null && imagesEncodedBannerList.size() > 0) {
-            MultipartBody.Part[] banner_image_part = new MultipartBody.Part[imagesEncodedBannerList.size()];
+            banner_image_parts = new MultipartBody.Part[imagesEncodedBannerList.size()];
             for (int i = 0; i < imagesEncodedBannerList.size(); i++) {
                 if (imagesEncodedBannerList.get(i) != null) {
-                    RequestBody thumbBody = RequestBody.create(MediaType.parse("image/jpg"), Compress.images(imagesEncodedBannerList.get(i).getAbsolutePath() , 1024 * 1024)) ;
-                    banner_image_part[i] = MultipartBody.Part.createFormData("banner_image[]", imagesEncodedBannerList.get(i).getName(), thumbBody);
+                    RequestBody thumbBody = RequestBody.create(MediaType.parse("image/jpg"), Compress.images(imagesEncodedBannerList.get(i).getPath(), 1024 * 1024));
+                    banner_image_parts[i] = MultipartBody.Part.createFormData("banner_image[]", imagesEncodedBannerList.get(i).getName(), thumbBody);
                 }
             }
-            RequestBody phone_body = getRequestBody(getted_mobileNos);
-            RequestBody ccp_bdy = getRequestBody("+91");
-            RequestBody type_body;
-            type_body = getRequestBody(vendor_Type);
-            String token = loginResponsePref.getInstance(EditSalon.this).getToken();
-            Call<EditProfileResponse> call = RetrofitClient.getVendorService().AddSalonBannerImagesEditProfile("Bearer " + token, phone_body, ccp_bdy, banner_image_part, type_body);
-            call.enqueue(new Callback<EditProfileResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<EditProfileResponse> call, @NonNull Response<EditProfileResponse> response) {
-                    FunctionCall.DismissDialog(EditSalon.this);
-                    if (response.isSuccessful() && response.body() != null) {
-                        if (response.body().isResult()) {
-
-                            Toast.makeText(EditSalon.this, " " + Objects.requireNonNull(response.body()).getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        if (response.body() != null) {
-                            Toast.makeText(EditSalon.this , "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        Log.d("editprofilehitsalon", "onResponse: " + response.body());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<EditProfileResponse> call, @NonNull Throwable t) {
-                    FunctionCall.DismissDialog(EditSalon.this );
-                    Log.d("editprofilehitsalon", "onFailure: " + t.getMessage());
-                }
-            });
         }
+
+//        if (imagesEncodedBannerList != null && imagesEncodedBannerList.size() > 0) {
+//            MultipartBody.Part[] banner_image_part = new MultipartBody.Part[imagesEncodedBannerList.size()];
+//            for (int i = 0; i < imagesEncodedBannerList.size(); i++) {
+//                if (imagesEncodedBannerList.get(i) != null) {
+//                    RequestBody thumbBody = RequestBody.create(MediaType.parse("image/jpg"), Compress.images(imagesEncodedBannerList.get(i).getAbsolutePath() , 1024 * 1024)) ;
+//                    banner_image_part[i] = MultipartBody.Part.createFormData("banner_image[]", imagesEncodedBannerList.get(i).getName(), thumbBody);
+//                }
+//            }
+        RequestBody phone_body = getRequestBody(getted_mobileNos);
+        RequestBody ccp_bdy = getRequestBody("+91");
+        RequestBody type_body;
+        type_body = getRequestBody(vendor_Type);
+        String token = loginResponsePref.getInstance(EditSalon.this).getToken();
+        Call<EditProfileResponse> call = RetrofitClient.getVendorService().AddSalonBannerImagesEditProfile("Bearer " + token, phone_body, ccp_bdy, banner_image_parts, type_body);
+        call.enqueue(new Callback<EditProfileResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<EditProfileResponse> call, @NonNull Response<EditProfileResponse> response) {
+                FunctionCall.DismissDialog(EditSalon.this);
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isResult()) {
+
+                        Toast.makeText(EditSalon.this, " " + Objects.requireNonNull(response.body()).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (response.body() != null) {
+                        Toast.makeText(EditSalon.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d("editprofilehitsalon", "onResponse: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<EditProfileResponse> call, @NonNull Throwable t) {
+                FunctionCall.DismissDialog(EditSalon.this);
+                Log.d("editprofilehitsalon", "onFailure: " + t.getMessage());
+            }
+        });
     }
 
 

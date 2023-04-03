@@ -1,5 +1,7 @@
 package com.vendor.salon.adapters;
 
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,9 @@ import com.vendor.salon.utilityMethod.OnRecentBindingItemsClickListener;
 import com.vendor.salon.utilityMethod.loginResponsePref;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,43 +67,92 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
 //        holder.setIsRecyclable(false);
         final AppointmentsItem recentAppointments = recentAppointmentsList.get(holder.getBindingAdapterPosition());
         if (recentAppointments != null) {
-            if (recentAppointments.getUserName().length()<13 ) {
+            if (recentAppointments.getUserName() != null) {
+                if (recentAppointments.getUserName().length() < 13) {
+                    String[] name_arr = recentAppointments.getUserName().split(" ");
+                    String name = String.format("%s%s", name_arr[0].substring(0, 1).toUpperCase(), name_arr[0].substring(1).toLowerCase()) + "";
+                    if (name_arr.length > 1) {
+                        for (int i = 1; i < name_arr.length; i++) {
+                            if (name_arr[i] != null) {
+                                name += String.format(" %s", name_arr[i].substring(0, 1).toUpperCase());
+                                if (name_arr[i].length() > 1) {
+                                    name += name_arr[i].substring(1).toLowerCase();
+                                }
+                            }
+                        }
+                    }
+                    holder.recentAppointmentsBinding.itemName.setText(name);
+                } else {
+                    String new_name = recentAppointments.getUserName().substring(0, 11);
+                    String[] name_arr = new_name.split(" ");
+                    String name = name_arr[0].substring(0, 1).toUpperCase() + name_arr[0].substring(1).toLowerCase();
+                    if (name_arr.length > 1) {
+                        for (int i = 1; i < name_arr.length; i++) {
+                            if (name_arr[i] != null) {
+                                name += String.format(" %s", name_arr[i].substring(0, 1).toUpperCase());
+                                if (name_arr[i].length() > 1) {
+                                    name += name_arr[i].substring(1).toLowerCase();
+                                }
+                            }
+                        }
+                    }
+                    name += "..";
+                    holder.recentAppointmentsBinding.itemName.setText(name);
+                }
+//
+//                    if (name_arr[1] != null) {
+//                        name += String.format("%s", name_arr[1].substring(0, 1).toUpperCase());
+//                        if (name_arr[1].length() > 1) {
+//                            name += name_arr[1].substring(1);
+//                        }
+//                    }
+            } else {
                 holder.recentAppointmentsBinding.itemName.setText(recentAppointments.getUserName());
             }
-            else {
-                holder.recentAppointmentsBinding.itemName.setText(recentAppointments.getUserName().substring(0,11 ) + "..");
-            }
-            holder.recentAppointmentsBinding.itemName.setText(recentAppointments.getUserName());
-            if (recentAppointments.getClientGender() == null ) {
+            if (recentAppointments.getClientGender() == null) {
                 holder.recentAppointmentsBinding.itemGender.setVisibility(View.GONE);
+            } else {
+                String gender = null;
+                gender = String.format("%s%s", recentAppointments.getClientGender().substring(0, 1).toUpperCase(), recentAppointments.getClientGender().substring(1));
+                holder.recentAppointmentsBinding.itemGender.setText(gender);
             }
-
-                holder.recentAppointmentsBinding.itemGender.setText(recentAppointments.getClientGender());
             Glide.with(holder.recentAppointmentsBinding.itemAllAppointmnImage.getContext()).load(recentAppointments.getUserImage()).into(holder.recentAppointmentsBinding.itemAllAppointmnImage);
 
-            holder.recentAppointmentsBinding.stylishVal.setText(recentAppointments.getSpecialist() + "");
-            if (recentAppointments.getDistance() == null ) {
+            String stylist_val = null;
+            if (recentAppointments.getSpecialist() != null) {
+                stylist_val = String.format("%s%s", recentAppointments.getSpecialist().substring(0, 1).toUpperCase(), recentAppointments.getSpecialist().substring(1).toLowerCase());
+            }
+            holder.recentAppointmentsBinding.stylishVal.setText(stylist_val);
+            if (recentAppointments.getDistance() == null) {
                 holder.recentAppointmentsBinding.distance.setVisibility(View.GONE);
             }
-                holder.recentAppointmentsBinding.distance.setText(recentAppointments.getDistance());
-            if (recentAppointments.getStartTime() != null ) {
-                holder.recentAppointmentsBinding.appointmentDay.setText(recentAppointments.getStartTime().split(" ")[0]);
-                holder.recentAppointmentsBinding.appointmentTime.setText(recentAppointments.getStartTime().split(" ")[1]);
-                holder.recentAppointmentsBinding.appointmentTime.setText(recentAppointments.getStartTime().split(" ")[1]);
+            holder.recentAppointmentsBinding.distance.setText(recentAppointments.getDistance());
+            holder.recentAppointmentsBinding.appointmentTime.setText(recentAppointments.getBookingTime());
+
+            String today_date = "YYYY-MM-dd";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                today_date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            }
+            String booking_dates = recentAppointments.getAppointmentDate();
+            if (today_date.equals(booking_dates)) {
+                holder.recentAppointmentsBinding.appointmentDay.setText("Today");
+            }
+            else {
+                holder.recentAppointmentsBinding.appointmentDay.setText(booking_dates);
             }
 
 
         }
 
 
-    holder.recentAppointmentsBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
+        holder.recentAppointmentsBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selected_Staff_name = "";
-                selected_staff_id = "" ;
+                selected_staff_id = "";
                 callAssignStaffApis("2", recentAppointments.getId() + "");
-                AppointmentFragment.status = "3" ;
-                AppointmentFragment.filter = "" ;
+                AppointmentFragment.status = "3";
+                AppointmentFragment.filter = "";
                 recentAppointmentFragment.getSearchedData();
             }
         });
@@ -109,7 +162,7 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
             public void onClick(View view) {
                 callAssignStaffApis("4", recentAppointments.getId() + "");
                 AppointmentFragment.filter = "";
-                AppointmentFragment.status = "3" ;
+                AppointmentFragment.status = "3";
                 recentAppointmentFragment.getSearchedData();
             }
         });
@@ -120,17 +173,16 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
                 if (holder.recentAppointmentsBinding.stylishVal.getText().toString().toLowerCase().equals("anyone")) {
                     Toast.makeText(recentAppointmentFragment.getContext(), " Please assign staff First . ", Toast.LENGTH_SHORT).show();
 
-                        selecteditem = holder.getBindingAdapterPosition();
-                        holder.recentAppointmentsBinding.assignStaffLays.setVisibility(View.VISIBLE);
-                        holder.recentAppointmentsBinding.btnRecentAccept.setVisibility(View.GONE);
-                        holder.recentAppointmentsBinding.btnRecentReject.setVisibility(View.GONE);
-                        getStaffData(holder.recentAppointmentsBinding);
+                    selecteditem = holder.getBindingAdapterPosition();
+                    holder.recentAppointmentsBinding.assignStaffLays.setVisibility(View.VISIBLE);
+                    holder.recentAppointmentsBinding.btnRecentAccept.setVisibility(View.GONE);
+                    holder.recentAppointmentsBinding.btnRecentReject.setVisibility(View.GONE);
+                    getStaffData(holder.recentAppointmentsBinding);
 
-                }
-                else {
+                } else {
                     callAssignStaffApis("4", recentAppointments.getId() + "");
                     AppointmentFragment.status = "3";
-                    AppointmentFragment.filter = "" ;
+                    AppointmentFragment.filter = "";
                     recentAppointmentFragment.getSearchedData();
                 }
             }
@@ -139,14 +191,14 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
             @Override
             public void onClick(View view) {
                 selected_staff_id = "";
-                selected_Staff_name = "" ;
+                selected_Staff_name = "";
                 callAssignStaffApis("2", recentAppointments.getId() + "");
                 AppointmentFragment.status = "3";
-                AppointmentFragment.filter = "" ;
+                AppointmentFragment.filter = "";
                 recentAppointmentFragment.getSearchedData();
             }
         });
-}
+    }
 
     private void callAssignStaffApis(String status, String appointment_id) {
         FunctionCall.showProgressDialog(recentAppointmentFragment.getContext());
@@ -176,7 +228,7 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
 
     private void getStaffData(ItemRecentAppointmentsBinding recentAppointmentsBinding) {
         String token = "Bearer " + loginResponsePref.getInstance(recentAppointmentFragment.getContext()).getToken();
-        Call<GetStaffResponse> call = RetrofitClient.getVendorService().getAllStaffList(token , "" );
+        Call<GetStaffResponse> call = RetrofitClient.getVendorService().getAllStaffList(token, "");
         call.enqueue(new Callback<GetStaffResponse>() {
             @Override
             public void onResponse(Call<GetStaffResponse> call, Response<GetStaffResponse> response) {
@@ -214,11 +266,10 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
     }
 
     public void refreshListss(List<AppointmentsItem> recentAppointmentsList) {
-        if (recentAppointmentsList != null && recentAppointmentsList.size()>0 ) {
+        if (recentAppointmentsList != null && recentAppointmentsList.size() > 0) {
             this.recentAppointmentsList = recentAppointmentsList;
-        }
-        else {
-            this.recentAppointmentsList = new ArrayList<>() ;
+        } else {
+            this.recentAppointmentsList = new ArrayList<>();
         }
         notifyDataSetChanged();
     }
@@ -228,7 +279,7 @@ public class RecentAppointmentRecyclerAdapter extends RecyclerView.Adapter<Recen
 
         public ViewHolder(ItemRecentAppointmentsBinding recentAppointmentsBinding) {
             super(recentAppointmentsBinding.getRoot());
-            this.recentAppointmentsBinding =  recentAppointmentsBinding ;
+            this.recentAppointmentsBinding = recentAppointmentsBinding;
 //            onRecentBindingItemsClickListener.OnItemClick(recentAppointmentsBinding1, getBindingAdapterPosition() );
         }
     }

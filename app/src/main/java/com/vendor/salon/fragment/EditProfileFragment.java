@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import com.vendor.salon.utilityMethod.loginResponsePref;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -72,7 +74,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         editProfileBinding = FragmentEditProfileBinding.inflate(inflater, container, false);
@@ -93,12 +95,7 @@ public class EditProfileFragment extends Fragment {
         ccp = "+91";
         token = loginResponsePref.getInstance(EditProfileFragment.this.getContext()).getToken();
         getProfileData();
-        editProfileBinding.btnMenus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeBinding.drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+        editProfileBinding.btnMenus.setOnClickListener(view13 -> homeBinding.drawerLayout.openDrawer(GravityCompat.START));
 
         editProfileBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -145,109 +142,94 @@ public class EditProfileFragment extends Fragment {
                 }
             }
         });
-        editProfileBinding.submit.setOnClickListener(new View.OnClickListener() {
+        editProfileBinding.submit.setOnClickListener(view1 -> {
+            MultipartBody.Part check_Img_part_val = null;
+            if (CheckFile != null) {
+                byte[]  imag_arrs = Compress.images( CheckFile.getPath(), 1024);
+                RequestBody license_request = RequestBody.create(MediaType.parse("check_image"), imag_arrs);
+                check_Img_part_val = MultipartBody.Part.createFormData("check_image", CheckFile.getName(), license_request);
+            }
 
-            @Override
-            public void onClick(View view) {
-                MultipartBody.Part check_Img_part_val = null;
-                if (CheckFile != null) {
-                    byte[]  imag_arrs = Compress.images( CheckFile.getPath(), 1* 1024);
-                    RequestBody license_request = RequestBody.create(MediaType.parse("check_image"), imag_arrs);
-                    check_Img_part_val = MultipartBody.Part.createFormData("check_image", CheckFile.getName(), license_request);
-                }
-
-                if (editProfileBinding.BankName.getText().toString().isEmpty() ) {
-                    editProfileBinding.BankName.setError("Mandatory Field! ");
-                    editProfileBinding.BankName.requestFocus();
-                }
-                else  if (editProfileBinding.AccountNumber.getText().toString().isEmpty() ) {
-                    editProfileBinding.AccountNumber.setError("Mandatory Field! ");
-                    editProfileBinding.AccountNumber.requestFocus();
-                }
-                else if (editProfileBinding.AccountHolderName.getText().toString().isEmpty() ) {
-                    editProfileBinding.AccountHolderName.setError("Mandatory Field! ");
-                    editProfileBinding.AccountHolderName.requestFocus();
-                }
-                else if (editProfileBinding.TvIfcCode.getText().toString().isEmpty() ) {
-                    editProfileBinding.TvIfcCode.setError("Mandatory Field! ");
-                    editProfileBinding.TvIfcCode.requestFocus();
-                }
-                else {
-                    FunctionCall.showProgressDialog(homeBinding.getRoot().getContext());
-                    String token = "Bearer " + loginResponsePref.getInstance(EditProfileFragment.this.getContext()).getToken();
-                    Call<BankEditResponse> call = RetrofitClient.getVendorService().EditBankDetails(token,
-                            getRequestBody(editProfileBinding.BankName.getText().toString()),
-                            getRequestBody(editProfileBinding.AccountNumber.getText().toString()),
-                            getRequestBody(editProfileBinding.AccountHolderName.getText().toString()),
-                            getRequestBody(editProfileBinding.TvIfcCode.getText().toString()),
-                            check_Img_part_val);
-                    call.enqueue(new Callback<BankEditResponse>() {
-                        @Override
-                        public void onResponse(Call<BankEditResponse> call, Response<BankEditResponse> response) {
-                            FunctionCall.DismissDialog(homeBinding.getRoot().getContext());
-                            if (response.isSuccessful() && response.body() != null && response.body().isResult()) {
-                                isEntriesEnabled = false;
-                                editProfileBinding.BankName.setEnabled(false);
-                                editProfileBinding.BankName.setBackgroundColor(Color.parseColor("#ffffff"));
-                                editProfileBinding.AccountNumber.setEnabled(false);
-                                editProfileBinding.AccountNumber.setBackgroundColor(Color.parseColor("#ffffff"));
-                                editProfileBinding.AccountHolderName.setEnabled(false);
-                                editProfileBinding.AccountHolderName.setBackgroundColor(Color.parseColor("#ffffff"));
-                                editProfileBinding.TvIfcCode.setEnabled(false);
-                                editProfileBinding.TvIfcCode.setBackgroundColor(Color.parseColor("#ffffff"));
-                                editProfileBinding.CancelCheckLays.setClickable(false);
-                                editProfileBinding.TvCancelCheckHeading.setTextColor(Color.BLACK);
-                                editProfileBinding.submit.setVisibility(View.GONE);
-                            } else {
-                                if (response.body() != null) {
-                                    Toast.makeText(homeContext, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                                Log.d("bankedithit", "onResponse: " + response.body());
+            if (Objects.requireNonNull(editProfileBinding.BankName.getText()).toString().isEmpty() ) {
+                editProfileBinding.BankName.setError("Mandatory Field! ");
+                editProfileBinding.BankName.requestFocus();
+            }
+            else  if (Objects.requireNonNull(editProfileBinding.AccountNumber.getText()).toString().isEmpty() ) {
+                editProfileBinding.AccountNumber.setError("Mandatory Field! ");
+                editProfileBinding.AccountNumber.requestFocus();
+            }
+            else if (Objects.requireNonNull(editProfileBinding.AccountHolderName.getText()).toString().isEmpty() ) {
+                editProfileBinding.AccountHolderName.setError("Mandatory Field! ");
+                editProfileBinding.AccountHolderName.requestFocus();
+            }
+            else if (Objects.requireNonNull(editProfileBinding.TvIfcCode.getText()).toString().isEmpty() ) {
+                editProfileBinding.TvIfcCode.setError("Mandatory Field! ");
+                editProfileBinding.TvIfcCode.requestFocus();
+            }
+            else {
+                FunctionCall.showProgressDialog(homeBinding.getRoot().getContext());
+                String token = "Bearer " + loginResponsePref.getInstance(EditProfileFragment.this.getContext()).getToken();
+                Call<BankEditResponse> call = RetrofitClient.getVendorService().EditBankDetails(token,
+                        getRequestBody(editProfileBinding.BankName.getText().toString()),
+                        getRequestBody(editProfileBinding.AccountNumber.getText().toString()),
+                        getRequestBody(editProfileBinding.AccountHolderName.getText().toString()),
+                        getRequestBody(editProfileBinding.TvIfcCode.getText().toString()),
+                        check_Img_part_val);
+                call.enqueue(new Callback<BankEditResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<BankEditResponse> call, @NonNull Response<BankEditResponse> response) {
+                        FunctionCall.DismissDialog(homeBinding.getRoot().getContext());
+                        if (response.isSuccessful() && response.body() != null && response.body().isResult()) {
+                            isEntriesEnabled = false;
+                            editProfileBinding.BankName.setEnabled(false);
+                            editProfileBinding.BankName.setBackgroundColor(Color.parseColor("#ffffff"));
+                            editProfileBinding.AccountNumber.setEnabled(false);
+                            editProfileBinding.AccountNumber.setBackgroundColor(Color.parseColor("#ffffff"));
+                            editProfileBinding.AccountHolderName.setEnabled(false);
+                            editProfileBinding.AccountHolderName.setBackgroundColor(Color.parseColor("#ffffff"));
+                            editProfileBinding.TvIfcCode.setEnabled(false);
+                            editProfileBinding.TvIfcCode.setBackgroundColor(Color.parseColor("#ffffff"));
+                            editProfileBinding.CancelCheckLays.setClickable(false);
+                            editProfileBinding.TvCancelCheckHeading.setTextColor(Color.BLACK);
+                            editProfileBinding.submit.setVisibility(View.GONE);
+                        } else {
+                            if (response.body() != null) {
+                                Toast.makeText(homeContext, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             }
+                            Log.d("bankedithit", "onResponse: " + response.body());
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<BankEditResponse> call, Throwable t) {
-                            FunctionCall.DismissDialog(homeBinding.getRoot().getContext());
-                            Log.d("bankedithit", "onFailure: " + t.getMessage());
-                        }
-                    });
+                    @Override
+                    public void onFailure(@NonNull Call<BankEditResponse> call, @NonNull Throwable t) {
+                        FunctionCall.DismissDialog(homeBinding.getRoot().getContext());
+                        Log.d("bankedithit", "onFailure: " + t.getMessage());
+                    }
+                });
 
-                }
             }
         });
 
-        editProfileBinding.editSalonDetailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                moveToSalonEditPage();
-            }
+        editProfileBinding.editSalonDetailBtn.setOnClickListener(view12 -> moveToSalonEditPage());
+
+
+        editProfileBinding.CancelCheckLays.setOnClickListener(view14 -> {
+            Image_REQ_CODE = 99;
+            ImagePicker.with(EditProfileFragment.this)
+                    .crop()                    //Crop image(Optional), Check Customization for more option
+                    .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                            1080,
+                            1080
+                    )   //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start();
         });
 
-
-        editProfileBinding.CancelCheckLays.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Image_REQ_CODE = 99;
-                ImagePicker.with(EditProfileFragment.this)
-                        .crop()                    //Crop image(Optional), Check Customization for more option
-                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                        .maxResultSize(
-                                1080,
-                                1080
-                        )   //Final image resolution will be less than 1080 x 1080(Optional)
-                        .start();
-            }
-        });
-
-        editProfileBinding.editOwnerDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editProfileBinding.progressBar.setVisibility(View.VISIBLE);
-                Intent editOwnerIntent = new Intent(getActivity(), EditOwner.class);
-                startActivity(editOwnerIntent);
-                editProfileBinding.progressBar.setVisibility(View.GONE);
-            }
+        editProfileBinding.editOwnerDetailsBtn.setOnClickListener(view15 -> {
+            editProfileBinding.progressBar.setVisibility(View.VISIBLE);
+            Intent editOwnerIntent = new Intent(getActivity(), EditOwner.class);
+            startActivity(editOwnerIntent);
+            editProfileBinding.progressBar.setVisibility(View.GONE);
         });
 
 
@@ -268,13 +250,16 @@ public class EditProfileFragment extends Fragment {
 
 
     private void getProfileData() {
+        if (homeContext == null ) {
+            homeContext = EditProfileFragment.this.getContext();
+        }
         String token = loginResponsePref.getInstance(homeContext).getToken();
-        FunctionCall.showProgressDialog(homeContext);
+//        FunctionCall.showProgressDialog(homeContext);
         Call<GetProfileResponse> call = RetrofitClient.getVendorService().getVendorDetails("Bearer " + token);
         call.enqueue(new Callback<GetProfileResponse>() {
             @Override
-            public void onResponse(Call<GetProfileResponse> call, Response<GetProfileResponse> response) {
-                FunctionCall.DismissDialog(homeContext);
+            public void onResponse(@NonNull Call<GetProfileResponse> call, @NonNull Response<GetProfileResponse> response) {
+//                FunctionCall.DismissDialog(homeContext);
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().isStatus()) {
                         GetProfileResponse profileResponse = response.body();
@@ -295,8 +280,8 @@ public class EditProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<GetProfileResponse> call, Throwable t) {
-                FunctionCall.DismissDialog(homeContext);
+            public void onFailure(@NonNull Call<GetProfileResponse> call, @NonNull Throwable t) {
+//                FunctionCall.DismissDialog(homeContext);
                 Toast.makeText(homeContext , "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("getprofilehit", "onFailure: " + t.getMessage());
             }
@@ -314,7 +299,7 @@ public class EditProfileFragment extends Fragment {
         if (vendorProfile.getOwnerDetail() != null) {
             vendor_Type = vendorProfile.getOwnerDetail().getVendorType() + "";
             if (vendorProfile.getOwnerDetail().getEmail()!= null && vendorProfile.getOwnerDetail().getEmail().length() >13 ) {
-                 editProfileBinding.ownerEmailId.setText(vendorProfile.getOwnerDetail().getEmail().substring(0,11) + "..");
+                 editProfileBinding.ownerEmailId.setText(String.format("%s..", vendorProfile.getOwnerDetail().getEmail().substring(0, 11)));
             }
             else {
                 editProfileBinding.ownerEmailId.setText(vendorProfile.getOwnerDetail().getEmail());
@@ -366,9 +351,10 @@ public class EditProfileFragment extends Fragment {
                 Image_REQ_CODE = 7;
                 editProfileBinding.submit.setVisibility(View.VISIBLE);
                 editProfileBinding.submit.isFocused();
-                CheckFile = GetFileFromUriUsingBufferReader.getImageFile(homeContext, data.getData());
+                CheckFile = GetFileFromUriUsingBufferReader.getImageFile(homeContext, Objects.requireNonNull(data).getData());
                 if (data != null) {
-                    if (CheckFile != null && CheckFile.getName() != null) {
+                    if (CheckFile != null) {
+                        CheckFile.getName();
                         editProfileBinding.TvCancelCheckHeading.setText(CheckFile.getName());
                         editProfileBinding.TvCancelCheckHeading.setTextColor(Color.BLACK);
                     }

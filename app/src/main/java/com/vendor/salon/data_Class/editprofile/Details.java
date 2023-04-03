@@ -1,15 +1,15 @@
 package com.vendor.salon.data_Class.editprofile;
 
-
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
-
 
 public class Details implements Serializable {
 
 	@SerializedName("id")
 	private int id;
+
+	@SerializedName("slug")
+	private String slug;
 
 	@SerializedName("name")
 	private String name;
@@ -26,6 +26,9 @@ public class Details implements Serializable {
 	@SerializedName("email")
 	private String email;
 
+	@SerializedName("password")
+	private Object password;
+
 	@SerializedName("dob")
 	private String dob;
 
@@ -36,16 +39,19 @@ public class Details implements Serializable {
 	private String vendorType;
 
 	@SerializedName("shop_name")
-	private Object shopName;
+	private String shopName;
 
 	@SerializedName("optional")
 	private Object optional;
 
 	@SerializedName("about")
-	private Object about;
+	private String about;
+
+	@SerializedName("designation")
+	private String designation;
 
 	@SerializedName("address")
-	private Object address;
+	private String address;
 
 	@SerializedName("lat")
 	private Object lat;
@@ -55,6 +61,9 @@ public class Details implements Serializable {
 
 	@SerializedName("service_for")
 	private String serviceFor;
+
+	@SerializedName("ratings")
+	private String ratings;
 
 	@SerializedName("id_proof_image")
 	private String idProofImage;
@@ -74,6 +83,39 @@ public class Details implements Serializable {
 	@SerializedName("is_approved")
 	private int isApproved;
 
+	@SerializedName("parent")
+	private Object parent;
+
+	@SerializedName("monday")
+	private String monday;
+
+	@SerializedName("tuesday")
+	private String tuesday;
+
+	@SerializedName("wednesday")
+	private String wednesday;
+
+	@SerializedName("thursday")
+	private String thursday;
+
+	@SerializedName("friday")
+	private String friday;
+
+	@SerializedName("saturday")
+	private String saturday;
+
+	@SerializedName("sunday")
+	private String sunday;
+
+	@SerializedName("wallet")
+	private Object wallet;
+
+	@SerializedName("area_cover")
+	private String areaCover;
+
+	@SerializedName("is_deleted")
+	private String isDeleted;
+
 	@SerializedName("created_at")
 	private String createdAt;
 
@@ -92,6 +134,14 @@ public class Details implements Serializable {
 
 	public int getId(){
 		return id;
+	}
+
+	public void setSlug(String slug){
+		this.slug = slug;
+	}
+
+	public String getSlug(){
+		return slug;
 	}
 
 	public void setName(String name){
@@ -134,6 +184,14 @@ public class Details implements Serializable {
 		return email;
 	}
 
+	public void setPassword(Object password){
+		this.password = password;
+	}
+
+	public Object getPassword(){
+		return password;
+	}
+
 	public void setDob(String dob){
 		this.dob = dob;
 	}
@@ -158,11 +216,11 @@ public class Details implements Serializable {
 		return vendorType;
 	}
 
-	public void setShopName(Object shopName){
+	public void setShopName(String shopName){
 		this.shopName = shopName;
 	}
 
-	public Object getShopName(){
+	public String getShopName(){
 		return shopName;
 	}
 
@@ -174,19 +232,27 @@ public class Details implements Serializable {
 		return optional;
 	}
 
-	public void setAbout(Object about){
+	public void setAbout(String about){
 		this.about = about;
 	}
 
-	public Object getAbout(){
+	public String getAbout(){
 		return about;
 	}
 
-	public void setAddress(Object address){
+	public void setDesignation(String designation){
+		this.designation = designation;
+	}
+
+	public String getDesignation(){
+		return designation;
+	}
+
+	public void setAddress(String address){
 		this.address = address;
 	}
 
-	public Object getAddress(){
+	public String getAddress(){
 		return address;
 	}
 
@@ -212,6 +278,14 @@ public class Details implements Serializable {
 
 	public String getServiceFor(){
 		return serviceFor;
+	}
+
+	public void setRatings(String ratings){
+		this.ratings = ratings;
+	}
+
+	public String getRatings(){
+		return ratings;
 	}
 
 	public void setIdProofImage(String idProofImage){
@@ -260,6 +334,94 @@ public class Details implements Serializable {
 
 	public int getIsApproved(){
 		return isApproved;
+	}
+
+	public void setParent(Object parent){
+		this.parent = parent;
+	}
+
+	public Object getParent(){
+		return parent;
+	}
+
+	public void setMonday(String monday){
+		this.monday = monday;
+	}
+
+	public String getMonday(){
+		return monday;
+	}
+
+	public void setTuesday(String tuesday){
+		this.tuesday = tuesday;
+	}
+
+	public String getTuesday(){
+		return tuesday;
+	}
+
+	public void setWednesday(String wednesday){
+		this.wednesday = wednesday;
+	}
+
+	public String getWednesday(){
+		return wednesday;
+	}
+
+	public void setThursday(String thursday){
+		this.thursday = thursday;
+	}
+
+	public String getThursday(){
+		return thursday;
+	}
+
+	public void setFriday(String friday){
+		this.friday = friday;
+	}
+
+	public String getFriday(){
+		return friday;
+	}
+
+	public void setSaturday(String saturday){
+		this.saturday = saturday;
+	}
+
+	public String getSaturday(){
+		return saturday;
+	}
+
+	public void setSunday(String sunday){
+		this.sunday = sunday;
+	}
+
+	public String getSunday(){
+		return sunday;
+	}
+
+	public void setWallet(Object wallet){
+		this.wallet = wallet;
+	}
+
+	public Object getWallet(){
+		return wallet;
+	}
+
+	public void setAreaCover(String areaCover){
+		this.areaCover = areaCover;
+	}
+
+	public String getAreaCover(){
+		return areaCover;
+	}
+
+	public void setIsDeleted(String isDeleted){
+		this.isDeleted = isDeleted;
+	}
+
+	public String getIsDeleted(){
+		return isDeleted;
 	}
 
 	public void setCreatedAt(String createdAt){

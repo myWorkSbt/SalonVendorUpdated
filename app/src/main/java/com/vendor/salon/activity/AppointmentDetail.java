@@ -286,13 +286,13 @@ public class AppointmentDetail extends AppCompatActivity implements OnMapReadyCa
                             String services_val = "" + appointments.getServicesName();
 
                             appointmentDetailBinding.service.setText(services_val);
-                            latitude = Double.parseDouble(appointments.getUser_lat());
-                            longitude = Double.parseDouble(appointments.getUser_lng());
-                            if (appointments.getUser_lat() != null && appointments.getUser_lng() != null && !appointments.getUser_lat().isEmpty() && !appointments.getUser_lat().isEmpty() && !appointments.getUser_lng().isEmpty()) {
+                            latitude = Double.parseDouble(appointments.getUserLat());
+                            longitude = Double.parseDouble(appointments.getUserLng());
+                            if (appointments.getUserLat() != null && appointments.getUserLng() != null && !appointments.getUserLat().isEmpty() && !appointments.getUserLat().isEmpty() && !appointments.getUserLng().isEmpty()) {
                                 FindLocationName(latitude, longitude);
                             }
                             setUpMapsWithLocations();
-                            setAppointmentStatus(appointments.getDoorstep_status(), -1);
+                            setAppointmentStatus(appointments.getDoorstepStatus(), -1);
                         }
                     }
 

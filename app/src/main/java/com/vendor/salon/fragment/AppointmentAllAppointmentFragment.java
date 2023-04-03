@@ -121,6 +121,9 @@ public class AppointmentAllAppointmentFragment extends Fragment {
             AppointmentFragment.status = "";
         }
         AppointmentFragment.filter = "" ;
+        if (homeContext == null ) {
+            homeContext = AppointmentAllAppointmentFragment.this.getContext();
+        }
         String token = "Bearer " + loginResponsePref.getInstance(getContext()).getToken();
         FunctionCall.showProgressDialog( homeContext);
         Call<AppointmentsFilterResponse> call = RetrofitClient.getVendorService().getAppointmentSearchedData(token, AppointmentFragment.status, AppointmentFragment.start_date, AppointmentFragment.end_date, AppointmentFragment.filter, AppointmentFragment.search, "", currentPage);

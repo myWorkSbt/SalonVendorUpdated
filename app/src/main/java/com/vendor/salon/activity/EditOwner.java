@@ -156,7 +156,6 @@ public class EditOwner extends AppCompatActivity {
                             }
                             Log.d("editprofilehit", "onResponse: " + response.body());
                         }
-                        editOwnerBinding.progressBar.setVisibility(View.GONE);
 
                     }
 

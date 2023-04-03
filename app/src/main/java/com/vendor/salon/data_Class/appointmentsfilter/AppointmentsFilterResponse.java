@@ -1,9 +1,8 @@
 package com.vendor.salon.data_Class.appointmentsfilter;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 public class AppointmentsFilterResponse implements Serializable {
 

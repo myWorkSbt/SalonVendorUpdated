@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getData();
@@ -221,7 +221,7 @@ public class HomeFragment extends Fragment {
         Call<HomeResponse> call = RetrofitClient.getVendorService().home("Bearer " + token);
         call.enqueue(new Callback<HomeResponse>() {
             @Override
-            public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response) {
+            public void onResponse(@NonNull Call<HomeResponse> call, @NonNull Response<HomeResponse> response) {
                 FunctionCall.DismissDialog(homeContext);
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().isStatus()) {
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<HomeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<HomeResponse> call, @NonNull Throwable t) {
                 FunctionCall.DismissDialog(homeContext);
                 Log.d("homehit", "onFailure:  " + t.getMessage());
                 viewDataBinding.Appointment.setVisibility(View.GONE);

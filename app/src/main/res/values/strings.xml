@@ -121,7 +121,7 @@
     <string name="save">Save</string>
     <string name="_10_km">10 km</string>
     <string name="google_maps_api_key">AIzaSyATW5jE8FZwyqSqf6-9tWIswj-JH-Gg7Fg</string>
-    <string name="online">online</string>
+    <string name="online">Online</string>
     <string name="completed">Completed</string>
     <string name="cancelled">" Cancelled "</string>
     <string name="appointment_status">Appointment Status :</string>

@@ -70,10 +70,9 @@ public class InventoryRecyclerAdapters extends RecyclerView.Adapter<InventoryRec
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     public void refreshLists(List<DataItem> myInventoryList) {
         this.myInventoryList = myInventoryList;
-        notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
